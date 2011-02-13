@@ -15,7 +15,6 @@ var ui_server = settings.UIPort === settings.port ? tile_server : express.create
 
 require('tile-server')(tile_server, settings);
 require('ui-server')(ui_server, settings);
-require('embed')(ui_server, settings);
 require('templates')(settings);
 require('bootstrap')(settings);
 tile_server.enable('jsonp callback');
