@@ -1,0 +1,30 @@
+node 0.2.6 source
+
+# module | github repo | tag | alias
+module senchalabs connect 0.3.0
+module visionmedia express 1.0.0
+module creationix step v0.0.3
+module visionmedia expresso 0.7.2
+module documentcloud backbone 0.3.3
+module documentcloud underscore 1.1.4
+module coopernurse node-pool 1.0.4
+module tmpvar jsdom 0.1.20
+module tautologistics node-htmlparser v1.7.3
+module mikeal request v1.2.0
+module developmentseed openlayers_slim v1.9
+module headjs headjs v0.8
+module developmentseed handlebars.js ds-v0.1
+
+# untagged
+module mapbox tilelive.js
+module mapbox map-utils
+module coolaj86 node-jquery v1.4.4
+module kkaefer node-compress
+module willwhite node-sqlite blobbuild-combined sqlite
+
+# Module layout workarounds
+cd $ROOT
+! test -f lib/node/request && ln -s ../../modules/request/main.js lib/node/request
+! test -f lib/node/jsdom.js && ln -s ../../modules/jsdom/lib/jsdom.js lib/node/jsdom.js
+! test -f lib/node/jsdom && ln -s ../../modules/jsdom/lib/jsdom lib/node/jsdom
+

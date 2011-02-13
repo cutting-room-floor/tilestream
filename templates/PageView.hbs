@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
+    <title>TileStream</title>
+    <link rel='shortcut icon' href='/images/favicon.ico' type='image/x-icon' />
+
+    <link rel='stylesheet' href='/map-utils/theme/controls.css' type='text/css'/>
+    <link rel='stylesheet' href='/css/reset.css' type='text/css'/>
+    <link rel='stylesheet' href='/css/style.css' type='text/css'/>
+
+    <script type='text/javascript' src='/js/libraries/jquery.js'></script>
+    <script type='text/javascript' src='/underscore/underscore.js'></script>
+    <script type='text/javascript' src='/backbone/backbone.js'></script>
+    <script type='text/javascript' src='/handlebars.js/lib/handlebars.js'></script>
+    <script type='text/javascript' src='/openlayers_slim/OpenLayers.js'></script>
+    <script type='text/javascript' src='/map-utils/control/interaction.js'></script>
+    <script type='text/javascript' src='/map-utils/control/grid_tooltip.js'></script>
+    <script type='text/javascript' src='/map-utils/lib/jquery.jsonp-2.1.4.js'></script>
+    <script type='text/javascript' src='/map-utils/control/grid_tooltip.js'></script>
+
+    <!-- client -->
+    <script type='text/javascript' src='/js/app.js'></script>
+
+    <!-- compiled server-side -->
+    <script type='text/javascript' src='/templates.js'></script>
+    <script type='text/javascript' src='/settings.js'></script>
+
+    <!-- common server/client side js -->
+    <script type='text/javascript' src='/models.js'></script>
+    <script type='text/javascript' src='/views.js'></script>
+    <script type='text/javascript' src='/controllers.js'></script>
+  </head>
+  <body>
+    <div id='app'>
+      {{{content}}}
+    </div>
+  </body>
+</html>

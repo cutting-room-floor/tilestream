@@ -1,0 +1,313 @@
+body {
+  background:#888;
+  color:#ccc;
+  font:15px/20px Arial,Helvetica,sans-serif;
+  }
+
+a {
+  color:#fff;
+  text-decoration:none;
+  }
+
+.pane { padding:10px; }
+
+.header,
+ul.maps label,
+.openlayers-tooltip {
+  background:url(../images/mask75.png);
+  text-shadow:#000 0px 1px 1px;
+  }
+
+.hud,
+.header,
+.openlayers-tooltip {
+  box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
+  -moz-box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
+  -webkit-box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
+  }
+
+/**
+ * Icons ======================================================================
+ */
+.icon {
+  display:block;
+  width:20px;
+  height:20px;
+  background:url(../images/sprite.png) 20px 20px no-repeat;
+  text-indent:-9999px;
+  overflow:hidden;
+  }
+
+.icon.right     { background-position:0px 0px; }
+.icon.info      { background-position:-20px 0px; }
+.icon.download  { background-position:-40px 0px; }
+
+/**
+ * Header =====================================================================
+ */
+.header {
+  position:fixed;
+  top:0px;
+  left:0px;
+  right:0px;
+  z-index:2;
+  height:20px;
+  padding:10px 20px;
+  }
+
+.header .breadcrumb a,
+.header .breadcrumb span { float:left; }
+
+.header .buttons {
+  font-size:11px;
+  font-weight:bold;
+  text-transform:uppercase;
+
+  position:absolute;
+  right:10px;
+  top:10px;
+  background:url(../images/mask25.png);
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+  }
+
+.header .buttons a {
+  float:left;
+  color:#999;
+  padding:0px 15px 0px 10px;
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+  }
+
+.header .buttons .icon { float:left; }
+
+/**
+ * MapListView ================================================================
+ */
+ul.maps {
+  position:absolute;
+  top:0px;
+  left:0px;
+  right:0px;
+  bottom:0px;
+  background:url(../images/bg.png);
+  }
+
+ul.maps li { float:left; }
+
+ul.maps a {
+  width:249px;
+  margin:0px 1px 1px 0px;
+  position:relative;
+  font-weight:bold;
+  display:block;
+  }
+
+ul.maps label {
+  opacity:0;
+  display:block;
+  position:absolute;
+  left:0px;
+  bottom:0px;
+  right:0px;
+  padding:10px 20px;
+  }
+
+ul.maps a:hover label {
+  opacity:1;
+  -moz-transition:opacity .25s;
+  -webkit-transition:opacity .25s;
+  }
+
+ul.maps span.thumb {
+  display:block;
+  width:249px;
+  height:249px;
+  background-position:50% 50%;
+  background-repeat:no-repeat;
+  }
+
+/**
+ * MapView ====================================================================
+ */
+.olMap {
+  background:url(../images/canvas.png);
+  position:absolute;
+  top:0px;
+  left:0px;
+  right:0px;
+  bottom:0px;
+  }
+
+.openlayers-tooltip {
+  top:60px;
+  left:0px;
+  padding:10px 20px;
+  }
+
+.zooms {
+  background:url(../images/mask25.png);
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+  }
+
+.zooms .zoom {
+  float:left;
+  width:20px;
+  text-align:center;
+  font-size:11px;
+  font-weight:bold;
+  color:#999;
+  }
+
+.header .buttons .active,
+.zooms .active {
+  color:#fff;
+  background-color:#666;
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+  box-shadow:#666 0px 0px 10px;
+  -moz-box-shadow:#666 0px 0px 10px;
+  -webkit-box-shadow:#666 0px 0px 10px;
+  }
+
+.hud {
+  right:0px;
+  top:60px;
+  bottom:20px;
+  width:280px;
+  position:fixed;
+  z-index:1;
+  background:url(../images/mask25.png);
+  text-shadow:#000 0px 1px 1px;
+  display:none;
+  }
+
+.hud.active { display:block; }
+
+.hud ul {
+  padding-bottom:120px;
+  background:url(../images/hud.png) 0% 100% repeat-x;
+  }
+
+.hud li {
+  padding:10px 20px;
+  background:url(../images/stroke.png) 0% 100% repeat-x;
+  }
+
+.hud .column {
+  float:left;
+  width:49.9%;
+  }
+
+.hud label {
+  display:block;
+  font-size:11px;
+  text-transform:uppercase;
+  font-weight:bold;
+  }
+
+.hud h1 {
+  font-size:20px;
+  letter-spacing:-1px;
+  }
+
+.hud h1,
+.hud .description { margin:10px 0px; }
+
+.hud h1,
+.hud label { color:#fff; }
+
+.olImageLoadError {
+  display:none;
+  }
+
+.olMap .olHandlerBoxZoomBox {
+  position:absolute;
+  background:url(../images/mask25.png);
+  font-size:1px;
+  border:0px;
+  opacity:1;
+  filter:alpha(opacity=100);
+  }
+
+/**
+ * Download link ==============================================================
+ */
+a.download {
+  display:block;
+  background:url(../images/mask25.png);
+  padding:10px;
+  margin:0px -10px;
+  word-break:break-all;
+  text-align:center;
+  }
+
+a.download * { display:block; }
+
+a.download .icon {
+  margin:0px auto;
+  width:100px;
+  height:100px;
+  background:url(../images/sprite.png) 0px -20px no-repeat;
+  }
+
+a.download .file { font-weight:bold; }
+a.download .size { color:#999; }
+
+/**
+ * Form elements ==============================================================
+ */
+select,
+input.text {
+  line-height:20px;
+  height:20px;
+  width:100%;
+  padding:0px 5px;
+
+  color:#fff;
+  background:url(../images/mask25.png);
+
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  }
+
+/**
+ * ErrorView ==================================================================
+ */
+.error {
+  background:url(../images/bg.png);
+  position:absolute;
+  top:0px;
+  right:0px;
+  bottom:0px;
+  left:0px;
+  }
+
+.error .message {
+  position:absolute
+  left:0px;
+  top:0px;
+  width:249px;
+  height:249px;
+  line-height:249px;
+
+  white-space:nowrap;
+  overflow:hidden;
+  text-align:center;
+
+  color:#333;
+  font-size:20px;
+  font-weight:bold;
+  text-shadow:#ccc 0px 1px;
+  background:url(../images/mask25.png);
+  }
+
