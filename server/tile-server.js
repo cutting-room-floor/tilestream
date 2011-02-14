@@ -82,21 +82,24 @@ module.exports = function(app, settings) {
         });
     });
 
-    // Load a map formatter
-    var formatter = /^\/1.0.0\/([\w+|\d+|.|-]*)?\/formatter.json/;
+    // Load a map formatter or legend
+    var formatter = /^\/1.0.0\/([\w+|\d+|.|-]*)?\/(formatter.json|legend.json)/;
     app.get(formatter, validateMap, function(req, res, next) {
         var tile = new Tile({
             type: 'mbtiles',
             mapfile: res.mapfile,
-            format: 'formatter.json',
+            format: req.params[1],
         });
         tile.render(function(err, data) {
             if (err) {
                 res.send(err.toString(), 500);
-            } else if (!tile) {
-                res.send('Formatter not found', 400);
+            } else if (!data) {
+                res.send(req.params[1] + ' not found', 400);
             } else {
-                res.send({ 'formatter': data });
+                var object = {};
+                var key = req.params[1].split('.').shift();
+                object[key] = data;
+                res.send(object);
             }
         });
     });
