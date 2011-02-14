@@ -229,6 +229,12 @@ var MapView = Backbone.View.extend({
         this.map.addControl(interaction);
         interaction.activate();
 
+        // Add legends
+        var legend = new OpenLayers.Control.Legend();
+        this.map.addControl(legend);
+        legend.activate();
+
+
         this.controlZoom({
             element: this.map.div
         });
