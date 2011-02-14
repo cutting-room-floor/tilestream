@@ -9,7 +9,7 @@ var _ = require('underscore'),
     fs = require('fs'),
     SphericalMercator = require('tilelive').SphericalMercator,
     models = require('models'),
-    poolcache = require('poolcache')(5);
+    Pool = require('tilelive').Pool;
 
 models.Map.prototype.sync =
 models.MapList.prototype.sync = function(method, model, success, error) {
@@ -46,23 +46,13 @@ function loadMap(model, callback) {
             if (err) return this(new Error('Map not found.'));
             data.size = stat.size;
             data.mtime = +stat.mtime;
-            poolcache.acquire(filepath, {
-                create: function(callback) {
-                    var mbtiles = new MBTiles(filepath, {});
-                    mbtiles.open(function() {
-                        callback(mbtiles);
-                    });
-                },
-                destroy: function(mbtiles) {
-                    mbtiles.db.close(function() {});
-                }
-            }, this);
+            Pool.acquire('mbtiles', filepath, {}, this);
         },
-        function(mbtiles) {
+        function(err, mbtiles) {
             var that = this;
             mbtiles.info(function(err, info) {
+                Pool.release('mbtiles', filepath, mbtiles);
                 that(err, info);
-                poolcache.release(filepath, mbtiles);
             });
         },
         function(err, info) {

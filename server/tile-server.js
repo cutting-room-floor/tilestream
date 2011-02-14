@@ -5,8 +5,7 @@ var _ = require('underscore'),
     fs = require('fs'),
     path = require('path'),
     compress = require('compress'),
-    MBTiles = require('tilelive').MBTiles,
-    poolcache = require('poolcache')(5),
+    Tile = require('tilelive').Tile,
     errorTile;
 
 function inflate(buffer, callback) {
@@ -50,24 +49,6 @@ module.exports = function(app, settings) {
         });
     };
 
-    // Route middleware. Loads and acquires a connection to an mbtiles db.
-    var loadMap = function(req, res, next) {
-        poolcache.acquire(res.mapfile, {
-            create: function(callback) {
-                var mbtiles = new MBTiles(res.mapfile, {});
-                mbtiles.open(function() {
-                    callback(mbtiles);
-                });
-            },
-            destroy: function(mbtiles) {
-                mbtiles.db.close(function() {});
-            }
-        }, function(mbtiles) {
-            res.mbtiles = mbtiles;
-            next();
-        });
-    };
-
     // If "download" feature is enabled, add route equivalent to
     // `/download/:map` except with handling for `:map` parameters that may
     // contain a `.` character.
@@ -83,87 +64,64 @@ module.exports = function(app, settings) {
     // Route equivalent to `/1.0.0/:map/:z/:x/:y.:format` except with handling
     // for `:map` parameters that may contain a `.` character.
     var tile = /^\/1.0.0\/([\w+|\d+|.|-]*)?\/([-]?\d+)\/([-]?\d+)\/([-]?\d+).(png|jpg|jpeg)/;
-    app.get(tile, validateMap, loadMap, function(req, res, next) {
-        Step(
-            function() {
-                var that = this;
-                res.mbtiles.tile(
-                    req.params[2],
-                    req.params[3],
-                    req.params[1],
-                    function(err, tile) {
-                        that(err, tile);
-                        poolcache.release(res.mapfile, res.mbtiles);
-                    }
-                );
-            },
-            function(err, tile) {
-                var headers = _.extend(
-                    settings.header_defaults,
-                    { 'Content-Type': 'image/png' }
-                );
-                if (!err && tile) {
-                    res.send(tile, headers);
-                } else {
-                    res.send(errorTile, headers);
-                }
+    app.get(tile, validateMap, function(req, res, next) {
+        var tile = new Tile({
+            type: 'mbtiles',
+            mapfile: res.mapfile,
+            format: req.params[4],
+            xyz: [req.params[2], req.params[3], req.params[1]]
+        });
+        tile.render(function(err, data) {
+            if (!err) {
+                data[1] = _.extend(settings.header_defaults, data[1]);
+                res.send(data[0], data[1]);
+            } else {
+                headers = _.extend(settings.header_defaults, {'Content-Type':'image/png'});
+                res.send(errorTile, headers);
             }
-        );
+        });
     });
 
     // Load a map formatter
     var formatter = /^\/1.0.0\/([\w+|\d+|.|-]*)?\/formatter.json/;
-    app.get(formatter, validateMap, loadMap, function(req, res, next) {
-        Step(
-            function() {
-                var that = this;
-                res.mbtiles.formatter(function(err, formatter) {
-                    that(err, formatter);
-                    poolcache.release(res.mapfile, res.mbtiles);
-                });
-            },
-            function(err, formatter) {
-                if (err) {
-                    res.send(err.toString(), 500);
-                } else if (!tile) {
-                    res.send('Formatter not found', 400);
-                } else {
-                    res.send({ 'formatter': formatter });
-                }
+    app.get(formatter, validateMap, function(req, res, next) {
+        var tile = new Tile({
+            type: 'mbtiles',
+            mapfile: res.mapfile,
+            format: 'formatter.json',
+        });
+        tile.render(function(err, data) {
+            if (err) {
+                res.send(err.toString(), 500);
+            } else if (!tile) {
+                res.send('Formatter not found', 400);
+            } else {
+                res.send({ 'formatter': data });
             }
-        );
+        });
     });
 
     // A single route for serving tiles.
     var grid = /^\/1.0.0\/([\w+|\d+|.|-]*)?\/([-]?\d+)\/([-]?\d+)\/([-]?\d+).grid.json/;
-    app.get(grid, validateMap, loadMap, function(req, res, next) {
+    app.get(grid, validateMap, function(req, res, next) {
+        var tile = new Tile({
+            type: 'mbtiles',
+            mapfile: res.mapfile,
+            format: 'grid.json',
+            xyz: [req.params[2], req.params[3], req.params[1]]
+        });
         Step(
             function() {
-                res.mbtiles.grid(
-                    req.params[2],
-                    req.params[3],
-                    req.params[1],
-                    this
-                );
+                tile.render(this);
             },
             function(err, grid) {
-                var that = this;
-                res.mbtiles.grid_data(
-                    req.params[2],
-                    req.params[3],
-                    req.params[1],
-                    function(err, grid_data) {
-                        poolcache.release(res.mapfile, res.mbtiles);
-                        that(err, grid, grid_data);
-                    }
-                );
-            },
-            function(err, grid_compressed, grid_data) {
                 if (err) {
                     res.send(err.toString(), 500);
-                } else if (!grid_compressed) {
+                } else if (!grid[0]) {
                     res.send('Grid not found', 404);
                 } else {
+                    var grid_compressed = grid[0];
+                    var grid_data = grid[1];
                     // Data coming out of MBTiles is gzipped;
                     // we need to inflate it to deal with it.
                     inflate(new Buffer(grid_compressed, 'binary'), function(err, grid) {
