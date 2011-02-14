@@ -17,7 +17,7 @@ module developmentseed handlebars.js ds-v0.1
 module coolaj86 node-jquery v1.4.4
 
 # untagged
-module mapbox tilelive.js pool
+module mapbox tilelive.js
 module mapbox map-utils
 module kkaefer node-compress
 module willwhite node-sqlite blobbuild-combined sqlite
