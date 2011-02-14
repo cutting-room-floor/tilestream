@@ -15,12 +15,12 @@ module developmentseed openlayers_slim v1.9
 module headjs headjs v0.8
 module developmentseed handlebars.js ds-v0.1
 module coolaj86 node-jquery v1.4.4
+module developmentseed node-sqlite3 1.0.3 sqlite
 
 # untagged
 module mapbox tilelive.js
 module mapbox map-utils
 module kkaefer node-compress
-module willwhite node-sqlite blobbuild-combined sqlite
 
 # Module layout workarounds
 cd $ROOT
