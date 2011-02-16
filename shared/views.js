@@ -109,7 +109,7 @@ var MapView = Backbone.View.extend({
             });
             break;
         case 'download':
-            return this.model.layerURL().shift()
+            return this.model.layerURL()[0]
                 + 'download/'
                 + this.model.get('id')
                 + '.mbtiles';
