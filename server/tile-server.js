@@ -36,35 +36,35 @@ module.exports = function(app, settings) {
             'errortile.png'));
     }
 
-    // Route middleware. Validates an mbtiles map specified in a tile or
+    // Route middleware. Validates an mbtiles file specified in a tile or
     // download route.
-    var validateMap = function(req, res, next) {
+    var validateTileset = function(req, res, next) {
         res.mapfile = path.join(settings.tiles, req.params[0] + '.mbtiles');
         path.exists(res.mapfile, function(exists) {
             if (exists) {
                 return next();
             } else {
-                return next(new Error('Map not found.'));
+                return next(new Error('Tileset not found.'));
             }
         });
     };
 
     // If "download" feature is enabled, add route equivalent to
-    // `/download/:map` except with handling for `:map` parameters that may
+    // `/download/:tileset` except with handling for `:tileset` parameters that may
     // contain a `.` character.
     if (settings.features && settings.features.download) {
         var download = /^\/download\/([\w+|\d+|.|-]*)?.mbtiles/;
-        app.get(download, validateMap, function(req, res, next) {
+        app.get(download, validateTileset, function(req, res, next) {
             res.sendfile(res.mapfile, function(err, path) {
                 return err && next(err);
             });
         });
     }
 
-    // Route equivalent to `/1.0.0/:map/:z/:x/:y.:format` except with handling
-    // for `:map` parameters that may contain a `.` character.
+    // Route equivalent to `/1.0.0/:tileset/:z/:x/:y.:format` except with handling
+    // for `:tileset` parameters that may contain a `.` character.
     var tile = /^\/1.0.0\/([\w+|\d+|.|-]*)?\/([-]?\d+)\/([-]?\d+)\/([-]?\d+).(png|jpg|jpeg)/;
-    app.get(tile, validateMap, function(req, res, next) {
+    app.get(tile, validateTileset, function(req, res, next) {
         var tile = new Tile({
             type: 'mbtiles',
             mapfile: res.mapfile,
@@ -82,9 +82,9 @@ module.exports = function(app, settings) {
         });
     });
 
-    // Load a map formatter or legend
+    // Load a tileset formatter or legend
     var formatter = /^\/1.0.0\/([\w+|\d+|.|-]*)?\/(formatter.json|legend.json)/;
-    app.get(formatter, validateMap, function(req, res, next) {
+    app.get(formatter, validateTileset, function(req, res, next) {
         var tile = new Tile({
             type: 'mbtiles',
             mapfile: res.mapfile,
@@ -106,7 +106,7 @@ module.exports = function(app, settings) {
 
     // A single route for serving tiles.
     var grid = /^\/1.0.0\/([\w+|\d+|.|-]*)?\/([-]?\d+)\/([-]?\d+)\/([-]?\d+).grid.json/;
-    app.get(grid, validateMap, function(req, res, next) {
+    app.get(grid, validateTileset, function(req, res, next) {
         var tile = new Tile({
             type: 'mbtiles',
             mapfile: res.mapfile,

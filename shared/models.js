@@ -10,13 +10,13 @@ if (typeof require !== 'undefined') {
     _ = require('underscore')._;
 }
 
-// Map
+// Tileset
 // ---
-// A single map, corresponding to an `.mbtiles` file. `model.id` is the
+// A single tileset, corresponding to an `.mbtiles` file. `model.id` is the
 // file basename, e.g. `foo.mbtiles` has an `id` of `foo`.
-var Map = Backbone.Model.extend({
+var Tileset = Backbone.Model.extend({
     url: function() {
-        return '/api/map/' + this.id;
+        return '/api/tileset/' + this.id;
     },
     // Return the base URLs of TileStream tile servers including a single
     // trailing slash, e.g. http://localhost:8889/ or http://mapbox/tilestream/
@@ -48,17 +48,17 @@ var Map = Backbone.Model.extend({
     }
 });
 
-// MapList
+// TilesetList
 // -------
-// Collection of all map models.
-var MapList = Backbone.Collection.extend({
-    model: Map,
-    url: '/api/map'
+// Collection of all tileset models.
+var TilesetList = Backbone.Collection.extend({
+    model: Tileset,
+    url: '/api/tileset'
 });
 
 if (typeof module !== 'undefined') {
     module.exports = {
-        Map: Map,
-        MapList: MapList
+        Tileset: Tileset,
+        TilesetList: TilesetList
     };
 }

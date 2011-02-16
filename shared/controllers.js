@@ -11,47 +11,47 @@
 if (typeof require !== 'undefined') {
     Backbone = require('backbone-server.js'),
     _ = require('underscore')._;
-    Map = require('models-server').Map;
-    MapList = require('models-server').MapList;
+    Tileset = require('models-server').Tileset;
+    TilesetList = require('models-server').TilesetList;
     PageView = require('views-server').PageView;
     ErrorView = require('views-server').ErrorView;
-    MapView = require('views-server').MapView;
-    MapListView = require('views-server').MapListView;
+    TilesetView = require('views-server').TilesetView;
+    TilesetListView = require('views-server').TilesetListView;
 }
 
 var Router = Backbone.Controller.extend({
     initialize: function(options) {
-        _.bindAll(this, 'list', 'map');
+        _.bindAll(this, 'list', 'tileset');
         Backbone.Controller.prototype.initialize.call(this, options);
     },
     routes: {
         '/': 'list',
         '!/': 'list',
-        '/map/:id': 'map',
-        '!/map/:id': 'map'
+        '/tileset/:id': 'tileset',
+        '!/tileset/:id': 'tileset'
     },
     list: function(res) {
         var that = this;
-        (new MapList()).fetch({
+        (new TilesetList()).fetch({
             success: function(collection) {
-                var view = new MapListView({ collection: collection });
+                var view = new TilesetListView({ collection: collection });
                 new PageView({ view: view, res: res });
             },
             error: function() {
-                var view = new ErrorView({ message: 'Error loading maps.' });
+                var view = new ErrorView({ message: 'Error loading tilesets.' });
                 new PageView({ view: view, res: res });
             }
         });
     },
-    map: function(id, res) {
+    tileset: function(id, res) {
         var that = this;
-        (new Map({ id: id })).fetch({
+        (new Tileset({ id: id })).fetch({
             success: function(model) {
-                var view = new MapView({ model: model });
+                var view = new TilesetView({ model: model });
                 new PageView({ view: view, res: res });
             },
             error: function() {
-                var view = new ErrorView({ message: 'Map not found.' });
+                var view = new ErrorView({ message: 'Tileset not found.' });
                 new PageView({ view: view, res: res });
             }
         });

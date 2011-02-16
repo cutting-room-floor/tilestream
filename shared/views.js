@@ -62,12 +62,12 @@ var ErrorView = Backbone.View.extend({
     }
 });
 
-// MapView
+// TilesetView
 // -------
-// View for exploring a single Map. Provides a fullscreen OpenLayers UI with
+// View for exploring a single Tileset. Provides a fullscreen OpenLayers UI with
 // HUD panels for enabled features (e.g. info, download, etc.)
-var MapView = Backbone.View.extend({
-    templateName: 'MapView',
+var TilesetView = Backbone.View.extend({
+    templateName: 'TilesetView',
     initialize: function(options) {
         Backbone.View.prototype.initialize.call(this, options);
         _.bindAll(this, 'render', 'ready', 'controlZoom', 'format');
@@ -183,7 +183,7 @@ var MapView = Backbone.View.extend({
             wrapDateLine = true;
         }
 
-        this.map = new OpenLayers.Map('map-' + this.model.id, options);
+        this.map = new OpenLayers.Map('tileset-' + this.model.id, options);
         this.layer = new OpenLayers.Layer.TMS('Preview', this.model.layerURL(), {
             layername: this.model.get('id'),
             type: 'png',
@@ -250,12 +250,12 @@ var MapView = Backbone.View.extend({
     }
 });
 
-// MapListView
+// TilesetListView
 // -----------
-// View showing each map as a thumbnail. Main map browsing page.
-var MapListView = Backbone.View.extend({
-    id: 'MapList',
-    templateName: 'MapListView',
+// View showing each tileset as a thumbnail. Main tileset browsing page.
+var TilesetListView = Backbone.View.extend({
+    id: 'TilesetList',
+    templateName: 'TilesetListView',
     initialize: function(options) {
         Backbone.View.prototype.initialize.call(this, options);
         _.bindAll(this, 'render');
@@ -264,21 +264,21 @@ var MapListView = Backbone.View.extend({
     render: function() {
         $(this.el).html(this.template());
         var that = this;
-        this.collection.each(function(map) {
-            map.view = new MapRowView({ model: map });
-            $('ul.maps', that.el).append(map.view.el);
+        this.collection.each(function(tileset) {
+            tileset.view = new TilesetRowView({ model: tileset });
+            $('ul.tilesets', that.el).append(tileset.view.el);
         });
         return this;
     }
 });
 
-// MapRowView
+// TilesetRowView
 // ----------
-// View for a single map in a MapListView.
-var MapRowView = Backbone.View.extend({
+// View for a single tileset in a TilesetListView.
+var TilesetRowView = Backbone.View.extend({
     tagName: 'li',
     className: 'clearfix',
-    templateName: 'MapRowView',
+    templateName: 'TilesetRowView',
     initialize: function(options) {
         Backbone.View.prototype.initialize.call(this, options);
         this.render().trigger('attach');
@@ -310,8 +310,8 @@ if (typeof module !== 'undefined') {
     module.exports = {
         PageView: PageView,
         ErrorView: ErrorView,
-        MapView: MapView,
-        MapListView: MapListView,
-        MapRowView: MapRowView
+        TilesetView: TilesetView,
+        TilesetListView: TilesetListView,
+        TilesetRowView: TilesetRowView
     };
 }

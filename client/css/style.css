@@ -12,7 +12,7 @@ a {
 .pane { padding:10px; }
 
 .header,
-ul.maps label,
+ul.tilesets label,
 .openlayers-tooltip,
 .openlayers-legends {
   background:url(../images/mask75.png);
@@ -86,9 +86,9 @@ ul.maps label,
 .header .buttons .icon { float:left; }
 
 /**
- * MapListView ================================================================
+ * TilesetListView ============================================================
  */
-ul.maps {
+ul.tilesets {
   position:absolute;
   top:0px;
   left:0px;
@@ -97,9 +97,9 @@ ul.maps {
   background:url(../images/bg.png);
   }
 
-ul.maps li { float:left; }
+ul.tilesets li { float:left; }
 
-ul.maps a {
+ul.tilesets a {
   width:249px;
   margin:0px 1px 1px 0px;
   position:relative;
@@ -107,7 +107,7 @@ ul.maps a {
   display:block;
   }
 
-ul.maps label {
+ul.tilesets label {
   opacity:0;
   display:block;
   position:absolute;
@@ -117,13 +117,13 @@ ul.maps label {
   padding:10px 20px;
   }
 
-ul.maps a:hover label {
+ul.tilesets a:hover label {
   opacity:1;
   -moz-transition:opacity .25s;
   -webkit-transition:opacity .25s;
   }
 
-ul.maps span.thumb {
+ul.tilesets span.thumb {
   display:block;
   width:249px;
   height:249px;
@@ -132,7 +132,7 @@ ul.maps span.thumb {
   }
 
 /**
- * MapView ====================================================================
+ * TilesetView ================================================================
  */
 .olMap {
   background:url(../images/canvas.png);
