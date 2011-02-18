@@ -62,6 +62,39 @@ var ErrorView = Backbone.View.extend({
     }
 });
 
+// OpenLayersView
+// --------------
+//
+var OpenLayersView = Backbone.View.extend({
+    templateName: 'OpenLayersView',
+    id: 'openlayers-map',
+    initialize: function(options) {
+        Backbone.View.prototype.initialize.call(this, options);
+        _.bindAll(this, 'ready');
+    },
+    ready: function() {
+        $(this.el).attr('src', this.waxURL());
+        // $(this.el).bind('openlayersWaxFinished', this.waxed);
+        $(this.el).each(OpenLayersWax.bind);
+    },
+    waxURL: function() {
+        var zoom = 0;
+        if (this.model.get('minzoom') < 2) {
+            zoom = 2;
+        }
+        var path = 'wax.json?' + $.param({
+            el: $(this.el).attr('id'),
+            layers: [this.model.id],
+            center: [this.model.get('center').lon, this.model.get('center').lat],
+            zoom: zoom
+        });
+        if (window.location && window.location.hostname) {
+            var baseURL = window.location.protocol + '//' + window.location.hostname + ':' + Settings.port;
+            return baseURL + '/' + path;
+        }
+    }
+});
+
 // TilesetView
 // -------
 // View for exploring a single Tileset. Provides a fullscreen OpenLayers UI with
@@ -71,7 +104,6 @@ var TilesetView = Backbone.View.extend({
     initialize: function(options) {
         Backbone.View.prototype.initialize.call(this, options);
         _.bindAll(this, 'render', 'ready', 'controlZoom', 'format');
-        this.bind('ready', this.ready);
         this.render().trigger('attach');
     },
     events: {
@@ -137,114 +169,38 @@ var TilesetView = Backbone.View.extend({
             download: this.format('download'),
             size: this.format('size')
         }));
+
+        this.map = new OpenLayersView({model: this.model});
+        this.bind('ready', this.map.ready);
+        $(this.map.el).bind('openlayersWaxFinished', this.ready);
+        $(this.el).append(this.map.el);
+
         return this;
     },
     ready: function() {
-        var options = {
-            projection: new OpenLayers.Projection('EPSG:900913'),
-            displayProjection: new OpenLayers.Projection('EPSG:4326'),
-            units: 'm',
-            maxExtent: new OpenLayers.Bounds(
-                -20037500,
-                -20037500,
-                20037500,
-                20037500
-            ),
-            controls: []
-        };
-
-        // Nav control images.
-        OpenLayers.ImgPath = 'images/openlayers_dark/';
-
-        var serverResolutions = [
-            156543.0339, 78271.51695, 39135.758475, 19567.8792375, 9783.93961875,
-            4891.96980938, 2445.98490469, 1222.99245234, 611.496226172,
-            305.748113086, 152.874056543, 76.4370282715, 38.2185141357,
-            19.1092570679, 9.55462853394, 4.77731426697, 2.38865713348,
-            1.19432856674, 0.597164283371
-        ];
-
-        // Set the layer bounds. If the layer bounds exceed that of the world,
-        // do not set `maxExtent` as OpenLayers does not render the contiguous
-        // dateline-wrapped world correctly in this scenario.
-        var bbox = this.model.get('bounds');
-        var maxExtent = new OpenLayers.Bounds(bbox[0], bbox[1], bbox[2], bbox[3]).transform(
-            new OpenLayers.Projection('EPSG:4326'),
-            new OpenLayers.Projection('EPSG:900913')
-        );
-        var wrapDateLine = false;
-        if (
-            maxExtent.bottom < -20037500
-            && maxExtent.left < -20037500
-            && maxExtent.right > 20037500
-            && maxExtent.top > 20037500
-        ) {
-            maxExtent = false;
-            wrapDateLine = true;
-        }
-
-        this.map = new OpenLayers.Map('tileset-' + this.model.id, options);
-        this.layer = new OpenLayers.Layer.TMS('Preview', this.model.layerURL(), {
-            layername: this.model.get('id'),
-            type: 'png',
-            buffer: 0,
-            transitionEffect: 'resize',
-            resolutions: serverResolutions.slice(
-                this.model.get('minzoom'),
-                this.model.get('maxzoom') + 1),
-            serverResolutions: serverResolutions,
-            wrapDateLine: wrapDateLine,
-            maxExtent: maxExtent
-        });
-        this.map.addLayers([this.layer]);
-
-        // Set the map's initial center point
-        var center = this.model.get('center');
-        var center = new OpenLayers.LonLat(
-            this.model.get('center').lon,
-            this.model.get('center').lat);
-        center.transform(
-            new OpenLayers.Projection('EPSG:4326'),
-            this.map.projection
-        );
-
-        // Use at least zoom level 2 if possible. Levels 0 & 1 are often not
-        // large enough to fill the entire map viewport on a reasonably sized
-        // screen.
-        if (this.model.get('minzoom') < 2) {
-            this.map.setCenter(center, 2);
-        } else {
-            this.map.setCenter(center, 0);
-        }
-
-        // Add custom controls
-        var navigation = new OpenLayers.Control.Navigation({
-            zoomWheelEnabled: true
-        });
-        this.map.addControl(navigation);
-        navigation.activate();
+        this.openlayers = $(this.map.el).data('map');
 
         // Add interactivity
         var interaction = new OpenLayers.Control.Interaction();
-        this.map.addControl(interaction);
+        this.openlayers.addControl(interaction);
         interaction.activate();
 
         // Add legends
         var legend = new OpenLayers.Control.Legend();
-        this.map.addControl(legend);
+        this.openlayers.addControl(legend);
         legend.activate();
-
 
         this.controlZoom({
             element: this.map.div
         });
-        this.map.events.register('moveend', this.map, this.controlZoom);
-        this.controlZoom({element: this.map.div});
-        this.map.events.register('zoomend', this.map, this.controlZoom);
+        this.openlayers.events.register('moveend', this.openlayers, this.controlZoom);
+        this.controlZoom({element: this.openlayers.div});
+        this.openlayers.events.register('zoomend', this.openlayers, this.controlZoom);
+
         return this;
     },
     controlZoom: function(e) {
-        var zoom = this.model.get('minzoom') + this.map.getZoom();
+        var zoom = this.model.get('minzoom') + this.openlayers.getZoom();
         this.$('.zoom.active').removeClass('active');
         this.$('.zoom-' + zoom).addClass('active');
     }
