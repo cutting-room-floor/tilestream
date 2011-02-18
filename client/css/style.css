@@ -123,7 +123,8 @@ ul.tilesets a:hover label {
   -webkit-transition:opacity .25s;
   }
 
-ul.tilesets span.thumb {
+ul.tilesets span.thumb,
+ul.tilesets span.baselayer-thumb {
   display:block;
   width:249px;
   height:249px;

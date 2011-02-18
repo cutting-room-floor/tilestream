@@ -265,21 +265,15 @@ var TilesetRowView = Backbone.View.extend({
         return this;
     },
     attach: function() {
+        var zxy = this.model.toZXY();
+        if (this.model.get('baselayer')) {
+            this.$('span.baselayer-thumb').css({
+                'backgroundImage': 'url(' + this.model.get('baselayer').thumb(zxy) + ')'
+            });
+        }
         this.$('span.thumb').css({
-            'backgroundImage': 'url(' + this.thumb() + ')'
+            'backgroundImage': 'url(' + this.model.thumb(zxy) + ')'
         });
-    },
-    // Single tile thumbnail URL generation. From [OSM wiki][1].
-    // [1]: http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#lon.2Flat_to_tile_numbers_2
-    thumb: function() {
-        var center = this.model.get('center');
-        center.lat = -1 * center.lat; // TMS is flipped from OSM calc below.
-        var z = this.model.get('minzoom');
-        var lat_rad = center.lat * Math.PI / 180;
-        var x = parseInt((center.lon + 180.0) / 360.0 * Math.pow(2, z));
-        var y = parseInt((1.0 - Math.log(Math.tan(lat_rad) + (1 / Math.cos(lat_rad))) / Math.PI) / 2.0 * Math.pow(2, z));
-
-        return this.model.layerURL()[0] + ['1.0.0', this.model.get('id'), z, x, y].join('/') + '.png';
     }
 });
 
