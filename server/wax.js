@@ -128,7 +128,7 @@ function layerWax(layer) {
                 "transitionEffect": 'resize',
                 "serverResolutions": serverResolutions,
                 "layername": layer.id,
-                // "isBaseLayer": layer.get('type') === 'baselayer' ? "true" : false,
+                "isBaseLayer": layer.get('type') === 'baselayer' ? "true" : false,
                 "resolutions": serverResolutions.slice(layer.get('minzoom'), layer.get('maxzoom') + 1),
                 "visibility": true,
             }

@@ -73,26 +73,47 @@ var OpenLayersView = Backbone.View.extend({
         _.bindAll(this, 'ready');
     },
     ready: function() {
-        $(this.el).attr('src', this.waxURL());
-        // $(this.el).bind('openlayersWaxFinished', this.waxed);
+        $(this.el).attr('src', this.waxURL(this.generateWax()));
         $(this.el).each(OpenLayersWax.bind);
     },
-    waxURL: function() {
-        var zoom = 0;
-        if (this.model.get('minzoom') < 2) {
-            zoom = 2;
-        }
-        var path = 'wax.json?' + $.param({
-            el: $(this.el).attr('id'),
-            layers: [this.model.id],
-            center: [this.model.get('center').lon, this.model.get('center').lat],
-            zoom: zoom
-        });
+    waxURL: function(wax) {
+        var path = 'wax.json?' + $.param(wax);
         if (window.location && window.location.hostname) {
             var baseURL = window.location.protocol + '//' + window.location.hostname + ':' + Settings.port;
             return baseURL + '/' + path;
         }
-    }
+    },
+    generateWax: function(callback) {
+        var wax = {
+            el: $(this.el).attr('id'),
+            layers: [this.model.id],
+            center: [this.model.get('center').lon, this.model.get('center').lat],
+            zoom: 0
+        };
+        if (this.model.get('type') === 'overlay') {
+            if (this.model.get('baselayer')) {
+                var baselayer = this.model.get('baselayer');
+                // Ensure the zoom levels of the baselayer intersect with those
+                // of the overlay.
+                if (
+                    _.intersect(
+                        _.range(this.model.get('minzoom'), this.model.get('maxzoom')),
+                        _.range(baselayer.get('minzoom'), baselayer.get('maxzoom'))
+                    ).length === 0
+                ) {
+                    var view = new ErrorView({ message: 'The default baselayer does not cover enough zoom levels.' });
+                    new PageView({ view: view });
+                }
+                wax.layers.push(baselayer.id);
+            }
+            else {
+                var view = new ErrorView({ message: 'No default baselayer set.' });
+                new PageView({ view: view });
+            }
+        }
+        wax.zoom = this.model.get('minzoom') < 2 ? 2 : 0;
+        return wax;
+    },
 });
 
 // TilesetView

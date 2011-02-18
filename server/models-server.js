@@ -59,7 +59,24 @@ function loadTileset(model, callback) {
             if (err) {
                 callback(err);
             } else {
-                callback(null, _.extend(data, info));
+                _.extend(data, info);
+            }
+            // Load default baselayer and attach it to overlay layers.
+            if (info.type === 'overlay' && settings.default_baselayer.length !== 0) {
+                loadTileset({ id: settings.default_baselayer }, this);
+            }
+            else {
+                this();
+            }
+        },
+        function(err, info) {
+            if (info) {
+                data.baselayer = info;
+            }
+            if (err) {
+                callback(err);
+            } else {
+                callback(null, data);
             }
         }
     );

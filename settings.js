@@ -2,6 +2,7 @@ module.exports = {
     'port': 9000,
     'UIPort': 9000,
     'tile_hostnames': [],
+    'default_baselayer': '',
     'tiles': __dirname + '/tiles',
     'features': {
         'info': true,

@@ -15,6 +15,21 @@ if (typeof require !== 'undefined') {
 // A single tileset, corresponding to an `.mbtiles` file. `model.id` is the
 // file basename, e.g. `foo.mbtiles` has an `id` of `foo`.
 var Tileset = Backbone.Model.extend({
+    initialize: function(attributes) {
+        Backbone.Model.prototype.initialize.call(this, attributes);
+        // Convert representation of baselayer into a true Tileset model.
+        if (typeof this.get('baselayer') !== 'undefined') {
+            this.set({ baselayer: new Tileset(this.get('baselayer')) });
+        }
+    },
+    parse: function(response){
+        var model = Backbone.Model.prototype.parse.call(this, response);
+        // Convert representation of baselayer into a true Tileset model.
+        if (typeof model.baselayer !== 'undefined') {
+            model.baselayer = new Tileset(model.baselayer);
+        }
+        return model;
+    },
     url: function() {
         return '/api/tileset/' + this.id;
     },
