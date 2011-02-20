@@ -49,7 +49,7 @@ module.exports = {
     'load map': function() {
         assert.response(
             servers.ui_server,
-            { url: '/api/map/control_room' },
+            { url: '/api/tileset/control_room' },
             { status: 200 },
             function(res) {
                 var map;
@@ -65,7 +65,7 @@ module.exports = {
     'load maps': function() {
         assert.response(
             servers.ui_server,
-            { url: '/api/map' },
+            { url: '/api/tileset' },
             { status: 200 },
             function(res) {
                 var maps;
@@ -92,18 +92,18 @@ module.exports = {
     'ssviews map': function() {
         assert.response(
             servers.ui_server,
-            { url: '/map/control_room' },
+            { url: '/tileset/control_room' },
             { status: 200 },
             function(res) {
-                assert.ok(res.body.indexOf('<a href="#!/map/control_room">control_room</a>') >= 0, 'Map markup.');
+                assert.ok(res.body.indexOf('<a href="#!/tileset/control_room">control_room</a>') >= 0, 'Map markup.');
             }
         );
         assert.response(
             servers.ui_server,
-            { url: '/?_escaped_fragment_=/map/control_room' },
+            { url: '/?_escaped_fragment_=/tileset/control_room' },
             { status: 200 },
             function(res) {
-                assert.ok(res.body.indexOf('<a href="#!/map/control_room">control_room</a>') >= 0, 'Map markup.');
+                assert.ok(res.body.indexOf('<a href="#!/tileset/control_room">control_room</a>') >= 0, 'Map markup.');
             }
         );
     },
