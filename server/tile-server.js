@@ -67,7 +67,7 @@ module.exports = function(app, settings) {
     app.get(tile, validateTileset, function(req, res, next) {
         var tile = new Tile({
             type: 'mbtiles',
-            mapfile: res.mapfile,
+            datasource: res.mapfile,
             format: req.params[4],
             xyz: [req.params[2], req.params[3], req.params[1]]
         });
@@ -87,7 +87,7 @@ module.exports = function(app, settings) {
     app.get(formatter, validateTileset, function(req, res, next) {
         var tile = new Tile({
             type: 'mbtiles',
-            mapfile: res.mapfile,
+            datasource: res.mapfile,
             format: req.params[1],
         });
         tile.render(function(err, data) {
@@ -109,7 +109,7 @@ module.exports = function(app, settings) {
     app.get(grid, validateTileset, function(req, res, next) {
         var tile = new Tile({
             type: 'mbtiles',
-            mapfile: res.mapfile,
+            datasource: res.mapfile,
             format: 'grid.json',
             xyz: [req.params[2], req.params[3], req.params[1]]
         });
