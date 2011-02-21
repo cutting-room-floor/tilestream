@@ -9,14 +9,14 @@
 // because even within the `if()` IE will wipe globally defined variables if
 // `var` is included, leaving us with broken objects.
 if (typeof require !== 'undefined') {
-    Backbone = require('backbone-server.js'),
-    _ = require('underscore')._;
-    Tileset = require('models-server').Tileset;
-    TilesetList = require('models-server').TilesetList;
-    PageView = require('views-server').PageView;
-    ErrorView = require('views-server').ErrorView;
-    TilesetView = require('views-server').TilesetView;
-    TilesetListView = require('views-server').TilesetListView;
+    _ = require('underscore')._,
+    Backbone = require('backbone.js'),
+    Tileset = require('models').Tileset,
+    TilesetList = require('models').TilesetList,
+    PageView = require('views').PageView,
+    ErrorView = require('views').ErrorView,
+    TilesetView = require('views').TilesetView,
+    TilesetListView = require('views').TilesetListView;
 }
 
 var Router = Backbone.Controller.extend({
@@ -30,29 +30,29 @@ var Router = Backbone.Controller.extend({
         '/tileset/:id': 'tileset',
         '!/tileset/:id': 'tileset'
     },
-    list: function(res) {
+    list: function(response) {
         var that = this;
         (new TilesetList()).fetch({
             success: function(collection) {
                 var view = new TilesetListView({ collection: collection });
-                new PageView({ view: view, res: res });
+                response(new PageView({ view: view }));
             },
             error: function() {
                 var view = new ErrorView({ message: 'Error loading tilesets.' });
-                new PageView({ view: view, res: res });
+                response(new PageView({ view: view }));
             }
         });
     },
-    tileset: function(id, res) {
+    tileset: function(id, response) {
         var that = this;
         (new Tileset({ id: id })).fetch({
             success: function(model) {
                 var view = new TilesetView({ model: model });
-                new PageView({ view: view, res: res });
+                response(new PageView({ view: view }));
             },
             error: function() {
                 var view = new ErrorView({ message: 'Tileset not found.' });
-                new PageView({ view: view, res: res });
+                response(new PageView({ view: view }));
             }
         });
     }

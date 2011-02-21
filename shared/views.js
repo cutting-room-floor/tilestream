@@ -1,27 +1,10 @@
-// Backbone Views to be used both client/server side. The following conventions
-// must be followed in order to ensure that the views can be used in both
-// environments:
-//
-// - Use `render()` only for templating. Any DOM event handlers, other
-//   js library initialization (e.g. OpenLayers) should be done in the
-//   `attach()` method.
-// - `render()` must `return this` in order to be chainable and any calls to
-//   `render()` should chain `trigger('attach')`.
-// - `templateName` should refer to a corresponding handlebars.js `.hbs`
-//   template file in the `templates/` directory.
-// - `template()` should be used to render an object using the template
-//   specified in `templateName`. Avoid using jquery or other doing other DOM
-//   element creation if templating could get the job done.
-//
-// See `client/js/app.js` and `server/backbone-server.js` for all the specific
-// overrides to `Backbone.Views` for each context.
-
 // Requires for the server-side context. *TODO* Note that `var` is omitted here
 // because even within the `if()` IE will wipe globally defined variables if
 // `var` is included, leaving us with broken objects.
 if (typeof require !== 'undefined') {
+    Bones = require('bones'),
     Settings = require('settings'),
-    Backbone = require('backbone-server.js'),
+    Backbone = require('backbone.js'),
     _ = require('underscore')._;
 }
 
@@ -34,10 +17,17 @@ if (typeof require !== 'undefined') {
 var PageView = Backbone.View.extend({
     initialize: function(options) {
         _.bindAll(this, 'render');
-        Backbone.View.prototype.initialize.call(this, options);
-        this.render().trigger('attach');
+        this.render().attach();
     },
     render: function() {
+        // Server side.
+        if (Bones.server) {
+            this.el = this.template('PageView', {
+                content: this.options.view.html()
+            });
+            return this;
+        }
+        // Client side.
         $('#app').html(this.options.view.el);
         this.options.view.trigger('ready');
         return this;
@@ -48,14 +38,12 @@ var PageView = Backbone.View.extend({
 // ---------
 // Error view.
 var ErrorView = Backbone.View.extend({
-    templateName: 'ErrorView',
     initialize: function(options) {
         _.bindAll(this, 'render');
-        Backbone.View.prototype.initialize.call(this, options);
-        this.render().trigger('attach');
+        this.render().attach();
     },
     render: function() {
-        $(this.el).html(this.template({
+        $(this.el).html(this.template('ErrorView', {
             message: this.options.message
         }));
         return this;
@@ -66,10 +54,8 @@ var ErrorView = Backbone.View.extend({
 // --------------
 //
 var OpenLayersView = Backbone.View.extend({
-    templateName: 'OpenLayersView',
     id: 'openlayers-map',
     initialize: function(options) {
-        Backbone.View.prototype.initialize.call(this, options);
         _.bindAll(this, 'ready');
     },
     ready: function() {
@@ -121,11 +107,9 @@ var OpenLayersView = Backbone.View.extend({
 // View for exploring a single Tileset. Provides a fullscreen OpenLayers UI with
 // HUD panels for enabled features (e.g. info, download, etc.)
 var TilesetView = Backbone.View.extend({
-    templateName: 'TilesetView',
     initialize: function(options) {
-        Backbone.View.prototype.initialize.call(this, options);
         _.bindAll(this, 'render', 'ready', 'controlZoom', 'format');
-        this.render().trigger('attach');
+        this.render().attach();
     },
     events: {
         'click .buttons a': 'hud'
@@ -173,7 +157,7 @@ var TilesetView = Backbone.View.extend({
         }
     },
     render: function() {
-        $(this.el).html(this.template({
+        $(this.el).html(this.template('TilesetView', {
             features: Settings.features,
             id: this.model.get('id'),
             name: this.model.get('name'),
@@ -231,15 +215,13 @@ var TilesetView = Backbone.View.extend({
 // -----------
 // View showing each tileset as a thumbnail. Main tileset browsing page.
 var TilesetListView = Backbone.View.extend({
-    id: 'TilesetList',
     templateName: 'TilesetListView',
     initialize: function(options) {
-        Backbone.View.prototype.initialize.call(this, options);
         _.bindAll(this, 'render');
-        this.render().trigger('attach');
+        this.render().attach();
     },
     render: function() {
-        $(this.el).html(this.template());
+        $(this.el).html(this.template('TilesetListView'));
         var that = this;
         this.collection.each(function(tileset) {
             tileset.view = new TilesetRowView({ model: tileset });
@@ -255,13 +237,11 @@ var TilesetListView = Backbone.View.extend({
 var TilesetRowView = Backbone.View.extend({
     tagName: 'li',
     className: 'clearfix',
-    templateName: 'TilesetRowView',
     initialize: function(options) {
-        Backbone.View.prototype.initialize.call(this, options);
-        this.render().trigger('attach');
+        this.render().attach();
     },
     render: function() {
-        $(this.el).html(this.template(this.model.attributes));
+        $(this.el).html(this.template('TilesetRowView', this.model.attributes));
         return this;
     },
     attach: function() {

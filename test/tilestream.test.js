@@ -107,13 +107,6 @@ module.exports = {
             }
         );
     },
-    'templates': function() {
-        assert.response(
-            servers.ui_server,
-            { url: '/templates.js' },
-            { status: 200 }
-        );
-    },
     'settings': function() {
         assert.response(
             servers.ui_server,

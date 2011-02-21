@@ -6,7 +6,7 @@
 // `var` is included, leaving us with broken objects.
 if (typeof require !== 'undefined') {
     Settings = require('settings'),
-    Backbone = require('backbone-server.js'),
+    Backbone = require('backbone.js'),
     _ = require('underscore')._;
 }
 

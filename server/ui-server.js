@@ -1,21 +1,11 @@
 // Routes for the UI server. Suitable for dynamic content that should not be
 // cached aggressively.
-var models = require('models-server'),
-    Router = require('controllers').Router,
-    Backbone = require('backbone-server');
+var models = require('models'),
+    Router = require('controllers').Router;
 
 module.exports = function(server, settings) {
     // Set up the backbone router
     new Router();
-    server.use(Backbone.history.middleware());
-
-    // Return compiled templates to the client-side application.
-    server.get('/templates.js', function(req, res, next) {
-        res.send(
-            require('templates')(settings).toJS(),
-            { 'Content-Type': 'text/javascript' }
-        );
-    });
 
     // Send settings to the browser.
     server.get('/settings.js', function(req, res, next) {

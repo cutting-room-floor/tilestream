@@ -21,9 +21,11 @@ module developmentseed node-sqlite3 1.0.3 sqlite
 module mapbox tilelive.js
 module mapbox map-utils
 module kkaefer node-compress
+module developmentseed bones
 
 # Module layout workarounds
 cd $ROOT
+! test -f lib/node/backbone.js && ln -s ../../modules/backbone/backbone.js lib/node/backbone.js
 ! test -f lib/node/request && ln -s ../../modules/request/main.js lib/node/request
 ! test -f lib/node/jsdom.js && ln -s ../../modules/jsdom/lib/jsdom.js lib/node/jsdom.js
 ! test -f lib/node/jsdom && ln -s ../../modules/jsdom/lib/jsdom lib/node/jsdom

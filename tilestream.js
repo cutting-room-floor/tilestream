@@ -8,16 +8,21 @@ require.paths.unshift(
 
 var _ = require('underscore'),
     express = require('express'),
-    settings = require('settings');
+    settings = require('settings'),
+    tile_server = express.createServer(),
+    ui_server = settings.UIPort === settings.port ? tile_server : express.createServer(),
+    Bones = require('bones').Bones(ui_server);
 
-var tile_server = express.createServer();
-var ui_server = settings.UIPort === settings.port ? tile_server : express.createServer();
+// Apply overrides/mixins and other setup.
+require('models-server');
+require('templates')(settings);
+require('bootstrap')(settings);
 
+// Main server modules.
 require('tile-server')(tile_server, settings);
 require('ui-server')(ui_server, settings);
 require('wax')(ui_server, settings);
-require('templates')(settings);
-require('bootstrap')(settings);
+
 tile_server.enable('jsonp callback');
 ui_server.use(express.staticProvider('client'));
 ui_server.use(express.staticProvider('shared'));
