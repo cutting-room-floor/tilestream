@@ -73,7 +73,7 @@ module.exports = function(app, settings) {
         });
         tile.render(function(err, data) {
             if (!err) {
-                data[1] = _.extend(settings.header_defaults, data[1]);
+                data[1] = _.extend({}, settings.header_defaults, data[1]);
                 res.send(data[0], data[1]);
             } else {
                 res.send(errorTile, {
@@ -133,7 +133,7 @@ module.exports = function(app, settings) {
                     // we need to inflate it to deal with it.
                     inflate(new Buffer(grid_compressed, 'binary'), function(err, grid) {
                         res.writeHead(200,
-                            _.extend(settings.header_defaults, {
+                            _.extend({}, settings.header_defaults, {
                                 'Content-Type': 'text/javascript'
                             }));
 
