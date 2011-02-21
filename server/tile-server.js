@@ -73,15 +73,15 @@ module.exports = function(app, settings) {
         });
         tile.render(function(err, data) {
             if (!err) {
-                data[1] = _.extend({}, settings.header_defaults, data[1]);
-                res.send(data[0], data[1]);
+                fs.stat(res.mapfile, function(err, stat) {
+                    res.send(data[0], _.extend({
+                        'Last-Modified': stat.mtime
+                    }, settings.header_defaults.success, data[1]));
+                });
             } else {
-                res.send(errorTile, {
+                res.send(errorTile, _.extend({
                     'Content-Type':'image/png',
-                    'Cache-Control': 'max-age=' +
-                        60 // minute
-                        * 60 // hour
-                }, 404);
+                }, settings.header_defaults.failure), 404);
             }
         });
     });
@@ -133,7 +133,7 @@ module.exports = function(app, settings) {
                     // we need to inflate it to deal with it.
                     inflate(new Buffer(grid_compressed, 'binary'), function(err, grid) {
                         res.writeHead(200,
-                            _.extend({}, settings.header_defaults, {
+                            _.extend({}, settings.header_defaults.success, {
                                 'Content-Type': 'text/javascript'
                             }));
 
