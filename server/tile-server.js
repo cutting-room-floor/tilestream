@@ -77,7 +77,7 @@ module.exports = function(app, settings) {
                 res.send(data[0], data[1]);
             } else {
                 headers = _.extend(settings.header_defaults, {'Content-Type':'image/png'});
-                res.send(errorTile, headers);
+                res.send(errorTile, headers, 404);
             }
         });
     });
@@ -94,7 +94,7 @@ module.exports = function(app, settings) {
             if (err) {
                 res.send(err.toString(), 500);
             } else if (!data) {
-                res.send(req.params[1] + ' not found', 400);
+                res.send(req.params[1] + ' not found', 404);
             } else {
                 var object = {};
                 var key = req.params[1].split('.').shift();
