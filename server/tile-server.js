@@ -95,10 +95,10 @@ module.exports = function(app, settings) {
             format: req.params[1],
         });
         tile.render(function(err, data) {
-            if (err) {
-                res.send(err.toString(), 500);
-            } else if (!data) {
+            if ((err && err.toString() === 'empty row') || !data) {
                 res.send(req.params[1] + ' not found', 404);
+            } else if (err) {
+                res.send(err.toString(), 500);
             } else {
                 var object = {};
                 var key = req.params[1].split('.').shift();
