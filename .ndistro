@@ -23,9 +23,6 @@ module mapbox tilelive.js
 module mapbox map-utils
 module kkaefer node-compress
 
-# downstream dependency - tilelive.js
-module tmcw node-get 0.1.0
-
 # Module layout workarounds
 cd $ROOT
 ! test -f lib/node/backbone.js && ln -s ../../modules/backbone/backbone.js lib/node/backbone.js
