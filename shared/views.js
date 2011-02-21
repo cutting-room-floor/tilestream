@@ -17,7 +17,7 @@ if (typeof require !== 'undefined') {
 var PageView = Backbone.View.extend({
     initialize: function(options) {
         _.bindAll(this, 'render');
-        this.render().attach();
+        this.render().trigger('attach');
     },
     render: function() {
         // Server side.
@@ -40,7 +40,7 @@ var PageView = Backbone.View.extend({
 var ErrorView = Backbone.View.extend({
     initialize: function(options) {
         _.bindAll(this, 'render');
-        this.render().attach();
+        this.render().trigger('attach');
     },
     render: function() {
         $(this.el).html(this.template('ErrorView', {
@@ -109,7 +109,7 @@ var OpenLayersView = Backbone.View.extend({
 var TilesetView = Backbone.View.extend({
     initialize: function(options) {
         _.bindAll(this, 'render', 'ready', 'controlZoom', 'format');
-        this.render().attach();
+        this.render().trigger('attach');
     },
     events: {
         'click .buttons a': 'hud'
@@ -218,7 +218,7 @@ var TilesetListView = Backbone.View.extend({
     templateName: 'TilesetListView',
     initialize: function(options) {
         _.bindAll(this, 'render');
-        this.render().attach();
+        this.render().trigger('attach');
     },
     render: function() {
         $(this.el).html(this.template('TilesetListView'));
@@ -238,7 +238,7 @@ var TilesetRowView = Backbone.View.extend({
     tagName: 'li',
     className: 'clearfix',
     initialize: function(options) {
-        this.render().attach();
+        this.render().trigger('attach');
     },
     render: function() {
         $(this.el).html(this.template('TilesetRowView', this.model.attributes));
