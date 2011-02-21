@@ -65,7 +65,8 @@ var OpenLayersView = Backbone.View.extend({
     waxURL: function(wax) {
         var path = 'wax.json?' + $.param(wax);
         if (window.location && window.location.hostname) {
-            var baseURL = window.location.protocol + '//' + window.location.hostname + ':' + Settings.port;
+            var baseURL = window.location.protocol + '//' +
+                window.location.hostname + ':' + Settings.port;
             return baseURL + '/' + path;
         }
     },
@@ -87,7 +88,9 @@ var OpenLayersView = Backbone.View.extend({
                         _.range(baselayer.get('minzoom'), baselayer.get('maxzoom'))
                     ).length === 0
                 ) {
-                    var view = new ErrorView({ message: 'The default baselayer does not cover enough zoom levels.' });
+                    var view = new ErrorView({
+                      message: 'The default baselayer does not cover enough zoom levels.'
+                    });
                     new PageView({ view: view });
                 }
                 wax.layers.push(baselayer.id);
