@@ -9,13 +9,11 @@ module.exports = {
         'download': true
     },
     'header_defaults': {
-        'Expires': new Date(Date.now() +
-            1000 // second
-            * 60 // minute
+        'Cache-Control': 'max-age=' +
+            60 // minute
             * 60 // hour
             * 24 // day
             * 365 // year
-            )
     }
 }
 
