@@ -76,8 +76,12 @@ module.exports = function(app, settings) {
                 data[1] = _.extend(settings.header_defaults, data[1]);
                 res.send(data[0], data[1]);
             } else {
-                headers = _.extend(settings.header_defaults, {'Content-Type':'image/png'});
-                res.send(errorTile, headers, 404);
+                res.send(errorTile, {
+                    'Content-Type':'image/png',
+                    'Cache-Control': 'max-age=' +
+                        60 // minute
+                        * 60 // hour
+                }, 404);
             }
         });
     });
