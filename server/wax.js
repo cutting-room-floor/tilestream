@@ -1,9 +1,43 @@
 var _ = require('underscore'),
     Step = require('step'),
-    models = require('models-server'),
+    models = require('models'),
     path = require('path');
 
 module.exports = function(app, settings) {
+    // Loader for layers. Validates `req.query` to ensure it is usable.
+    function load(req, res, next) {
+        var valid = (_.isString(req.query.el) &&
+            _.isArray(req.query.layers) &&
+            _.isArray(req.query.center) &&
+            req.query.layers.length > 0 &&
+            req.query.center.length === 2);
+        if (!valid) return next(new Error('Invalid query string.'));
+
+        var layers = [];
+        Step(
+            function() {
+                var group = this.group();
+                for (var i = 0; i < req.query.layers.length; i++) {
+                    var id = req.query.layers[i];
+                    var tileset = new models.Tileset({id: id});
+                    var next = group();
+                    layers.push(tileset);
+                    tileset.fetch({ success: next, error: next });
+                }
+            },
+            function() {
+                layers = _.select(layers, function(layer) {
+                    return layer.get('name');
+                });
+                if (layers.length !== req.query.layers.length) {
+                    next(new Error('Invalid layer specified.'));
+                } else {
+                    res.layers = layers;
+                    next();
+                }
+            }
+        );
+    };
 
     // OpenLayers Wax API Endpoint
     // ---------------------------
@@ -21,67 +55,49 @@ module.exports = function(app, settings) {
     // - `zoom` - Integer for inital zoom level.
     // - `externals`
     //
-    app.get('/wax.json', function(req, res, next) {
-        Step(
-            function() {
-                var tilesets = new models.TilesetList();
-                var that = this;
-                tilesets.fetch({
-                    success: function(model, resp) { that(null, model); },
-                    error: function(model, resp) { res.send(resp, 500); }
-                });
+    app.get('/wax.json', load, function(req, res, next) {
+        var zoom = req.query.zoom || 0;
+        var waxedLayers = _.map(res.layers, layerWax);
+        var map = {
+            "map": {
+                "layers": waxedLayers,
+                "maxExtent": {
+                    "_type": "OpenLayers.Bounds",
+                    "_value": [-20037500, -20037500, 20037500, 20037500]
+                },
+                "maxResolution": 1.40625,
+                "projection": {
+                    "_type": "OpenLayers.Projection",
+                    "_value": ["EPSG:900913"]
+                },
+                "displayProjection": {
+                    "_type": "OpenLayers.Projection",
+                    "_value": ["EPSG:900913"]
+                },
+                "units": "m",
+                "controls": [
+                {
+                    "_type": "OpenLayers.Control.Navigation",
+                    "_value": [{
+                        "zoomWheelEnabled": true
+                    }]
+                },
+                {
+                    "_type": "OpenLayers.Control.Attribution",
+                    "_value": [""]
+                }
+                ]
             },
-            function(err, collection) {
-                var zoom = req.query.zoom || 0;
-
-                var layers = _.map(req.query.layers, function(layerId) { return collection.get(layerId) });
-                var waxedLayers = _.map(layers, layerWax);
-
-                var map = {
-                    "map": {
-                        "layers": waxedLayers,
-                        "maxExtent": {
-                            "_type": "OpenLayers.Bounds",
-                            "_value": [-20037500, -20037500, 20037500, 20037500]
-                        },
-                        "maxResolution": 1.40625,
-                        "projection": {
-                            "_type": "OpenLayers.Projection",
-                            "_value": ["EPSG:900913"]
-                        },
-                        "displayProjection": {
-                            "_type": "OpenLayers.Projection",
-                            "_value": ["EPSG:900913"]
-                        },
-                        "units": "m",
-                        "controls": [
-                        {
-                            "_type": "OpenLayers.Control.Navigation",
-                            "_value": [{
-                                "zoomWheelEnabled": true
-                            }]
-                        },
-                        {
-                            "_type": "OpenLayers.Control.Attribution",
-                            "_value": [""]
-                        }
-                        ]
-                    },
-                    "externals": [
-                        {
-                            "_type": "OpenLayersWaxZoomOnLoad",
-                            "_value": [
-                                '#' + req.query.el, req.query.center[0], req.query.center[1], zoom
-                            ]
-                        }
+            "externals": [
+                {
+                    "_type": "OpenLayersWaxZoomOnLoad",
+                    "_value": [
+                        '#' + req.query.el, req.query.center[0], req.query.center[1], zoom
                     ]
                 }
-                // turn on jsonp support in express
-                app.enable('jsonp callback');
-                res.send(map);
-                app.disable('jsonp callback');
-            }
-        );
+            ]
+        }
+        res.send(map);
     });
 }
 
