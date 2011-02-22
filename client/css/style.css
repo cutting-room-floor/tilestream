@@ -13,7 +13,7 @@ a {
 
 .header,
 ul.tilesets label,
-.openlayers-tooltip,
+.maputil-tooltip,
 .openlayers-legends {
   background:url(../images/mask75.png);
   text-shadow:#000 0px 1px 1px;
@@ -21,7 +21,7 @@ ul.tilesets label,
 
 .hud,
 .header,
-.openlayers-tooltip,
+.maputil-tooltip,
 .openlayers-legends {
   box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
   -moz-box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
@@ -144,7 +144,7 @@ ul.tilesets span.baselayer-thumb {
   bottom:0px;
   }
 
-.openlayers-tooltip {
+.maputil-tooltip {
   top:60px;
   left:0px;
   padding:10px 20px;
