@@ -118,6 +118,24 @@ module.exports = {
             { url: '/settings.js' },
             { status: 200 }
         );
+    },
+    'wax endpoint': function() {
+        assert.response(
+            servers.ui_server,
+            { url: '/wax.json?el=openlayers-map&layers%5B%5D=control_room&center%5B%5D=0&center%5B%5D=0&zoom=-1&callback=_jqjsp&_1298387967133=' },
+            { status: 200 },
+            function(res) {
+                assert.doesNotThrow(function() {
+                    var matches = res.body.match(/\_jqjsp\((.+)\);/);
+                    JSON.parse(matches[1]);
+                });
+            }
+        );
+        assert.response(
+            servers.ui_server,
+            { url: '/wax.json?el=openlayers-map&center%5B%5D=0&center%5B%5D=0&zoom=-1&callback=_jqjsp&_1298387967133=' },
+            { status: 400 }
+        );
     }
 }
 
