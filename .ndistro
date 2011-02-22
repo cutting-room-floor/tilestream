@@ -20,7 +20,7 @@ module developmentseed bones 0.0.1
 
 # untagged
 module mapbox tilelive.js
-module mapbox map-utils
+module mapbox wax
 module kkaefer node-compress
 
 # Module layout workarounds
