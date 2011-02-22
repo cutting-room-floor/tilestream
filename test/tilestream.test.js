@@ -23,6 +23,10 @@ module.exports = {
             { status: 200 },
             function(res) {
                 assert.equal(res.headers['content-length'], 63554);
+                assert.equal(res.headers['content-type'], 'image/png');
+                assert.equal(res.headers['cache-control'], 'max-age=31536000');
+                assert.ok(res.headers['last-modified']);
+                assert.ok(res.headers['e-tag']);
             }
         );
     },
@@ -30,9 +34,10 @@ module.exports = {
         assert.response(
             servers.tile_server,
             { url: '/1.0.0/control_room/-1/-1/-1.png' },
-            { status: 200 },
+            { status: 404 },
             function(res) {
                 assert.equal(res.headers['content-length'], 1454);
+                assert.equal(res.headers['content-type'], 'image/png');
             }
         );
     },

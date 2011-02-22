@@ -44,10 +44,29 @@ module.exports = function(app, settings) {
             if (exists) {
                 return next();
             } else {
-                return next(new Error('Tileset not found.'));
+                res.send(errorTile, {
+                    'Content-Type':'image/png',
+                }, 404);
             }
         });
     };
+
+    // Load HTTP headers specific to the requested mbtiles file.
+    var loadMapFileHeaders = function(req, res, next) {
+        var headers = {};
+        if (res.mapfile) {
+            fs.stat(res.mapfile, function(err, stat) {
+                if (!err) {
+                    res.mapfile_headers = {
+                        'Last-Modified': stat.mtime,
+                        'E-Tag': stat.size + '-' + Number(stat.mtime)
+                    }
+                    // res.mapfileStat = stat;
+                    return next();
+                }
+            });
+        }
+    }
 
     // If "download" feature is enabled, add route equivalent to
     // `/download/:tileset` except with handling for `:tileset` parameters that may
@@ -64,7 +83,7 @@ module.exports = function(app, settings) {
     // Route equivalent to `/1.0.0/:tileset/:z/:x/:y.:format` except with handling
     // for `:tileset` parameters that may contain a `.` character.
     var tile = /^\/1.0.0\/([\w+|\d+|.|-]*)?\/([-]?\d+)\/([-]?\d+)\/([-]?\d+).(png|jpg|jpeg)/;
-    app.get(tile, validateTileset, function(req, res, next) {
+    app.get(tile, validateTileset, loadMapFileHeaders, function(req, res, next) {
         var tile = new Tile({
             type: 'mbtiles',
             datasource: res.mapfile,
@@ -73,22 +92,21 @@ module.exports = function(app, settings) {
         });
         tile.render(function(err, data) {
             if (!err) {
-                fs.stat(res.mapfile, function(err, stat) {
-                    res.send(data[0], _.extend({
-                        'Last-Modified': stat.mtime
-                    }, settings.header_defaults.success, data[1]));
-                });
+                res.send(data[0], _.extend({},
+                    res.mapfile_headers,
+                    settings.header_defaults,
+                    data[1]));
             } else {
-                res.send(errorTile, _.extend({
+                res.send(errorTile, {
                     'Content-Type':'image/png',
-                }, settings.header_defaults.failure), 404);
+                }, 404);
             }
         });
     });
 
-    // Load a tileset formatter or legend
+    // Load a tileset formatter or legend.
     var formatter = /^\/1.0.0\/([\w+|\d+|.|-]*)?\/(formatter.json|legend.json)/;
-    app.get(formatter, validateTileset, function(req, res, next) {
+    app.get(formatter, validateTileset, loadMapFileHeaders, function(req, res, next) {
         var tile = new Tile({
             type: 'mbtiles',
             datasource: res.mapfile,
@@ -103,14 +121,18 @@ module.exports = function(app, settings) {
                 var object = {};
                 var key = req.params[1].split('.').shift();
                 object[key] = data;
-                res.send(object);
+                res.send(object, _.extend({
+                        'Content-Type': 'text/javascript'
+                    },
+                    res.mapfile_headers,
+                    settings.header_defaults));
             }
         });
     });
 
-    // A single route for serving tiles.
+    // Load an interaction grid tile.
     var grid = /^\/1.0.0\/([\w+|\d+|.|-]*)?\/([-]?\d+)\/([-]?\d+)\/([-]?\d+).grid.json/;
-    app.get(grid, validateTileset, function(req, res, next) {
+    app.get(grid, validateTileset, loadMapFileHeaders, function(req, res, next) {
         var tile = new Tile({
             type: 'mbtiles',
             datasource: res.mapfile,
@@ -132,10 +154,11 @@ module.exports = function(app, settings) {
                     // Data coming out of MBTiles is gzipped;
                     // we need to inflate it to deal with it.
                     inflate(new Buffer(grid_compressed, 'binary'), function(err, grid) {
-                        res.writeHead(200,
-                            _.extend({}, settings.header_defaults.success, {
+                        res.writeHead(200, _.extend({
                                 'Content-Type': 'text/javascript'
-                            }));
+                            },
+                            res.mapfile_headers,
+                            settings.header_defaults));
 
                         // Manually wrap the JSON in JSONp in order to
                         // avoid re-encoding the UTF-8 in griddata

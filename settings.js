@@ -9,18 +9,11 @@ module.exports = {
         'download': true
     },
     'header_defaults': {
-        'success': {
-            'Cache-Control': 'max-age=' +
-                60 // minute
-                * 60 // hour
-                * 24 // day
-                * 365 // year
-        },
-        'failure': {
-            'Cache-Control': 'max-age=' +
-                60 // minute
-                * 60 // hour
-        }
+        'Cache-Control': 'max-age=' +
+            60 // minute
+            * 60 // hour
+            * 24 // day
+            * 365 // year
     }
 }
 
