@@ -89,7 +89,7 @@ module.exports = function(app, settings) {
             },
             "externals": [
                 {
-                    "_type": "OpenLayersWaxZoomOnLoad",
+                    "_type": "wax.ol.ZoomOnLoad",
                     "_value": [
                         '#' + req.query.el, req.query.center[0], req.query.center[1], zoom
                     ]
@@ -114,7 +114,7 @@ function layerWax(layer) {
     // dateline-wrapped world correctly in this scenario.
     var bounds = layer.get('bounds');
     var maxExtent = {
-        "_type": "OpenLayersWax.BoundsTransform",
+        "_type": "wax.ol.BoundsTransform",
         "_value": bounds.concat(['EPSG:4326', 'EPSG:900913'])
     };
 

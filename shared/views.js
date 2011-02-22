@@ -189,12 +189,12 @@ var TilesetView = Backbone.View.extend({
         this.openlayers = $(this.map.el).data('map');
 
         // Add interactivity
-        var interaction = new OpenLayers.Control.Interaction();
+        var interaction = new wax.ol.Interaction();
         this.openlayers.addControl(interaction);
         interaction.activate();
 
         // Add legends
-        var legend = new OpenLayers.Control.Legend();
+        var legend = new wax.ol.Legend();
         this.openlayers.addControl(legend);
         legend.activate();
 
