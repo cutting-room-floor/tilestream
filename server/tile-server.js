@@ -107,6 +107,7 @@ module.exports = function(app, settings) {
     // Load a tileset formatter or legend.
     var formatter = /^\/1.0.0\/([\w+|\d+|.|-]*)?\/(formatter.json|legend.json)/;
     app.get(formatter, validateTileset, loadMapFileHeaders, function(req, res, next) {
+        req.query.callback = req.query.callback || 'grid';
         var tile = new Tile({
             type: 'mbtiles',
             datasource: res.mapfile,
