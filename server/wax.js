@@ -11,7 +11,7 @@ module.exports = function(app, settings) {
             _.isArray(req.query.center) &&
             req.query.layers.length > 0 &&
             req.query.center.length === 2);
-        if (!valid) return next(new Error('Invalid query string.'));
+        if (!valid) return res.send('Invalid request.', 400);
 
         var layers = [];
         Step(
@@ -30,7 +30,7 @@ module.exports = function(app, settings) {
                     return layer.get('name');
                 });
                 if (layers.length !== req.query.layers.length) {
-                    next(new Error('Invalid layer specified.'));
+                    res.send('Invalid layer specified.', 400);
                 } else {
                     res.layers = layers;
                     next();
@@ -53,7 +53,6 @@ module.exports = function(app, settings) {
     // - `center` - List containing the longitude and latitude
     //     center[]=66.5&center[]=55.8
     // - `zoom` - Integer for inital zoom level.
-    // - `externals`
     //
     app.get('/wax.json', load, function(req, res, next) {
         var zoom = req.query.zoom || 0;
