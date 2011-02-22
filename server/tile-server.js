@@ -96,10 +96,13 @@ module.exports = function(app, settings) {
                     res.mapfile_headers,
                     settings.header_defaults,
                     data[1]));
-            } else {
+            } else if (err.toString() === 'empty row') {
                 res.send(errorTile, {
                     'Content-Type':'image/png',
                 }, 404);
+            }
+            else {
+                res.send(err.toString(), 500);
             }
         });
     });
