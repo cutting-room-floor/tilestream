@@ -111,47 +111,24 @@ module.exports = function(app, settings) {
     // A single route for serving tiles.
     var grid = /^\/1.0.0\/([\w+|\d+|.|-]*)?\/([-]?\d+)\/([-]?\d+)\/([-]?\d+).grid.json/;
     app.get(grid, validateTileset, function(req, res, next) {
+        req.query.callback = req.query.callback || 'grid';
         var tile = new Tile({
             type: 'mbtiles',
             datasource: res.mapfile,
             format: 'grid.json',
             xyz: [req.params[2], req.params[3], req.params[1]]
         });
-        Step(
-            function() {
-                tile.render(this);
-            },
-            function(err, grid) {
-                if (err) {
-                    res.send(err.toString(), 500);
-                } else if (!grid[0]) {
-                    res.send('Grid not found', 404);
-                } else {
-                    var grid_compressed = grid[0];
-                    var grid_data = grid[1];
-                    // Data coming out of MBTiles is gzipped;
-                    // we need to inflate it to deal with it.
-                    inflate(new Buffer(grid_compressed, 'binary'), function(err, grid) {
-                        res.writeHead(200,
-                            _.extend({}, settings.header_defaults, {
-                                'Content-Type': 'text/javascript'
-                            }));
-
-                        // Manually wrap the JSON in JSONp in order to
-                        // avoid re-encoding the UTF-8 in griddata
-                        if (req.query.callback) {
-                            res.write(req.query.callback + '({"grid":');
-                        }
-                        res.write(grid);
-                        res.write(',"grid_data":');
-                        res.write(JSON.stringify(grid_data));
-                        if (req.query.callback) {
-                            res.write('});');
-                        }
-                        res.end();
-                    });
-                }
+        tile.render(function(err, data) {
+            if (err) {
+                res.send(err.toString(), 500);
+            } else if (!data) {
+                res.send('Grid not found', 404);
+            } else {
+                res.send(
+                    req.query.callback + '(' + data + ');',
+                    {'Content-Type': 'text/javascript; charset=utf-8'}
+                );
             }
-        );
+        });
     });
 };
