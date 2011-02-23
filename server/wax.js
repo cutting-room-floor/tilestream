@@ -84,6 +84,14 @@ module.exports = function(app, settings) {
                 {
                     "_type": "OpenLayers.Control.Attribution",
                     "_value": [""]
+                },
+                {
+                    "_type": "wax.ol.Interaction",
+                    "_value": [""]
+                },
+                {
+                    "_type": "wax.ol.Legend",
+                    "_value": [""]
                 }
                 ]
             },
