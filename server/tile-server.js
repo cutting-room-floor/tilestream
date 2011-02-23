@@ -117,11 +117,7 @@ module.exports = function(app, settings) {
             format: req.params[1],
         });
         tile.render(function(err, data) {
-            if ((err && err.toString() === 'empty row') || !data) {
-                res.send(req.params[1] + ' not found', 404);
-            } else if (err) {
-                res.send(err.toString(), 500);
-            } else {
+            if (!err) {
                 var object = {};
                 var key = req.params[1].split('.').shift();
                 object[key] = data;
@@ -130,6 +126,12 @@ module.exports = function(app, settings) {
                     },
                     res.mapfile_headers,
                     settings.header_defaults));
+            }
+            else if ((err.toString() === 'empty row') || !data) {
+                res.send(req.params[1] + ' not found', 404);
+            }
+            else {
+                res.send(err.toString(), 500);
             }
         });
     });
@@ -145,11 +147,7 @@ module.exports = function(app, settings) {
             xyz: [req.params[2], req.params[3], req.params[1]]
         });
         tile.render(function(err, data) {
-            if (err) {
-                res.send(err.toString(), 500);
-            } else if (!data) {
-                res.send('Grid not found', 404);
-            } else {
+            if (!err) {
                 res.send(
                     req.query.callback + '(' + data + ');',
                     _.extend(
@@ -158,6 +156,12 @@ module.exports = function(app, settings) {
                         settings.header_defaults
                     )
                 );
+            }
+            else if ((err.toString() === 'empty row') || !data) {
+                res.send('Grid not found', 404);
+            }
+            else {
+                res.send(err.toString(), 500);
             }
         });
     });
