@@ -1,8 +1,9 @@
 node 0.2.6 source
 
 # module | github repo | tag | alias
-module senchalabs connect 0.3.0
-module visionmedia express 1.0.0
+module senchalabs connect 0.5.10
+module visionmedia express 1.0.7
+module visionmedia node-querystring 0.0.6 qs
 module creationix step v0.0.3
 module visionmedia expresso 0.7.2
 module documentcloud backbone 0.3.3
