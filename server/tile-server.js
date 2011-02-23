@@ -61,7 +61,6 @@ module.exports = function(app, settings) {
                         'Last-Modified': stat.mtime,
                         'E-Tag': stat.size + '-' + Number(stat.mtime)
                     }
-                    // res.mapfileStat = stat;
                     return next();
                 }
             });
