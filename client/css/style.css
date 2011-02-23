@@ -13,16 +13,16 @@ a {
 
 .header,
 ul.tilesets label,
-.maputil-tooltip,
-.openlayers-legends {
+.wax-tooltip,
+.wax-legends {
   background:url(../images/mask75.png);
   text-shadow:#000 0px 1px 1px;
   }
 
 .hud,
 .header,
-.maputil-tooltip,
-.openlayers-legends {
+.wax-tooltip,
+.wax-legends {
   box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
   -moz-box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
   -webkit-box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
@@ -144,24 +144,24 @@ ul.tilesets span.baselayer-thumb {
   bottom:0px;
   }
 
-.maputil-tooltip {
+.wax-tooltip {
   top:60px;
   left:0px;
   padding:10px 20px;
   max-width:260px;
   }
 
-.openlayers-legends {
+.wax-legends {
   padding:0px;
   max-width:300px;
   }
 
-.openlayers-legend {
+.wax-legend {
   padding:10px 20px;
   background:url(../images/stroke.png) 0% 0% repeat-x;
   }
 
-.openlayers-legend:first-child { background:transparent; }
+.wax-legend:first-child { background:transparent; }
 
 .zooms {
   background:url(../images/mask25.png);
