@@ -54,8 +54,8 @@ module.exports = function(app, settings) {
     var loadMap = function(req, res, next) {
         poolcache.acquire(res.mapfile, {
             create: function(callback) {
-                var mbtiles = new MBTiles(res.mapfile, {});
-                mbtiles.open(function() {
+                var mbtiles = new MBTiles(res.mapfile, {}, function(err) {
+                    if (err) throw err;
                     callback(mbtiles);
                 });
             },

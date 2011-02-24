@@ -20,7 +20,7 @@ module mapbox tilelive.js
 module mapbox map-utils
 module coolaj86 node-jquery v1.4.4
 module kkaefer node-compress
-module willwhite node-sqlite blobbuild-combined sqlite
+module developmentseed node-sqlite3 2.0.2 sqlite3
 
 # Module layout workarounds
 cd $ROOT
