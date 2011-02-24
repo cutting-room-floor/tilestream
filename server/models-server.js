@@ -133,53 +133,30 @@ MBTiles.prototype.info = function(callback) {
         // Load metadata table
         function() {
             var end = this;
-            that.db.prepare(
-                'SELECT * FROM metadata;',
-                function(err, statement) {
-                    if (err || !statement) end(err);
-                    var next = function(err, row) {
-                        if (err || !row) {
-                            statement.finalize(function() {
-                                end(err, info);
-                            });
-                        } else {
-                            info[row.name] = row.value;
-                            statement.step(next);
-                        }
-                    }
-                    statement.step(next);
+            that.db.all("SELECT name, value FROM metadata", function(err, rows) {
+                if (rows) for (var i = 0; i < rows.length; i++) {
+                    info[rows[i].name] = rows[i].value;
                 }
-            );
+                end(err);
+            });
         },
         // Determine min/max zoom if needed
         function(err) {
+            if (err) return callback(err);
             if (typeof info.maxzoom !== 'undefined'
                 && typeof info.minzoom !== 'undefined') return this(null);
 
             var group = this.group();
-            var zoomquery = function(zoom, callback) {
-                that.db.prepare(
-                    'SELECT zoom_level '
-                    + 'FROM tiles '
-                    + 'WHERE zoom_level = ? '
-                    + 'LIMIT 1;',
-                    function(err, statement) {
-                        if (err || !statement) return callback(err);
-                        statement.bind(1, zoom, function() {
-                            statement.step(function(err, row) {
-                                statement.finalize(function() {
-                                    callback(err, row);
-                                });
-                            });
-                        });
-                    }
-                );
-            };
+
+            var zoomquery = that.db.prepare('SELECT zoom_level FROM tiles ' +
+                                            'WHERE zoom_level = ? LIMIT 1');
             for (var i = 0; i < 30; i++) {
-                zoomquery(i, group());
+                zoomquery.get(i, group());
             }
+            zoomquery.finalize();
         },
         function(err, rows) {
+            if (err) throw err;
             if (!err && rows) {
                 var zooms = _.filter(rows, function(row) { return row; }),
                 zooms = _.pluck(zooms, 'zoom_level');
@@ -190,31 +167,20 @@ MBTiles.prototype.info = function(callback) {
         },
         // Determine bounds if needed
         function(err) {
+            if (err) return callback(err);
             if (info.bounds) return this();
             if (typeof info.minzoom === 'undefined') return this();
 
             var next = this;
             Step(
                 function() {
-                    var callback = this;
-                    that.db.prepare(
-                        'SELECT '
-                        + 'MAX(tile_column) AS maxx, '
-                        + 'MIN(tile_column) AS minx, '
-                        + 'MAX(tile_row) AS maxy, '
-                        + 'MIN(tile_row) AS miny '
-                        + 'FROM tiles '
-                        + 'WHERE zoom_level = ?;',
-                        function(err, statement) {
-                            if (err || !statement) return callback(err);
-                            statement.bind(1, info.minzoom, function() {
-                                statement.step(function(err, row) {
-                                    statement.finalize(function() {
-                                        callback(err, row);
-                                    });
-                                });
-                            });
-                        }
+                    that.db.get(
+                        'SELECT MAX(tile_column) AS maxx, ' +
+                        'MIN(tile_column) AS minx, MAX(tile_row) AS maxy, ' +
+                        'MIN(tile_row) AS miny FROM tiles ' +
+                        'WHERE zoom_level = ?',
+                        info.minzoom,
+                        this
                     );
                 },
                 function(err, row) {
@@ -233,7 +199,8 @@ MBTiles.prototype.info = function(callback) {
             );
         },
         // Return info
-        function() {
+        function(err) {
+            if (err) return callback(err);
             info.minzoom = parseInt(info.minzoom);
             info.maxzoom = parseInt(info.maxzoom);
             info.bounds = _.map(info.bounds.split(','), function(val) { return parseFloat(val) });
