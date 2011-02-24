@@ -63,7 +63,12 @@ var OpenLayersView = Backbone.View.extend({
         $(this.el).each(OpenLayersWax.bind);
     },
     waxURL: function(wax) {
-        return '/wax.json?' + $.param(wax);
+        var path = 'wax.json?' + $.param(wax);
+        if (window.location && window.location.hostname) {
+            var baseURL = window.location.protocol + '//' +
+                window.location.hostname + ':' + Settings.port;
+            return baseURL + '/' + path;
+        }
     },
     generateWax: function(callback) {
         var wax = {
