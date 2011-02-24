@@ -95,7 +95,7 @@ module.exports = function(app, settings) {
                     res.mapfile_headers,
                     settings.header_defaults,
                     data[1]));
-            } else if (err.toString() === 'empty row') {
+            } else if (err.toString() === 'Tile does not exist') {
                 res.send(errorTile, {
                     'Content-Type':'image/png',
                 }, 404);
@@ -122,7 +122,7 @@ module.exports = function(app, settings) {
                     res.mapfile_headers,
                     settings.header_defaults
                 ));
-            } else if ((err.toString() === 'empty row') || !data) {
+            } else if ((err.toString() === 'Key does not exist') || !data) {
                 res.send('layer.json not found', 404);
             } else {
                 res.send(err.toString(), 500);
@@ -151,7 +151,7 @@ module.exports = function(app, settings) {
                     )
                 );
             }
-            else if ((err.toString() === 'empty row') || !data) {
+            else if ((err.toString() === 'Grid does not exist') || !data) {
                 res.send('Grid not found', 404);
             }
             else {
