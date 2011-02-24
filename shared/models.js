@@ -6,17 +6,32 @@
 // `var` is included, leaving us with broken objects.
 if (typeof require !== 'undefined') {
     Settings = require('settings'),
-    Backbone = require('backbone-server.js'),
+    Backbone = require('backbone.js'),
     _ = require('underscore')._;
 }
 
-// Map
+// Tileset
 // ---
-// A single map, corresponding to an `.mbtiles` file. `model.id` is the
+// A single tileset, corresponding to an `.mbtiles` file. `model.id` is the
 // file basename, e.g. `foo.mbtiles` has an `id` of `foo`.
-var Map = Backbone.Model.extend({
+var Tileset = Backbone.Model.extend({
+    initialize: function(attributes) {
+        Backbone.Model.prototype.initialize.call(this, attributes);
+        // Convert representation of baselayer into a true Tileset model.
+        if (typeof this.get('baselayer') !== 'undefined') {
+            this.set({ baselayer: new Tileset(this.get('baselayer')) });
+        }
+    },
+    parse: function(response){
+        var model = Backbone.Model.prototype.parse.call(this, response);
+        // Convert representation of baselayer into a true Tileset model.
+        if (typeof model.baselayer !== 'undefined') {
+            model.baselayer = new Tileset(model.baselayer);
+        }
+        return model;
+    },
     url: function() {
-        return '/api/map/' + this.id;
+        return '/api/tileset/' + this.id;
     },
     // Return the base URLs of TileStream tile servers including a single
     // trailing slash, e.g. http://localhost:8889/ or http://mapbox/tilestream/
@@ -45,20 +60,35 @@ var Map = Backbone.Model.extend({
         } else {
             return ['http://localhost:9000/'];
         }
+    },
+    // Get ZXY of tile of tileset's center and minzoom. From [OSM wiki][1].
+    // [1]: http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#lon.2Flat_to_tile_numbers_2
+    toZXY: function() {
+        var center = this.get('center');
+        center.lat = -1 * center.lat; // TMS is flipped from OSM calc below.
+        var z = this.get('minzoom');
+        var lat_rad = center.lat * Math.PI / 180;
+        var x = parseInt((center.lon + 180.0) / 360.0 * Math.pow(2, z));
+        var y = parseInt((1.0 - Math.log(Math.tan(lat_rad) + (1 / Math.cos(lat_rad))) / Math.PI) / 2.0 * Math.pow(2, z));
+
+        return [z, x, y];
+    },
+    thumb: function(zxy) {
+        return this.layerURL()[0] + ['1.0.0', this.get('id'), zxy[0], zxy[1], zxy[2]].join('/') + '.png';
     }
 });
 
-// MapList
+// TilesetList
 // -------
-// Collection of all map models.
-var MapList = Backbone.Collection.extend({
-    model: Map,
-    url: '/api/map'
+// Collection of all tileset models.
+var TilesetList = Backbone.Collection.extend({
+    model: Tileset,
+    url: '/api/tileset'
 });
 
 if (typeof module !== 'undefined') {
     module.exports = {
-        Map: Map,
-        MapList: MapList
+        Tileset: Tileset,
+        TilesetList: TilesetList
     };
 }

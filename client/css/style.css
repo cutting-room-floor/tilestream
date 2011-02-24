@@ -12,15 +12,17 @@ a {
 .pane { padding:10px; }
 
 .header,
-ul.maps label,
-.openlayers-tooltip {
+ul.tilesets label,
+.wax-tooltip,
+.wax-legends {
   background:url(../images/mask75.png);
   text-shadow:#000 0px 1px 1px;
   }
 
 .hud,
 .header,
-.openlayers-tooltip {
+.wax-tooltip,
+.wax-legends {
   box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
   -moz-box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
   -webkit-box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
@@ -84,9 +86,9 @@ ul.maps label,
 .header .buttons .icon { float:left; }
 
 /**
- * MapListView ================================================================
+ * TilesetListView ============================================================
  */
-ul.maps {
+ul.tilesets {
   position:absolute;
   top:0px;
   left:0px;
@@ -95,9 +97,9 @@ ul.maps {
   background:url(../images/bg.png);
   }
 
-ul.maps li { float:left; }
+ul.tilesets li { float:left; }
 
-ul.maps a {
+ul.tilesets a {
   width:249px;
   margin:0px 1px 1px 0px;
   position:relative;
@@ -105,7 +107,7 @@ ul.maps a {
   display:block;
   }
 
-ul.maps label {
+ul.tilesets label {
   opacity:0;
   display:block;
   position:absolute;
@@ -115,13 +117,14 @@ ul.maps label {
   padding:10px 20px;
   }
 
-ul.maps a:hover label {
+ul.tilesets a:hover label {
   opacity:1;
   -moz-transition:opacity .25s;
   -webkit-transition:opacity .25s;
   }
 
-ul.maps span.thumb {
+ul.tilesets span.thumb,
+ul.tilesets span.baselayer-thumb {
   display:block;
   width:249px;
   height:249px;
@@ -130,7 +133,7 @@ ul.maps span.thumb {
   }
 
 /**
- * MapView ====================================================================
+ * TilesetView ================================================================
  */
 .olMap {
   background:url(../images/canvas.png);
@@ -141,11 +144,24 @@ ul.maps span.thumb {
   bottom:0px;
   }
 
-.openlayers-tooltip {
+.wax-tooltip {
   top:60px;
   left:0px;
   padding:10px 20px;
+  max-width:260px;
   }
+
+.wax-legends {
+  padding:0px;
+  max-width:300px;
+  }
+
+.wax-legend {
+  padding:10px 20px;
+  background:url(../images/stroke.png) 0% 0% repeat-x;
+  }
+
+.wax-legend:first-child { background:transparent; }
 
 .zooms {
   background:url(../images/mask25.png);

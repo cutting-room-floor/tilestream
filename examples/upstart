@@ -1,0 +1,23 @@
+# Example configuration for using TileMill with [upstart][1] on Ubuntu.
+#
+# [1]:http://upstart.ubuntu.com/
+#
+# Assumes you have TileStream installed at /var/www/tilestream
+# Copy to /etc/init/tilestream.conf and run
+#
+#     sudo start tilestream
+#
+
+description "tilestream mbtiles server"
+
+env TILESTREAM_HOME=/var/www/tilestream
+
+start on runlevel [2]
+stop on runlevel [016]
+
+script
+    chdir $TILESTREAM_HOME
+    exec $TILESTREAM_HOME/bin/node tilestream.js > /var/log/tilestream.log 2>&1
+end script
+
+respawn

@@ -1,5 +1,5 @@
 // Server-side specific overrides of model definitions in `shared/models.js`.
-// Defines `sync()` for Map and MapList, replacing the default REST interface
+// Defines `sync()` for Tileset and TilesetList, replacing the default REST interface
 // with loaders.
 var _ = require('underscore'),
     Step = require('step'),
@@ -9,19 +9,19 @@ var _ = require('underscore'),
     fs = require('fs'),
     SphericalMercator = require('tilelive').SphericalMercator,
     models = require('models'),
-    poolcache = require('poolcache')(5);
+    Pool = require('tilelive').Pool;
 
-models.Map.prototype.sync =
-models.MapList.prototype.sync = function(method, model, success, error) {
+models.Tileset.prototype.sync =
+models.TilesetList.prototype.sync = function(method, model, success, error) {
     switch (method) {
     case 'read':
         if (model.id) {
-            loadMap(model, function(err, model) {
+            loadTileset(model, function(err, model) {
                 return err ? error(err) : success(model);
             });
         }
         else {
-            loadMaps(model, function(err, model) {
+            loadTilesets(model, function(err, model) {
                 return err ? error(err) : success(model);
             });
         }
@@ -29,9 +29,9 @@ models.MapList.prototype.sync = function(method, model, success, error) {
     }
 };
 
-// Load a map model. Retrieve `.mbtiles` file stats, open the DB, retrieve
+// Load a tileset model. Retrieve `.mbtiles` file stats, open the DB, retrieve
 // metadata about the tiles.
-function loadMap(model, callback) {
+function loadTileset(model, callback) {
     var filepath = path.join(settings.tiles, model.id + '.mbtiles');
     var data = {};
     Step(
@@ -43,40 +43,47 @@ function loadMap(model, callback) {
             }
         },
         function(err, stat) {
-            if (err) return this(new Error('Map not found.'));
+            if (err) return this(new Error('Tileset not found.'));
             data.size = stat.size;
             data.mtime = +stat.mtime;
-            poolcache.acquire(filepath, {
-                create: function(callback) {
-                    var mbtiles = new MBTiles(filepath, {}, function(err) {
-                        if (err) throw err;
-                        callback(mbtiles);
-                    });
-                },
-                destroy: function(mbtiles) {
-                    mbtiles.db.close();
-                }
-            }, this);
+            Pool.acquire('mbtiles', filepath, {}, this);
         },
-        function(mbtiles) {
+        function(err, mbtiles) {
             var that = this;
             mbtiles.info(function(err, info) {
+                Pool.release('mbtiles', filepath, mbtiles);
                 that(err, info);
-                poolcache.release(filepath, mbtiles);
             });
         },
         function(err, info) {
             if (err) {
                 callback(err);
             } else {
-                callback(null, _.extend(data, info));
+                _.extend(data, info);
+            }
+            // Load default baselayer and attach it to overlay layers.
+            if (info.type === 'overlay' && settings.default_baselayer.length !== 0) {
+                loadTileset({ id: settings.default_baselayer }, this);
+            }
+            else {
+                this();
+            }
+        },
+        function(err, info) {
+            if (info) {
+                data.baselayer = info;
+            }
+            if (err) {
+                callback(err);
+            } else {
+                callback(null, data);
             }
         }
     );
 }
 
-// Load all map models.
-function loadMaps(model, callback) {
+// Load all tileset models.
+function loadTilesets(model, callback) {
     Step(
         function() {
             try {
@@ -92,15 +99,15 @@ function loadMaps(model, callback) {
                 return this(null, []);
             }
             var group = this.group();
-            var maps = _.map(_.filter( files,
+            var tilesets = _.map(_.filter( files,
                 function(filename) {
                     return path.extname(filename) === '.mbtiles';
                 }),
                 function(filename) {
                     return path.basename(filename, '.mbtiles');
                 });
-            for (var i = 0; i < maps.length; i++) {
-                loadMap({ id: maps[i] }, group());
+            for (var i = 0; i < tilesets.length; i++) {
+                loadTileset({ id: tilesets[i] }, group());
             }
         },
         function(err, models) {

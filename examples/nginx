@@ -1,0 +1,39 @@
+# Example nginx configuration file for TileStream.
+#
+# Assumes you have TileStream configured to run on two different ports so tiles
+# can served through a CDN. In settings.js, `port` is set to 9000, while
+# `UIPort` is set to 9001.
+
+#
+# UI Server
+#
+upstream ui {
+    server 127.0.0.1:9001;
+}
+
+server {
+    listen 80;
+    server_name example.com;
+    access_log  /var/log/nginx/tilestream-ui.access.log;
+
+    location / {
+        proxy_pass http://ui;
+    }
+}
+
+#
+# Tile Server
+#
+upstream tiles {
+    server 127.0.0.1:9000;
+}
+
+server {
+    listen 80;
+    server_name origin.example.com;
+    access_log  /var/log/nginx/tilestream-tiles.access.log;
+
+    location / {
+        proxy_pass http://tiles;
+    }
+}
