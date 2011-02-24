@@ -187,20 +187,7 @@ var TilesetView = Backbone.View.extend({
     },
     ready: function() {
         this.openlayers = $(this.map.el).data('map');
-
-        // Add interactivity
-        var interaction = new wax.ol.Interaction();
-        this.openlayers.addControl(interaction);
-        interaction.activate();
-
-        // Add legends
-        var legend = new wax.ol.Legend();
-        this.openlayers.addControl(legend);
-        legend.activate();
-
-        this.controlZoom({
-            element: this.map.div
-        });
+        this.controlZoom({element: this.map.div});
         this.openlayers.events.register('moveend', this.openlayers, this.controlZoom);
         this.controlZoom({element: this.openlayers.div});
         this.openlayers.events.register('zoomend', this.openlayers, this.controlZoom);

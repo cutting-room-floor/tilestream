@@ -106,30 +106,25 @@ module.exports = function(app, settings) {
         });
     });
 
-    // Load a tileset formatter or legend.
-    var formatter = /^\/1.0.0\/([\w+|\d+|.|-]*)?\/(formatter.json|legend.json)/;
+    // Load a tileset layer.json manifest.
+    var formatter = /^\/1.0.0\/([\w+|\d+|.|-]*)?\/layer.json/;
     app.get(formatter, validateTileset, loadMapFileHeaders, function(req, res, next) {
         req.query.callback = req.query.callback || 'grid';
         var tile = new Tile({
             type: 'mbtiles',
             datasource: res.mapfile,
-            format: req.params[1],
+            format: 'layer.json',
         });
         tile.render(function(err, data) {
             if (!err) {
-                var object = {};
-                var key = req.params[1].split('.').shift();
-                object[key] = data;
-                res.send(object, _.extend({
-                        'Content-Type': 'text/javascript'
-                    },
+                res.send(data, _.extend(
+                    { 'Content-Type': 'text/javascript' },
                     res.mapfile_headers,
-                    settings.header_defaults));
-            }
-            else if ((err.toString() === 'empty row') || !data) {
-                res.send(req.params[1] + ' not found', 404);
-            }
-            else {
+                    settings.header_defaults
+                ));
+            } else if ((err.toString() === 'empty row') || !data) {
+                res.send('layer.json not found', 404);
+            } else {
                 res.send(err.toString(), 500);
             }
         });
