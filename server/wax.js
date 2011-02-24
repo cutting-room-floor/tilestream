@@ -98,55 +98,58 @@ module.exports = function(app, settings) {
         }
         res.send(map);
     });
-}
 
-function layerWax(layer) {
-    var serverResolutions = [
-        156543.0339,78271.51695,39135.758475,19567.8792375,9783.93961875,
-        4891.96980938,2445.98490469,1222.99245234,611.496226172,
-        305.748113086,152.874056543,76.4370282715,38.2185141357,
-        19.1092570679,9.55462853394,4.77731426697,2.38865713348,
-        1.19432856674,0.597164283371
-    ];
+    // Generate wax for the provided layer
+    // -----------------------------------
+    //
+    function layerWax(layer) {
+        var serverResolutions = [
+            156543.0339,78271.51695,39135.758475,19567.8792375,9783.93961875,
+            4891.96980938,2445.98490469,1222.99245234,611.496226172,
+            305.748113086,152.874056543,76.4370282715,38.2185141357,
+            19.1092570679,9.55462853394,4.77731426697,2.38865713348,
+            1.19432856674,0.597164283371
+        ];
 
-    // Set the layer bounds. If the layer bounds exceed that of the world,
-    // do not set `maxExtent` as OpenLayers does not render the contiguous
-    // dateline-wrapped world correctly in this scenario.
-    var bounds = layer.get('bounds');
-    var maxExtent = {
-        "_type": "wax.ol.BoundsTransform",
-        "_value": bounds.concat(['EPSG:4326', 'EPSG:900913'])
-    };
+        // Set the layer bounds. If the layer bounds exceed that of the world,
+        // do not set `maxExtent` as OpenLayers does not render the contiguous
+        // dateline-wrapped world correctly in this scenario.
+        var bounds = layer.get('bounds');
+        var maxExtent = {
+            "_type": "wax.ol.BoundsTransform",
+            "_value": bounds.concat(['EPSG:4326', 'EPSG:900913'])
+        };
 
-    var wrapDateLine = false;
-    if (
-        bounds[0] <= -180
-        && bounds[2] >= 180
-    ) {
-        maxExtent = false;
-        wrapDateLine = true;
-    }
+        var wrapDateLine = false;
+        if (
+            bounds[0] <= -180
+            && bounds[2] >= 180
+        ) {
+            maxExtent = false;
+            wrapDateLine = true;
+        }
 
-    return {
-        '_type': 'OpenLayers.Layer.TMS',
-        '_value': [
-            layer.get('name'), 'http://localhost:9000/',
-            {
-                "projection": {
-                  "_type": "OpenLayers.Projection",
-                  "_value": ["EPSG:900913"]
-                },
-                "wrapDateLine": wrapDateLine,
-                "maxExtent": maxExtent,
-                "type": "png",
-                "buffer": 0,
-                "transitionEffect": 'resize',
-                "serverResolutions": serverResolutions,
-                "layername": layer.id,
-                "isBaseLayer": layer.get('type') === 'baselayer' ? "true" : false,
-                "resolutions": serverResolutions.slice(layer.get('minzoom'), layer.get('maxzoom') + 1),
-                "visibility": true,
-            }
-        ]
+        return {
+            '_type': 'OpenLayers.Layer.TMS',
+            '_value': [
+                layer.get('name'), settings.tile_hostnames,
+                {
+                    "projection": {
+                      "_type": "OpenLayers.Projection",
+                      "_value": ["EPSG:900913"]
+                    },
+                    "wrapDateLine": wrapDateLine,
+                    "maxExtent": maxExtent,
+                    "type": "png",
+                    "buffer": 0,
+                    "transitionEffect": 'resize',
+                    "serverResolutions": serverResolutions,
+                    "layername": layer.id,
+                    "isBaseLayer": layer.get('type') === 'baselayer' ? "true" : false,
+                    "resolutions": serverResolutions.slice(layer.get('minzoom'), layer.get('maxzoom') + 1),
+                    "visibility": true,
+                }
+            ]
+        }
     }
 }
