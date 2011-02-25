@@ -53,6 +53,8 @@ module.exports = function(app, settings) {
     // - `center` - List containing the longitude and latitude
     //     center[]=66.5&center[]=55.8
     // - `zoom` - Integer for inital zoom level.
+    // - `minzoom` - Override the minimum zoom level for all layers in the map.
+    // - `maxzoom` - Override the maximum zoom level for all layers in the map.
     //
     app.get('/wax.json', load, function(req, res, next) {
         var zoom = req.query.zoom || 0;
@@ -107,7 +109,9 @@ module.exports = function(app, settings) {
 
         // Generate wax for the provided layer
         function layerWax(layer) {
-            var hostnames = [],
+            var minzoom = layer.get('minzoom'),
+                maxzoom = layer.get('maxzoom'),
+                hostnames = [],
                 options = {
                     'projection': ['@new OpenLayers.Projection', 'EPSG:900913'],
                     'wrapDateLine': false,
@@ -142,10 +146,13 @@ module.exports = function(app, settings) {
                 options.wrapDateLine = true;
             }
 
-            // Return the proper subset of resolutions for this layer.
+            // Return the proper subset of resolutions for this layer, using
+			// request query overrides of minzoom/maxzoom if present.
+            (req.query.minzoom && req.query.minzoom > minzoom) && (minzoom = req.query.minzoom);
+            (req.query.maxzoom && req.query.maxzoom < maxzoom) && (maxzoom = req.query.maxzoom);
             options.resolutions = options.serverResolutions.slice(
-                layer.get('minzoom'),
-                layer.get('maxzoom') + 1
+                minzoom,
+                maxzoom + 1
             );
 
             // If no hosts specified in settings, try to auto-detect host.

@@ -78,7 +78,9 @@ var OpenLayersView = Backbone.View.extend({
             el: $(this.el).attr('id'),
             layers: [this.model.id],
             center: [this.model.get('center').lon, this.model.get('center').lat],
-            zoom: 0
+            zoom: 0,
+            minzoom: this.model.get('minzoom'),
+            maxzoom: this.model.get('maxzoom')
         };
         if (this.model.get('type') === 'overlay') {
             if (this.model.get('baselayer')) {
