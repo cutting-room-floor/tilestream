@@ -24,6 +24,8 @@ require('ui-server')(ui_server, settings);
 require('wax')(ui_server, settings);
 
 tile_server.enable('jsonp callback');
+ui_server.enable('jsonp callback');
+
 ui_server.use(express.staticProvider('client'));
 ui_server.use(express.staticProvider('shared'));
 ui_server.use(express.staticProvider('modules'));
