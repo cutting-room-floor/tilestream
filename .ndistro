@@ -22,7 +22,7 @@ module kkaefer node-compress v0.1.10-a
 
 # untagged
 module mapbox tilelive.js
-module mapbox wax 1.0.0
+module mapbox wax master
 
 # Module layout workarounds
 cd $ROOT
