@@ -22,7 +22,7 @@ module kkaefer node-compress v0.1.10-a
 
 # untagged
 module mapbox tilelive.js
-module mapbox wax
+module mapbox wax 1.0.0
 
 # Module layout workarounds
 cd $ROOT
@@ -30,4 +30,3 @@ cd $ROOT
 ! test -f lib/node/request && ln -s ../../modules/request/main.js lib/node/request
 ! test -f lib/node/jsdom.js && ln -s ../../modules/jsdom/lib/jsdom.js lib/node/jsdom.js
 ! test -f lib/node/jsdom && ln -s ../../modules/jsdom/lib/jsdom lib/node/jsdom
-

@@ -66,7 +66,7 @@ var OpenLayersView = Backbone.View.extend({
             callbackParameter: 'callback',
             success: function(data) {
                 if (data && data.wax) {
-                    this.openlayers = wax.Wax.reify(data.wax);
+                    this.openlayers = wax.Record(data.wax);
                     this.trigger('ready');
                 }
             },
