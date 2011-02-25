@@ -56,117 +56,110 @@ module.exports = function(app, settings) {
     //
     app.get('/wax.json', load, function(req, res, next) {
         var zoom = req.query.zoom || 0;
-        var waxedLayers = _.map(res.layers, layerWax);
-        var map = {
-            "map": {
-                "layers": waxedLayers,
-                "maxExtent": {
-                    "_type": "OpenLayers.Bounds",
-                    "_value": [-20037500, -20037500, 20037500, 20037500]
-                },
-                "maxResolution": 1.40625,
-                "projection": {
-                    "_type": "OpenLayers.Projection",
-                    "_value": ["EPSG:900913"]
-                },
-                "displayProjection": {
-                    "_type": "OpenLayers.Projection",
-                    "_value": ["EPSG:900913"]
-                },
-                "units": "m",
-                "controls": [
-                {
-                    "_type": "OpenLayers.Control.Navigation",
-                    "_value": [{
-                        "zoomWheelEnabled": true
-                    }]
-                },
-                {
-                    "_type": "OpenLayers.Control.Attribution",
-                    "_value": [""]
-                },
-                {
-                    "_type": "wax.ol.Interaction",
-                    "_value": [""]
-                },
-                {
-                    "_type": "wax.ol.Legend",
-                    "_value": [""]
-                }
+        res.send({ 'wax':
+            ['@group',
+                ['@new OpenLayers.Map',
+                    req.query.el,
+                    {
+                        'layers': _.map(res.layers, layerWax),
+                        'units': 'm',
+                        'maxResolution': 1.40625,
+                        'maxExtent': [
+                            '@new OpenLayers.Bounds',
+                            -20037508.34,
+                            -20037508.34,
+                            20037508.34,
+                            20037508.34
+                        ],
+                        'projection': [
+                            '@new OpenLayers.Projection',
+                            'EPSG:900913'
+                        ],
+                        'displayProjection': [
+                            '@new OpenLayers.Projection',
+                            'EPSG:900913'
+                        ],
+                        'controls': [
+                            ['@new OpenLayers.Control.Navigation',
+                                {'zoomWheelEnabled': true}
+                            ],
+                            ['@new OpenLayers.Control.Attribution'],
+                            ['@new wax.ol.Interaction'],
+                            ['@new wax.ol.Legend']
+                        ]
+                    }
+                ],
+                ['@inject setCenter',
+                    ['@group',
+                        ['@new OpenLayers.LonLat',
+                            req.query.center[0],
+                            req.query.center[1]
+                        ],
+                        ['@inject transform',
+                            ['@new OpenLayers.Projection', 'EPSG:4326'],
+                            ['@new OpenLayers.Projection', 'EPSG:900913']
+                        ]
+                    ],
+                    req.query.zoom || 0
                 ]
-            },
-            "externals": [
-                {
-                    "_type": "wax.ol.ZoomOnLoad",
-                    "_value": [
-                        '#' + req.query.el, req.query.center[0], req.query.center[1], zoom
-                    ]
-                }
             ]
-        }
-        res.send(map);
+        });
 
         // Generate wax for the provided layer
-        // -----------------------------------
-        //
         function layerWax(layer) {
-            var serverResolutions = [
-                156543.0339,78271.51695,39135.758475,19567.8792375,9783.93961875,
-                4891.96980938,2445.98490469,1222.99245234,611.496226172,
-                305.748113086,152.874056543,76.4370282715,38.2185141357,
-                19.1092570679,9.55462853394,4.77731426697,2.38865713348,
-                1.19432856674,0.597164283371
-            ];
+            var hostnames = [],
+                options = {
+                    'projection': ['@new OpenLayers.Projection', 'EPSG:900913'],
+                    'wrapDateLine': false,
+                    'type': 'png',
+                    'buffer': 0,
+                    'transitionEffect': 'resize',
+                    'serverResolutions': [
+                        156543.0339,78271.51695,39135.758475,19567.8792375,9783.93961875,
+                        4891.96980938,2445.98490469,1222.99245234,611.496226172,
+                        305.748113086,152.874056543,76.4370282715,38.2185141357,
+                        19.1092570679,9.55462853394,4.77731426697,2.38865713348,
+                        1.19432856674,0.597164283371
+                    ],
+                    'layername': layer.id,
+                    'isBaseLayer': (layer.get('type') === 'baselayer'),
+                    'visibility': true,
+                    'maxExtent': ['@group',
+                        ['@new OpenLayers.Bounds'].concat(layer.get('bounds')),
+                        ['@inject transform',
+                            ['@new OpenLayers.Projection', 'EPSG:4326'],
+                            ['@new OpenLayers.Projection', 'EPSG:900913']
+                        ]
+                    ],
+                    'wrapDateLine': false
+                };
 
             // Set the layer bounds. If the layer bounds exceed that of the world,
             // do not set `maxExtent` as OpenLayers does not render the contiguous
             // dateline-wrapped world correctly in this scenario.
-            var bounds = layer.get('bounds');
-            var maxExtent = {
-                "_type": "wax.ol.BoundsTransform",
-                "_value": bounds.concat(['EPSG:4326', 'EPSG:900913'])
-            };
-
-            var wrapDateLine = false;
-            if (
-                bounds[0] <= -180
-                && bounds[2] >= 180
-            ) {
-                maxExtent = false;
-                wrapDateLine = true;
+            if (layer.get('bounds')[0] <= -180 && layer.get('bounds')[2] >= 180) {
+                options.maxExtent = false;
+                options.wrapDateLine = true;
             }
 
+            // Return the proper subset of resolutions for this layer.
+            options.resolutions = options.serverResolutions.slice(
+                layer.get('minzoom'),
+                layer.get('maxzoom') + 1
+            );
+
+            // If no hosts specified in settings, try to auto-detect host.
             if (settings.tile_hostnames.length !== 0) {
-                var hostnames = settings.tile_hostnames;
-            }
-            else {
-                // Try to auto-detect host
-                var protocol = 'http';
-                var hostnames = [protocol + '://' + req.headers.host + '/'];
+                hostnames = settings.tile_hostnames;
+            } else {
+                hostnames.push('http://' + req.headers.host + '/');
             }
 
-            return {
-                '_type': 'OpenLayers.Layer.TMS',
-                '_value': [
-                    layer.get('name'), hostnames,
-                    {
-                        "projection": {
-                          "_type": "OpenLayers.Projection",
-                          "_value": ["EPSG:900913"]
-                        },
-                        "wrapDateLine": wrapDateLine,
-                        "maxExtent": maxExtent,
-                        "type": "png",
-                        "buffer": 0,
-                        "transitionEffect": 'resize',
-                        "serverResolutions": serverResolutions,
-                        "layername": layer.id,
-                        "isBaseLayer": layer.get('type') === 'baselayer' ? "true" : false,
-                        "resolutions": serverResolutions.slice(layer.get('minzoom'), layer.get('maxzoom') + 1),
-                        "visibility": true,
-                    }
-                ]
-            }
+            return ['@new OpenLayers.Layer.TMS',
+                layer.get('name'),
+                hostnames,
+                options
+            ];
         }
     });
 }

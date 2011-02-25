@@ -59,8 +59,16 @@ var OpenLayersView = Backbone.View.extend({
         _.bindAll(this, 'ready');
     },
     ready: function() {
-        $(this.el).attr('src', this.waxURL(this.generateWax()));
-        $(this.el).each(OpenLayersWax.bind);
+        $.jsonp({
+            url: this.waxURL(this.generateWax()),
+            context: this,
+            callback: 'grid',
+            callbackParameter: 'callback',
+            success: function(data) {
+                (data && data.wax) && wax.Wax.reify(data.wax);
+            },
+            error: function() {}
+        });
     },
     waxURL: function(wax) {
         return '/wax.json?' + $.param(wax);
