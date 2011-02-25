@@ -65,7 +65,10 @@ var OpenLayersView = Backbone.View.extend({
             callback: 'grid',
             callbackParameter: 'callback',
             success: function(data) {
-                (data && data.wax) && wax.Wax.reify(data.wax);
+                if (data && data.wax) {
+                    this.openlayers = wax.Wax.reify(data.wax);
+                    this.trigger('ready');
+                }
             },
             error: function() {}
         });
@@ -107,7 +110,7 @@ var OpenLayersView = Backbone.View.extend({
         }
         wax.zoom = this.model.get('minzoom') < 2 ? 2 : 0;
         return wax;
-    },
+    }
 });
 
 // TilesetView
@@ -183,24 +186,31 @@ var TilesetView = Backbone.View.extend({
             size: this.format('size')
         }));
 
+        // @TODO eliminate the need for this entirely. controlZoom should be
+        // a proper OL control that can just be waxed in.
         this.map = new OpenLayersView({model: this.model});
         this.bind('ready', this.map.ready);
-        $(this.map.el).bind('openlayersWaxFinished', this.ready);
+        this.map.bind('ready', this.ready);
         $(this.el).append(this.map.el);
-
         return this;
     },
     ready: function() {
-        this.openlayers = $(this.map.el).data('map');
-        this.controlZoom({element: this.map.div});
-        this.openlayers.events.register('moveend', this.openlayers, this.controlZoom);
-        this.controlZoom({element: this.openlayers.div});
-        this.openlayers.events.register('zoomend', this.openlayers, this.controlZoom);
+        this.map.openlayers.events.register(
+            'moveend',
+            this.map.openlayers,
+            this.controlZoom
+        );
+        this.map.openlayers.events.register(
+            'zoomend',
+            this.map.openlayers,
+            this.controlZoom
+        );
+        this.controlZoom({element: this.map.openlayers.div});
 
         return this;
     },
     controlZoom: function(e) {
-        var zoom = this.model.get('minzoom') + this.openlayers.getZoom();
+        var zoom = this.model.get('minzoom') + this.map.openlayers.getZoom();
         this.$('.zoom.active').removeClass('active');
         this.$('.zoom-' + zoom).addClass('active');
     }
