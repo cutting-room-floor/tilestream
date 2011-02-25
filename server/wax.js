@@ -53,9 +53,14 @@ module.exports = function(app, settings) {
     // - `center` - List containing the longitude and latitude
     //     center[]=66.5&center[]=55.8
     // - `zoom` - Integer for inital zoom level.
+    // - `minzoom` - Override the minimum zoom level for all layers in the map.
+    // - `maxzoom` - Override the maximum zoom level for all layers in the map.
     //
     app.get('/wax.json', load, function(req, res, next) {
         var zoom = req.query.zoom || 0;
+        var mapMinZoom = req.query.minzoom || null;
+        var mapMaxZoom = req.query.maxzoom || null;
+
         var waxedLayers = _.map(res.layers, layerWax);
         var map = {
             "map": {
@@ -145,6 +150,13 @@ module.exports = function(app, settings) {
                 var hostnames = [protocol + '://' + req.headers.host + '/'];
             }
 
+            // Attempt to use min/max zoom overrides if present, but avoid
+            // setting the layer to use zoom levels it doesn't support.
+            var layerMinZoom = mapMinZoom >= layer.get('minzoom') ?
+                mapMinZoom : layer.get('minzoom');
+            var layerMaxZoom = mapMaxZoom <= layer.get('minzoom') ?
+                mapMaxZoom : layer.get('maxzoom');
+
             return {
                 '_type': 'OpenLayers.Layer.TMS',
                 '_value': [
@@ -162,7 +174,7 @@ module.exports = function(app, settings) {
                         "serverResolutions": serverResolutions,
                         "layername": layer.id,
                         "isBaseLayer": layer.get('type') === 'baselayer' ? "true" : false,
-                        "resolutions": serverResolutions.slice(layer.get('minzoom'), layer.get('maxzoom') + 1),
+                        "resolutions": serverResolutions.slice(layerMinZoom, layerMaxZoom + 1),
                         "visibility": true,
                     }
                 ]
