@@ -19,10 +19,10 @@ module coolaj86 node-jquery v1.4.4
 module developmentseed node-sqlite3 2.0.4 sqlite3
 module developmentseed bones 0.0.1
 module kkaefer node-compress v0.1.10-a
+module mapbox wax 1.0.1
 
 # untagged
 module mapbox tilelive.js
-module mapbox wax master
 
 # Module layout workarounds
 cd $ROOT
