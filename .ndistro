@@ -18,7 +18,7 @@ module developmentseed handlebars.js ds-v0.1
 module coolaj86 node-jquery v1.4.4
 module developmentseed node-sqlite3 2.0.6 sqlite3
 module developmentseed bones 0.0.1
-module kkaefer node-compress v0.1.10-a
+module kkaefer node-compress v0.1.10-b
 module mapbox wax 1.0.1
 module mapbox tilelive.js 2.0.0
 
