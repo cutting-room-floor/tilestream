@@ -2,7 +2,7 @@ require.paths.splice(0, require.paths.length);
 require.paths.unshift(
     __dirname + '/lib/node',
     __dirname + '/server',
-    __dirname + '/shared',
+    __dirname + '/mvc',
     __dirname
 );
 
@@ -27,7 +27,7 @@ tile_server.enable('jsonp callback');
 ui_server.enable('jsonp callback');
 
 ui_server.use(express.staticProvider('client'));
-ui_server.use(express.staticProvider('shared'));
+ui_server.use(express.staticProvider('mvc'));
 ui_server.use(express.staticProvider('modules'));
 
 if (tile_server.settings.env !== 'test') {
