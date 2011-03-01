@@ -99,15 +99,20 @@ function loadTilesets(model, callback) {
                 return this(null, []);
             }
             var group = this.group();
-            var tilesets = _.map(_.filter( files,
-                function(filename) {
+            var tilesets = _(files).chain()
+                .filter(function(filename) {
                     return path.extname(filename) === '.mbtiles';
-                }),
-                function(filename) {
+                })
+                .map(function(filename) {
                     return path.basename(filename, '.mbtiles');
-                });
-            for (var i = 0; i < tilesets.length; i++) {
-                loadTileset({ id: tilesets[i] }, group());
+                })
+                .value();
+            if (tilesets.length) {
+                for (var i = 0; i < tilesets.length; i++) {
+                    loadTileset({ id: tilesets[i] }, group());
+                }
+            } else {
+                this(null, []);
             }
         },
         function(err, models) {
