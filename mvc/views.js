@@ -121,24 +121,28 @@ var HUDView = Backbone.View.extend({
         'click .buttons a': 'hud'
     },
     hud: function(ev) {
-        var that = this;
         var link = $(ev.currentTarget);
         var hud = !link.is('.active')
             ? link.attr('href').split('#').pop()
             : false;
-
-        // Start by hiding active HUDs.
-        this.$('.buttons .active').removeClass('active');
-        this.$('.hud.active').removeClass('active').fadeOut();
-
-        // If a HUD for activation has been specified, activate it.
-        if (hud) {
-            link.addClass('active');
-            that.$('.hud.' + hud).fadeIn(function() {
-                $(this).addClass('active');
-            });
-        }
+        this.hide();
+        (hud) && (this.show(hud));
         return false;
+    },
+    show: function(hud, callback) {
+        $('.buttons a[href=#' + hud + ']').addClass('active');
+        this.$('.hud.' + hud).fadeIn(function() {
+            $(this).addClass('active');
+            callback && callback();
+        });
+        return this;
+    },
+    hide: function(callback) {
+        this.$('.buttons .active').removeClass('active');
+        this.$('.hud.active').removeClass('active').fadeOut(function() {
+            callback && callback();
+        });
+        return this;
     }
 });
 
