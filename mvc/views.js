@@ -117,6 +117,9 @@ var OpenLayersView = Backbone.View.extend({
 // -------
 // Base view that supports toggling on/off HUD displays.
 var HUDView = Backbone.View.extend({
+    initialize: function(options) {
+        _.bindAll(this, 'hud', 'show', 'hide');
+    },
     events: {
         'click .buttons a': 'hud'
     },
@@ -152,6 +155,7 @@ var HUDView = Backbone.View.extend({
 // HUD panels for enabled features (e.g. info, download, etc.)
 var TilesetView = HUDView.extend({
     initialize: function(options) {
+        HUDView.prototype.initialize.call(this, options);
         _.bindAll(this, 'render', 'ready', 'controlZoom', 'format');
         this.render().trigger('attach');
     },
@@ -231,6 +235,7 @@ var TilesetView = HUDView.extend({
 // View showing each tileset as a thumbnail. Main tileset browsing page.
 var TilesetListView = HUDView.extend({
     initialize: function(options) {
+        HUDView.prototype.initialize.call(this, options);
         _.bindAll(this, 'render');
         this.render().trigger('attach');
     },
