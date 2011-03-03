@@ -31,7 +31,7 @@ var Tileset = Backbone.Model.extend({
         return model;
     },
     url: function() {
-        return '/api/tileset/' + this.id;
+        return '/api/Tileset/' + this.id;
     },
     // Return the base URLs of TileStream tile servers including a single
     // trailing slash, e.g. http://localhost:8889/ or http://mapbox/tilestream/
@@ -83,7 +83,7 @@ var Tileset = Backbone.Model.extend({
 // Collection of all tileset models.
 var TilesetList = Backbone.Collection.extend({
     model: Tileset,
-    url: '/api/tileset'
+    url: '/api/Tileset'
 });
 
 if (typeof module !== 'undefined') {

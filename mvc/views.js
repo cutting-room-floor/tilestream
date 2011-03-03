@@ -66,7 +66,7 @@ var OpenLayersView = Backbone.View.extend({
             callbackParameter: 'callback',
             success: function(data) {
                 if (data && data.wax) {
-                    this.openlayers = wax.Wax.reify(data.wax);
+                    this.openlayers = wax.Record(data.wax);
                     this.trigger('ready');
                 }
             },
@@ -113,37 +113,51 @@ var OpenLayersView = Backbone.View.extend({
     }
 });
 
-// TilesetView
+// HUDView
 // -------
-// View for exploring a single Tileset. Provides a fullscreen OpenLayers UI with
-// HUD panels for enabled features (e.g. info, download, etc.)
-var TilesetView = Backbone.View.extend({
+// Base view that supports toggling on/off HUD displays.
+var HUDView = Backbone.View.extend({
     initialize: function(options) {
-        _.bindAll(this, 'render', 'ready', 'controlZoom', 'format');
-        this.render().trigger('attach');
+        _.bindAll(this, 'hud', 'show', 'hide');
     },
     events: {
         'click .buttons a': 'hud'
     },
     hud: function(ev) {
-        var that = this;
         var link = $(ev.currentTarget);
         var hud = !link.is('.active')
             ? link.attr('href').split('#').pop()
             : false;
-
-        // Start by hiding active HUDs.
-        this.$('.buttons .active').removeClass('active');
-        this.$('.hud.active').removeClass('active').fadeOut();
-
-        // If a HUD for activation has been specified, activate it.
-        if (hud) {
-            link.addClass('active');
-            that.$('.hud.' + hud).fadeIn(function() {
-                $(this).addClass('active');
-            });
-        }
+        this.hide();
+        (hud) && (this.show(hud));
         return false;
+    },
+    show: function(hud, callback) {
+        $('.buttons a[href=#' + hud + ']').addClass('active');
+        this.$('.hud.' + hud).fadeIn(function() {
+            $(this).addClass('active');
+            callback && callback();
+        });
+        return this;
+    },
+    hide: function(callback) {
+        this.$('.buttons .active').removeClass('active');
+        this.$('.hud.active').removeClass('active').fadeOut(function() {
+            callback && callback();
+        });
+        return this;
+    }
+});
+
+// TilesetView
+// -----------
+// View for exploring a single Tileset. Provides a fullscreen OpenLayers UI with
+// HUD panels for enabled features (e.g. info, download, etc.)
+var TilesetView = HUDView.extend({
+    initialize: function(options) {
+        HUDView.prototype.initialize.call(this, options);
+        _.bindAll(this, 'render', 'ready', 'controlZoom', 'format');
+        this.render().trigger('attach');
     },
     format: function(type, value) {
         switch (type) {
@@ -217,11 +231,11 @@ var TilesetView = Backbone.View.extend({
 });
 
 // TilesetListView
-// -----------
+// ---------------
 // View showing each tileset as a thumbnail. Main tileset browsing page.
-var TilesetListView = Backbone.View.extend({
-    templateName: 'TilesetListView',
+var TilesetListView = HUDView.extend({
     initialize: function(options) {
+        HUDView.prototype.initialize.call(this, options);
         _.bindAll(this, 'render');
         this.render().trigger('attach');
     },
@@ -237,7 +251,7 @@ var TilesetListView = Backbone.View.extend({
 });
 
 // TilesetRowView
-// ----------
+// --------------
 // View for a single tileset in a TilesetListView.
 var TilesetRowView = Backbone.View.extend({
     tagName: 'li',

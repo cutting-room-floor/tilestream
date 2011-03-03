@@ -54,7 +54,7 @@ module.exports = {
     'load map': function() {
         assert.response(
             servers.ui_server,
-            { url: '/api/tileset/control_room' },
+            { url: '/api/Tileset/control_room' },
             { status: 200 },
             function(res) {
                 var map;
@@ -70,7 +70,7 @@ module.exports = {
     'load maps': function() {
         assert.response(
             servers.ui_server,
-            { url: '/api/tileset' },
+            { url: '/api/Tileset' },
             { status: 200 },
             function(res) {
                 var maps;

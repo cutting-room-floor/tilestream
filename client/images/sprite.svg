@@ -122,12 +122,12 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="11.641532"
-     inkscape:cx="22.712506"
-     inkscape:cy="388.4781"
+     inkscape:zoom="1"
+     inkscape:cx="65.586347"
+     inkscape:cy="387.47737"
      inkscape:document-units="px"
      inkscape:current-layer="svg2"
-     showgrid="true"
+     showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:snap-page="false"
@@ -148,7 +148,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -177,7 +177,7 @@
        transform="translate(0,20)">
       <path
          transform="matrix(1,0,0,0.93333333,0,659.02884)"
-         d="m 95,62.5 a 45,37.5 0 1 1 -90,0 45,37.5 0 1 1 90,0 z"
+         d="M 95,62.5 C 95,83.210678 74.852814,100 50,100 25.147186,100 5,83.210678 5,62.5 5,41.789322 25.147186,25 50,25 74.852814,25 95,41.789322 95,62.5 z"
          sodipodi:ry="37.5"
          sodipodi:rx="45"
          sodipodi:cy="62.5"
@@ -222,4 +222,10 @@
      style="color:#000000;fill:#ffffff;fill-opacity:0.75294118;fill-rule:nonzero;stroke:none;stroke-width:0.99999994;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
      d="M 29 4 C 26.23 4 24 6.23 24 9 L 24 11 C 24 13.77 26.23 16 29 16 L 31 16 C 33.77 16 36 13.77 36 11 L 36 9 C 36 6.23 33.77 4 31 4 L 29 4 z M 29.5 6 L 30.5 6 C 31.054 6 31.5 6.446 31.5 7 C 31.5 7.554 31.054 8 30.5 8 L 29.5 8 C 28.946 8 28.5 7.554 28.5 7 C 28.5 6.446 28.946 6 29.5 6 z M 29 9 L 31 9 L 31 13 L 32 14 L 28 14 L 29 13 L 29 10 L 28 10 L 29 9 z "
      id="rect4232" />
+  <path
+     style="color:#000000;fill:#ffffff;fill-opacity:0.75294118;fill-rule:nonzero;stroke:none;stroke-width:0.99999994;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+     d="M 66.5,5 65,6.5 68.5,10 65,13.5 66.5,15 70,11.5 73.5,15 75,13.5 71.5,10 75,6.5 73.5,5 70,8.5 z"
+     id="path3007"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="ccccccccccccc" />
 </svg>

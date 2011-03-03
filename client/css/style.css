@@ -31,6 +31,7 @@ ul.tilesets label,
 /**
  * Icons ======================================================================
  */
+.wax-tooltip .close,
 .icon {
   display:block;
   width:20px;
@@ -43,6 +44,7 @@ ul.tilesets label,
 .icon.right     { background-position:0px 0px; }
 .icon.info      { background-position:-20px 0px; }
 .icon.download  { background-position:-40px 0px; }
+.wax-tooltip .close { background-position:-60px 0px; }
 
 /**
  * Header =====================================================================
@@ -151,6 +153,13 @@ ul.tilesets span.baselayer-thumb {
   max-width:260px;
   }
 
+.wax-popup { padding-right:40px; }
+
+.wax-popup .close {
+  top:10px;
+  right:10px;
+  }
+
 .wax-legends {
   padding:0px;
   max-width:300px;
@@ -179,6 +188,9 @@ ul.tilesets span.baselayer-thumb {
   color:#999;
   }
 
+input[type=submit]:active,
+input[type=button]:active,
+.wax-popup .close,
 .header .buttons .active,
 .zooms .active {
   color:#fff;
@@ -279,7 +291,8 @@ a.download .size { color:#999; }
  * Form elements ==============================================================
  */
 select,
-input.text {
+input[type=text],
+input[type=password] {
   line-height:20px;
   height:20px;
   width:100%;
@@ -295,6 +308,29 @@ input.text {
   -moz-box-sizing:border-box;
   -webkit-box-sizing:border-box;
   }
+
+input[type=submit],
+input[type=button] {
+  font-size:11px;
+  font-weight:bold;
+  text-transform:uppercase;
+  text-shadow:#000 0px 1px 1px;
+
+  padding:0px 10px;
+  background:#444;
+  color:#eee;
+
+  cursor:pointer;
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  }
+
+form select,
+form input { margin:0px 0px 10px; }
 
 /**
  * ErrorView ==================================================================
