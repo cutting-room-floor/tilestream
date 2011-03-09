@@ -43,7 +43,7 @@ function loadTileset(model, callback) {
             }
         },
         function(err, stat) {
-            if (err) return this(new Error('Tileset not found.'));
+            if (err) return callback(new Error('Tileset not found.'));
             data.size = stat.size;
             data.mtime = +stat.mtime;
             Pool.acquire('mbtiles', filepath, {}, this);
@@ -63,19 +63,23 @@ function loadTileset(model, callback) {
             }
             // Load default baselayer and attach it to overlay layers.
             if (data.type === 'overlay' && settings.default_baselayer.length !== 0) {
-                loadTileset({ id: settings.default_baselayer }, this);
+                var that = this;
+                loadTileset({ id: settings.default_baselayer }, function(err, baselayer) {
+                    if (!err) {
+                        info.baselayer = baselayer;
+                    }
+                    that();
+                });
             }
             else {
                 this();
             }
         },
         function(err, info) {
-            if (info) {
-                data.baselayer = info;
-            }
             if (err) {
                 callback(err);
-            } else {
+            }
+            else {
                 callback(null, data);
             }
         }
