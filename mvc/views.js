@@ -142,7 +142,8 @@ var HUDView = Backbone.View.extend({
     },
     hide: function(callback) {
         this.$('.buttons .active').removeClass('active');
-        this.$('.hud.active').removeClass('active').fadeOut(function() {
+        this.$('.hud.active').fadeOut(function() {
+            $(this).removeClass('active');
             callback && callback();
         });
         return this;
