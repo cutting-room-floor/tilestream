@@ -87,7 +87,10 @@ module.exports = function(app, settings) {
                             ],
                             ['@new OpenLayers.Control.Attribution'],
                             ['@new wax.ol.Interaction'],
-                            ['@new wax.ol.Legend']
+                            ['@new wax.ol.Legend'],
+                            ['@new ControlZoom',
+                                {'minzoom': req.query.minzoom || 0}
+                            ]
                         ]
                     }
                 ],
