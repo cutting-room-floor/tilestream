@@ -131,12 +131,12 @@ module.exports = function(app, settings) {
                     'layername': layer.id,
                     'isBaseLayer': (layer.get('type') === 'baselayer'),
                     'visibility': true,
-                    'maxExtent': ['@group',
-                        ['@new OpenLayers.Bounds'].concat(layer.get('bounds')),
-                        ['@inject transform',
-                            ['@new OpenLayers.Projection', 'EPSG:4326'],
-                            ['@new OpenLayers.Projection', 'EPSG:900913']
-                        ]
+                    'maxExtent': [
+                        '@new OpenLayers.Bounds',
+                        -20037508.34,
+                        -20037508.34,
+                        20037508.34,
+                        20037508.34
                     ],
                     'wrapDateLine': false
                 };
@@ -145,7 +145,6 @@ module.exports = function(app, settings) {
             // do not set `maxExtent` as OpenLayers does not render the contiguous
             // dateline-wrapped world correctly in this scenario.
             if (layer.get('bounds')[0] <= -180 && layer.get('bounds')[2] >= 180) {
-                options.maxExtent = false;
                 options.wrapDateLine = true;
             }
 
