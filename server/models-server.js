@@ -66,7 +66,7 @@ function loadTileset(model, callback) {
                 var that = this;
                 loadTileset({ id: settings.default_baselayer }, function(err, baselayer) {
                     if (!err) {
-                        info.baselayer = baselayer;
+                        data.baselayer = baselayer;
                     }
                     that();
                 });
@@ -75,7 +75,7 @@ function loadTileset(model, callback) {
                 this();
             }
         },
-        function(err, info) {
+        function(err) {
             if (err) {
                 callback(err);
             }
