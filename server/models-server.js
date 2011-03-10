@@ -57,7 +57,7 @@ function loadTileset(model, callback) {
         },
         function(err, info) {
             if (err) {
-                callback(err);
+                return callback(err);
             } else {
                 _.extend(data, info);
             }
