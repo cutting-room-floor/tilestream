@@ -201,10 +201,33 @@ var TilesetView = HUDView.extend({
             size: this.format('size')
         }));
 
+        // @TODO eliminate the need for this entirely. controlZoom should be
+        // a proper OL control that can just be waxed in.
         this.map = new OpenLayersView({model: this.model});
         this.bind('ready', this.map.ready);
+        this.map.bind('ready', this.ready);
         $(this.el).append(this.map.el);
         return this;
+    },
+    ready: function() {
+        this.map.openlayers.events.register(
+            'moveend',
+            this.map.openlayers,
+            this.controlZoom
+        );
+        this.map.openlayers.events.register(
+            'zoomend',
+            this.map.openlayers,
+            this.controlZoom
+        );
+        this.controlZoom({element: this.map.openlayers.div});
+
+        return this;
+    },
+    controlZoom: function(e) {
+        var zoom = this.model.get('minzoom') + this.map.openlayers.getZoom();
+        this.$('.zoom.active').removeClass('active');
+        this.$('.zoom-' + zoom).addClass('active');
     }
 });
 
