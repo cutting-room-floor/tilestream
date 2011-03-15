@@ -5,8 +5,7 @@ var _ = require('underscore'),
     fs = require('fs'),
     path = require('path'),
     compress = require('compress'),
-    Tile = require('tilelive').Tile,
-    errorTile;
+    Tile = require('tilelive').Tile;
 
 function inflate(buffer, callback) {
     var gz = new compress.Gunzip();
@@ -27,15 +26,6 @@ function inflate(buffer, callback) {
 }
 
 module.exports = function(app, settings) {
-    // Load errorTile into memory at require time. Blocking.
-    if (!errorTile) {
-        errorTile = fs.readFileSync(path.join(__dirname,
-            '..',
-            'client',
-            'images',
-            'errortile.png'));
-    }
-
     // Route middleware. Validates an mbtiles file specified in a tile or
     // download route.
     var validateTileset = function(req, res, next) {
@@ -44,7 +34,7 @@ module.exports = function(app, settings) {
             if (exists) {
                 return next();
             } else {
-                res.send(errorTile, {
+                res.send('Tileset not found.', {
                     'Content-Type':'image/png',
                 }, 404);
             }
@@ -96,7 +86,7 @@ module.exports = function(app, settings) {
                     settings.header_defaults,
                     data[1]));
             } else if (err.toString() === 'Tile does not exist') {
-                res.send(errorTile, {
+                res.send('Tile not found.', {
                     'Content-Type':'image/png',
                 }, 404);
             }
