@@ -5,7 +5,7 @@
 // because even within the `if()` IE will wipe globally defined variables if
 // `var` is included, leaving us with broken objects.
 if (typeof require !== 'undefined') {
-    Settings = require('settings'),
+    Settings = require('tilestream/settings'),
     Backbone = require('backbone.js'),
     _ = require('underscore')._;
 }

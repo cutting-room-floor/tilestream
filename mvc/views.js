@@ -3,7 +3,7 @@
 // `var` is included, leaving us with broken objects.
 if (typeof require !== 'undefined') {
     Bones = require('bones'),
-    Settings = require('settings'),
+    Settings = require('tilestream/settings'),
     Backbone = require('backbone.js'),
     _ = require('underscore')._;
 }

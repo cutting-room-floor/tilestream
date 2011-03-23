@@ -1,44 +1,47 @@
-require.paths.splice(0, require.paths.length);
-require.paths.unshift(
-    __dirname + '/lib/node',
-    __dirname + '/server',
-    __dirname + '/mvc',
-    __dirname
-);
-
 // Bootstrap.
-require('bootstrap')(require('settings'));
+require('tilestream/server/bootstrap')(require('tilestream/settings'));
 
 var _ = require('underscore'),
     express = require('express'),
-    settings = require('settings'),
+    settings = require('tilestream/settings'),
     tile_server = express.createServer(),
     ui_server = settings.UIPort === settings.port ? tile_server : express.createServer(),
     mirror = require('mirror');
 
-ui_server.use(express.staticProvider('client'));
-ui_server.use(express.staticProvider('mvc'));
-ui_server.use(express.staticProvider('modules'));
+ui_server.use(express.staticProvider(__dirname + '/client'));
 ui_server.enable('jsonp callback');
 tile_server.enable('jsonp callback');
 
 // Initialize bones, apply overrides/mixins and other setup.
 require('bones').Bones(ui_server, {secret: ''});
-require('models-server');
-require('templates')(settings);
+require('tilestream/server/models-server');
+require('tilestream/server/templates')(settings);
 
 // Main server modules.
-require('tile-server')(tile_server, settings);
-require('ui-server')(ui_server, settings, '');
-require('wax')(ui_server, settings);
+require('tilestream/server/tile-server')(tile_server, settings);
+require('tilestream/server/ui-server')(ui_server, settings, '');
+require('tilestream/server/wax')(ui_server, settings);
 
 // Mirror module assets.
 ui_server.get('/vendor.js', mirror.assets([
     'underscore/underscore.js',
     'backbone/backbone.js',
     'handlebars/handlebars.js',
-    'bones/bones.js'
+    'bones/bones.js',
+    'openlayers_slim/OpenLayers.js',
+    'wax/control/lib/gridutil.js',
+    'wax/build/wax.ol.min.js',
+    'wax/lib/record.js',
+    'tilestream/mvc/controllers.js',
+    'tilestream/mvc/models.js',
+    'tilestream/mvc/views.js'
 ]));
+
+ui_server.get('/vendor.css', mirror.assets([
+    'wax/theme/controls.css'
+]));
+
+ui_server.get('/theme/default/style.css', mirror.file('openlayers_slim/theme/default/style.css'))
 
 if (tile_server.settings.env !== 'test') {
     tile_server.listen(settings.port);

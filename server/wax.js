@@ -1,6 +1,6 @@
 var _ = require('underscore'),
     Step = require('step'),
-    models = require('models'),
+    models = require('tilestream/mvc/models'),
     path = require('path');
 
 module.exports = function(app, settings) {

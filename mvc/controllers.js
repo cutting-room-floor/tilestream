@@ -11,12 +11,12 @@
 if (typeof require !== 'undefined') {
     _ = require('underscore')._,
     Backbone = require('backbone.js'),
-    Tileset = require('models').Tileset,
-    TilesetList = require('models').TilesetList,
-    PageView = require('views').PageView,
-    ErrorView = require('views').ErrorView,
-    TilesetView = require('views').TilesetView,
-    TilesetListView = require('views').TilesetListView;
+    Tileset = require('tilestream/mvc/models').Tileset,
+    TilesetList = require('tilestream/mvc/models').TilesetList,
+    PageView = require('tilestream/mvc/views').PageView,
+    ErrorView = require('tilestream/mvc/views').ErrorView,
+    TilesetView = require('tilestream/mvc/views').TilesetView,
+    TilesetListView = require('tilestream/mvc/views').TilesetListView;
 }
 
 var Router = Backbone.Controller.extend({

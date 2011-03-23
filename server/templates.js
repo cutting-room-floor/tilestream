@@ -5,7 +5,7 @@ var fs = require('fs'),
 
 module.exports = function(options) {
     options = options || {};
-    options.path = options.path || 'templates';
+    options.path = options.path || path.join(__dirname, '../templates');
     var files = fs.readdirSync(options.path);
     for (var i = 0; i < files.length; i++) {
         var key = path.basename(files[i], '.hbs');

@@ -3,12 +3,12 @@
 // with loaders.
 var _ = require('underscore'),
     Step = require('step'),
-    settings = require('settings'),
+    settings = require('tilestream/settings'),
     path = require('path'),
     MBTiles = require('tilelive').MBTiles,
     fs = require('fs'),
     SphericalMercator = require('tilelive').SphericalMercator,
-    models = require('models'),
+    models = require('tilestream/mvc/models'),
     Pool = require('tilelive').Pool;
 
 models.Tileset.prototype.sync =

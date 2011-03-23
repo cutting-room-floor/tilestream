@@ -1,7 +1,7 @@
 // Routes for the UI server. Suitable for dynamic content that should not be
 // cached aggressively.
-var models = require('models'),
-    Router = require('controllers').Router;
+var models = require('tilestream/mvc/models'),
+    Router = require('tilestream/mvc/controllers').Router;
 
 module.exports = function(server, settings) {
     // Set up the backbone router
@@ -28,7 +28,7 @@ module.exports = function(server, settings) {
     // Send settings to the browser.
     server.get('/settings.js', function(req, res, next) {
         res.send(
-            require('settings').toJS(),
+            require('tilestream/settings').toJS(),
             { 'Content-Type': 'text/javascript' }
         );
     });
