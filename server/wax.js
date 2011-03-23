@@ -155,7 +155,14 @@ module.exports = function(app, settings) {
             );
 
             // If no hosts specified in settings, try to auto-detect host.
-            if (settings.tile_hostnames.length !== 0) {
+            if (layer.get('type') === 'mapbox') {
+                hostnames = [
+                    "http://a.tile.mapbox.com/",
+                    "http://b.tile.mapbox.com/",
+                    "http://c.tile.mapbox.com/"
+                ];
+                options.isBaseLayer = true;
+            } else if (settings.tile_hostnames.length !== 0) {
                 hostnames = settings.tile_hostnames;
             } else {
                 hostnames.push('http://' + req.headers.host + '/');

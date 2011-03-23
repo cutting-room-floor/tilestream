@@ -104,8 +104,7 @@ var OpenLayersView = Backbone.View.extend({
                 wax.layers.push(baselayer.id);
             }
             else {
-                var view = new ErrorView({ message: 'No default baselayer set.' });
-                new PageView({ view: view });
+                wax.layers.push('<default>');
             }
         }
         wax.zoom = this.model.get('minzoom') < 2 ? 2 : 0;

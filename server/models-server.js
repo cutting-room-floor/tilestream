@@ -32,6 +32,18 @@ models.TilesetList.prototype.sync = function(method, model, success, error) {
 // Load a tileset model. Retrieve `.mbtiles` file stats, open the DB, retrieve
 // metadata about the tiles.
 function loadTileset(model, callback) {
+    if (model.id === '<default>') {
+        return callback(null, {
+            basename: 'world-light',
+            id: 'world-light',
+            name: 'world-light',
+            type: 'mapbox',
+            minzoom: 0,
+            maxzoom: 11,
+            bounds: [ -180, 90, 180, -90 ]
+        });
+    }
+
     var filepath = path.join(settings.tiles, model.id + '.mbtiles');
     var data = {};
     Step(
