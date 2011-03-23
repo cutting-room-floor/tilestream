@@ -22,13 +22,13 @@ ui_server.enable('jsonp callback');
 tile_server.enable('jsonp callback');
 
 // Initialize bones, apply overrides/mixins and other setup.
-require('bones').Bones(ui_server);
+require('bones').Bones(ui_server, {secret: ''});
 require('models-server');
 require('templates')(settings);
 
 // Main server modules.
 require('tile-server')(tile_server, settings);
-require('ui-server')(ui_server, settings);
+require('ui-server')(ui_server, settings, '');
 require('wax')(ui_server, settings);
 
 if (tile_server.settings.env !== 'test') {
