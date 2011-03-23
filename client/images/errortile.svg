@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="256"
+   height="256"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.0 r9654"
+   sodipodi:docname="errortile.svg"
+   inkscape:export-filename="/home/devseed/tilestream/client/images/errortile.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1"
+     inkscape:cx="78.718032"
+     inkscape:cy="131.9409"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2985"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="BG"
+     sodipodi:insensitive="true"
+     style="display:none">
+    <rect
+       transform="translate(0,-796.36217)"
+       y="796.36218"
+       x="0"
+       height="256"
+       width="256"
+       id="rect3758"
+       style="color:#000000;fill:#404040;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.99999994;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+  </g>
+  <g
+     inkscape:label="Tile"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-796.36217)"
+     sodipodi:insensitive="true">
+    <path
+       style="color:#000000;fill:#ffffff;fill-opacity:0.25098039;fill-rule:nonzero;stroke:none;stroke-width:0.99999994;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M 0,0 0,255 255,255 255,0 0,0 z m 118,108 20,0 c 5.54,0 10,4.46 10,10 l 0,20 c 0,5.54 -4.46,10 -10,10 l -20,0 c -5.54,0 -10,-4.46 -10,-10 l 0,-20 c 0,-5.54 4.46,-10 10,-10 z m 5.5,12.5 -3,3 4.5,4.5 -4.5,4.5 3,3 4.5,-4.5 4.5,4.5 3,-3 -4.5,-4.5 4.5,-4.5 -3,-3 -4.5,4.5 -4.5,-4.5 z"
+       transform="translate(0,796.36217)"
+       id="rect2987"
+       inkscape:connector-curvature="0" />
+    <path
+       style="color:#000000;fill:#ffffff;fill-opacity:0.1254902;fill-rule:nonzero;stroke:none;stroke-width:0.99999994;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 118,904.36217 c -5.54,0 -10,4.46 -10,10 l 0,20 c 0,5.54 4.46,10 10,10 l 20,0 c 5.54,0 10,-4.46 10,-10 l 0,-20 c 0,-5.54 -4.46,-10 -10,-10 l -20,0 z m 5.5,12.5 4.5,4.5 4.5,-4.5 3,3 -4.5,4.5 4.5,4.5 -3,3 -4.5,-4.5 -4.5,4.5 -3,-3 4.5,-4.5 -4.5,-4.5 3,-3 z"
+       id="rect3804"
+       inkscape:connector-curvature="0" />
+    <path
+       style="color:#000000;fill:#ffffff;fill-opacity:0.1254902;fill-rule:nonzero;stroke:none;stroke-width:0.99999994;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 255,0 0,255 -255,0 0,1 256,0 0,-256 -1,0 z"
+       transform="translate(0,796.36217)"
+       id="path3812"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>

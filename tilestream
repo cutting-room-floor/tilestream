@@ -1,2 +1,2 @@
 #!/bin/sh
-exec ./bin/node tilestream.js
+exec ./bin/node tilestream.js "$@"

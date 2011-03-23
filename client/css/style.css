@@ -12,7 +12,8 @@ a {
 .pane { padding:10px; }
 
 .header,
-ul.tilesets label,
+.overlay .title,
+ul.tilesets span.thumb-name,
 .wax-tooltip,
 .wax-legends {
   background:url(../images/mask75.png);
@@ -41,9 +42,9 @@ ul.tilesets label,
   overflow:hidden;
   }
 
-.icon.right     { background-position:0px 0px; }
-.icon.info      { background-position:-20px 0px; }
-.icon.download  { background-position:-40px 0px; }
+.icon.right         { background-position:0px 0px; }
+.icon.info          { background-position:-20px 0px; }
+.icon.download      { background-position:-40px 0px; }
 .wax-tooltip .close { background-position:-60px 0px; }
 
 /**
@@ -54,9 +55,14 @@ ul.tilesets label,
   top:0px;
   left:0px;
   right:0px;
-  z-index:2;
   height:20px;
   padding:10px 20px;
+
+  opacity:1;
+  z-index:80;
+  transition:opacity .25s, z-index .25s;
+  -moz-transition:opacity .25s, z-index .25s;
+  -webkit-transition:opacity .25s, z-index .25s;
   }
 
 .header .breadcrumb a,
@@ -87,12 +93,60 @@ ul.tilesets label,
 
 .header .buttons .icon { float:left; }
 
+.header .exits {
+  font-size:11px;
+  font-weight:bold;
+  text-transform:uppercase;
+
+  position:absolute;
+  right:250px;
+  top:10px;
+  background:url(../images/mask25.png);
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+  }
+
+.tabs {
+  float:left;
+  padding-left:50px;
+  }
+
+.tabs a {
+  float:left;
+  color:#aaa;
+  padding:5px 15px 4px 10px;
+  background:url(../images/mask25.png);
+  }
+
+.tabs a.active {
+  color: #fff;
+  background:url(../images/mask75.png);
+  }
+
+.header input[type='text'] {
+  width:150px;
+  float:left;
+  }
+
+/**
+ * MapListView ================================================================
+ */
+ul.maps {
+  position:absolute;
+  top:0px;
+  left:0;
+  right:0;
+  bottom:0;
+  background:url(../images/bg.png);
+  }
+
 /**
  * TilesetListView ============================================================
  */
 ul.tilesets {
   position:absolute;
-  top:0px;
+  top:40px;
   left:0px;
   right:0px;
   bottom:0px;
@@ -101,7 +155,7 @@ ul.tilesets {
 
 ul.tilesets li { float:left; }
 
-ul.tilesets a {
+ul.tilesets a.thumb-link {
   width:249px;
   margin:0px 1px 1px 0px;
   position:relative;
@@ -109,7 +163,7 @@ ul.tilesets a {
   display:block;
   }
 
-ul.tilesets label {
+ul.tilesets span.thumb-name {
   opacity:0;
   display:block;
   position:absolute;
@@ -119,13 +173,14 @@ ul.tilesets label {
   padding:10px 20px;
   }
 
-ul.tilesets a:hover label {
+ul.tilesets a:hover span.thumb-name {
   opacity:1;
   -moz-transition:opacity .25s;
   -webkit-transition:opacity .25s;
   }
 
 ul.tilesets span.thumb,
+ul.tilesets span.map-thumb,
 ul.tilesets span.baselayer-thumb {
   display:block;
   width:249px;
@@ -203,19 +258,27 @@ input[type=button]:active,
   -webkit-box-shadow:#666 0px 0px 10px;
   }
 
+.hud.active,
 .hud {
   right:0px;
   top:60px;
   bottom:20px;
   width:280px;
   position:fixed;
-  z-index:1;
   background:url(../images/mask25.png);
   text-shadow:#000 0px 1px 1px;
-  display:none;
+  overflow: auto;
+  opacity:0;
+  z-index:-1;
+  transition:opacity .5s, z-index .5s;
+  -moz-transition:opacity .5s, z-index .5s;
+  -webkit-transition:opacity .5s, z-index .5s;
   }
 
-.hud.active { display:block; }
+.hud.active {
+  opacity:1;
+  z-index:80;
+  }
 
 .hud ul {
   padding-bottom:120px;
@@ -242,6 +305,10 @@ input[type=button]:active,
 .hud h1 {
   font-size:20px;
   letter-spacing:-1px;
+  }
+
+.hud h2 {
+  margin:1em 0 0.5em;
   }
 
 .hud h1,
@@ -331,6 +398,20 @@ input[type=button] {
 
 form select,
 form input { margin:0px 0px 10px; }
+
+  label.inline {
+    display:inline;
+    padding:0 5px;
+    }
+
+  div.edit input[type='text'] {
+    border:1px solid #aaa;
+    }
+
+  div.size input[type='text'] {
+    width:50px;
+    text-align:center;
+    }
 
 /**
  * ErrorView ==================================================================
