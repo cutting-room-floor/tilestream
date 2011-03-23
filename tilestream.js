@@ -13,7 +13,8 @@ var _ = require('underscore'),
     express = require('express'),
     settings = require('settings'),
     tile_server = express.createServer(),
-    ui_server = settings.UIPort === settings.port ? tile_server : express.createServer();
+    ui_server = settings.UIPort === settings.port ? tile_server : express.createServer(),
+    mirror = require('mirror');
 
 ui_server.use(express.staticProvider('client'));
 ui_server.use(express.staticProvider('mvc'));
@@ -30,6 +31,14 @@ require('templates')(settings);
 require('tile-server')(tile_server, settings);
 require('ui-server')(ui_server, settings, '');
 require('wax')(ui_server, settings);
+
+// Mirror module assets.
+ui_server.get('/vendor.js', mirror.assets([
+    'underscore/underscore.js',
+    'backbone/backbone.js',
+    'handlebars/handlebars.js',
+    'bones/bones.js'
+]));
 
 if (tile_server.settings.env !== 'test') {
     tile_server.listen(settings.port);
