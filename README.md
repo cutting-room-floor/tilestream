@@ -32,12 +32,13 @@ Install [Xcode][3] for Mac OS X.
 
 Download and unpack TileStream. Build & install:
 
+    git clone -b master-ndistro git://github.com/mapbox/tilestream.git
     cd tilestream
     ./ndistro
 
 Start TileStream:
 
-    ./tilestream
+    bin/tilestream
 
 TileStream should now be accessible from a browser at `http://localhost:9000`.
 
@@ -52,12 +53,13 @@ Install build requirements:
 
 Download and unpack TileStream. Build & install:
 
-    cd tilesteram
+    git clone -b master-ndistro git://github.com/mapbox/tilestream.git
+    cd tilestream
     ./ndistro
 
 Start TileStream:
 
-    ./tilestream
+    bin/tilestream
 
 TileStream should now be accessible from a browser at `http://localhost:9000`.
 
@@ -70,7 +72,7 @@ directory, and default baselayer.
 
 Usage
 -----
-MBTiles files should be placed in the `tilestream/tiles` directory. Each
+MBTiles files should be placed in the `modules/tilestream/tiles` directory. Each
 tileset can be previewed at `http://localhost:9000/tileset/[filename]` where
 `[filename]` is the name of the tileset file without the `.mbtiles` extension.
 
