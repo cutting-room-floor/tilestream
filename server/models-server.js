@@ -48,11 +48,7 @@ function loadTileset(model, callback) {
     var data = {};
     Step(
         function() {
-            try {
-                fs.stat(filepath, this);
-            } catch(err) {
-                this(err);
-            }
+            fs.stat(filepath, this);
         },
         function(err, stat) {
             if (err) return callback(new Error('Tileset not found.'));
