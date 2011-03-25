@@ -4,8 +4,12 @@
 if (typeof require !== 'undefined') {
     _ = require('underscore')._
     Backbone = require('backbone.js'),
-    Bones = require('bones');
+    Bones = require('bones'),
+    require('./models'); // Bones mixin.
 }
+
+var Bones = Bones || {};
+Bones.views = Bones.views || {};
 
 // Add `route()` method for handling normally linked paths into hash paths.
 // Because IE7 provides an absolute URL for `attr('href')`, regex out the
@@ -35,13 +39,13 @@ Backbone.View = Backbone.View.extend({
     }
 });
 
-// PageView
-// --------
-// View representing the entire page viewport. The view that should "fill" the
+// App
+// ---
+// View representing the entire app viewport. The view that should "fill" the
 // viewport should be passed as `options.view`. When the View's element has
 // been successfully added to the DOM a `ready` event will be triggered on that
 // view.
-var PageView = Backbone.View.extend({
+Bones.views.App = Backbone.View.extend({
     initialize: function(options) {
         _.bindAll(this, 'render');
         this.render().trigger('attach');
@@ -49,7 +53,7 @@ var PageView = Backbone.View.extend({
     render: function() {
         // Server side.
         if (Bones.server) {
-            this.el = this.template('PageView', {
+            this.el = this.template('App', {
                 content: this.options.view.html()
             });
             return this;
@@ -64,23 +68,23 @@ var PageView = Backbone.View.extend({
 // ErrorView
 // ---------
 // Error view.
-var ErrorView = Backbone.View.extend({
+Bones.views.Error = Backbone.View.extend({
     initialize: function(options) {
         _.bindAll(this, 'render');
         this.render().trigger('attach');
     },
     render: function() {
-        $(this.el).html(this.template('ErrorView', {
+        $(this.el).html(this.template('Error', {
             message: this.options.message
         }));
         return this;
     }
 });
 
-// OpenLayersView
-// --------------
-//
-var OpenLayersView = Backbone.View.extend({
+// MapPreview
+// ----------
+// A web map client for displaying tile-based maps.
+Bones.views.MapClient = Backbone.View.extend({
     id: 'openlayers-map',
     initialize: function(options) {
         _.bindAll(this, 'ready');
@@ -117,10 +121,10 @@ var OpenLayersView = Backbone.View.extend({
     }
 });
 
-// HUDView
-// -------
+// HUD
+// ---
 // Base view that supports toggling on/off HUD displays.
-var HUDView = Backbone.View.extend({
+Bones.views.HUD = Backbone.View.extend({
     initialize: function(options) {
         _.bindAll(this, 'hud', 'show', 'hide');
     },
@@ -149,13 +153,13 @@ var HUDView = Backbone.View.extend({
     }
 });
 
-// TilesetView
-// -----------
-// View for exploring a single Tileset. Provides a fullscreen OpenLayers UI with
-// HUD panels for enabled features (e.g. info, download, etc.)
-var TilesetView = HUDView.extend({
+// Map
+// ---
+// View for exploring a single Map. Provides a fullscreen map client with HUD
+// panels for enabled features (e.g. info, download, etc.)
+Bones.views.Map = Bones.views.HUD.extend({
     initialize: function(options) {
-        HUDView.prototype.initialize.call(this, options);
+        Bones.views.HUD.prototype.initialize.call(this, options);
         _.bindAll(this, 'render', 'ready', 'controlZoom', 'format');
         this.render().trigger('attach');
     },
@@ -182,7 +186,7 @@ var TilesetView = HUDView.extend({
         }
     },
     render: function() {
-        $(this.el).html(this.template('TilesetView', {
+        $(this.el).html(this.template('Map', {
             features: Bones.settings.features,
             id: this.model.get('id'),
             name: this.model.get('name'),
@@ -202,7 +206,7 @@ var TilesetView = HUDView.extend({
 
         // @TODO eliminate the need for this entirely. controlZoom should be
         // a proper OL control that can just be waxed in.
-        this.map = new OpenLayersView({model: this.model});
+        this.map = new Bones.views.MapClient({model: this.model});
         this.bind('ready', this.map.ready);
         this.map.bind('ready', this.ready);
         $(this.el).append(this.map.el);
@@ -230,37 +234,37 @@ var TilesetView = HUDView.extend({
     }
 });
 
-// TilesetListView
-// ---------------
-// View showing each tileset as a thumbnail. Main tileset browsing page.
-var TilesetListView = HUDView.extend({
+// Maps
+// ----
+// View showing each map as a thumbnail. Main map browsing page.
+Bones.views.Maps = Bones.views.HUD.extend({
     initialize: function(options) {
-        HUDView.prototype.initialize.call(this, options);
+        Bones.views.HUD.prototype.initialize.call(this, options);
         _.bindAll(this, 'render');
         this.render().trigger('attach');
     },
     render: function() {
-        $(this.el).html(this.template('TilesetListView'));
+        $(this.el).html(this.template('Maps'));
         var that = this;
         this.collection.each(function(tileset) {
-            tileset.view = new TilesetRowView({ model: tileset });
-            $('ul.tilesets', that.el).append(tileset.view.el);
+            tileset.view = new Bones.views.MapThumb({ model: tileset });
+            $('ul.maps', that.el).append(tileset.view.el);
         });
         return this;
     }
 });
 
-// TilesetRowView
-// --------------
-// View for a single tileset in a TilesetListView.
-var TilesetRowView = Backbone.View.extend({
+// MapThumb
+// --------
+// Thumbnail view of a single map.
+Bones.views.MapThumb = Backbone.View.extend({
     tagName: 'li',
     className: 'clearfix',
     initialize: function(options) {
         this.render().trigger('attach');
     },
     render: function() {
-        $(this.el).html(this.template('TilesetRowView', {
+        $(this.el).html(this.template('MapThumb', {
             id: this.model.get('id'),
             name: this.model.get('name'),
             thumb: this.model.thumb()
@@ -269,12 +273,5 @@ var TilesetRowView = Backbone.View.extend({
     }
 });
 
-if (typeof module !== 'undefined') {
-    module.exports = {
-        PageView: PageView,
-        ErrorView: ErrorView,
-        TilesetView: TilesetView,
-        TilesetListView: TilesetListView,
-        TilesetRowView: TilesetRowView
-    };
-}
+(typeof module !== 'undefined') && (module.exports = Bones.views);
+

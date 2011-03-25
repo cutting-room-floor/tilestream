@@ -78,12 +78,12 @@ module.exports = {
     'ssviews map': function() {
         assert.response(
             tilestream.uiServer,
-            { url: '/tileset/control_room' },
+            { url: '/map/control_room' },
             { status: 200, body: /control_room<\/a/ }
         );
         assert.response(
             tilestream.uiServer,
-            { url: '/?_escaped_fragment_=/tileset/control_room' },
+            { url: '/?_escaped_fragment_=/map/control_room' },
             { status: 200, body: /control_room<\/a/ }
         );
     },

@@ -1,6 +1,6 @@
 // Server-side specific overrides of model definitions in `shared/models.js`.
-// Defines `sync()` for Tileset and TilesetList, replacing the default REST interface
-// with loaders.
+// Defines `sync()` for Tileset and Tilest=ets, replacing the default REST
+// interface with loaders.
 var _ = require('underscore')._,
     fs = require('fs'),
     path = require('path'),
@@ -12,7 +12,7 @@ var _ = require('underscore')._,
 
 module.exports = function(settings) {
     models.Tileset.prototype.sync =
-    models.TilesetList.prototype.sync = function(method, model, success, error) {
+    models.Tilesets.prototype.sync = function(method, model, success, error) {
         switch (method) {
         case 'read':
             if (model.id) {

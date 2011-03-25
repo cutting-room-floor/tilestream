@@ -1,62 +1,53 @@
-// UI router for TileStream. The `Router` controller will handle routing for
-// the client-side UI as well as server-side renders for search crawlers.
-// Routes are registered with both a "normal" path as well as the "hashbang"
-// path for supporting [Google's AJAX crawling][1] recommendation.
-//
-// [1]: http://code.google.com/web/ajaxcrawling/docs/getting-started.html
-
 // Requires for the server-side context. *TODO* Note that `var` is omitted here
 // because even within the `if()` IE will wipe globally defined variables if
 // `var` is included, leaving us with broken objects.
 if (typeof require !== 'undefined') {
     _ = require('underscore')._,
     Backbone = require('backbone.js'),
-    Tileset = require('tilestream/mvc/models').Tileset,
-    TilesetList = require('tilestream/mvc/models').TilesetList,
-    PageView = require('tilestream/mvc/views').PageView,
-    ErrorView = require('tilestream/mvc/views').ErrorView,
-    TilesetView = require('tilestream/mvc/views').TilesetView,
-    TilesetListView = require('tilestream/mvc/views').TilesetListView;
+    Bones = require('bones'),
+    require('./models'), // Bones mixin.
+    require('./views'); // Bones mixin.
 }
 
-var Router = Backbone.Controller.extend({
+var Bones = Bones || {};
+Bones.controllers = Bones.controllers || {};
+
+Bones.controllers.Router = Backbone.Controller.extend({
     initialize: function(options) {
         _.bindAll(this, 'list', 'tileset');
-        Backbone.Controller.prototype.initialize.call(this, options);
     },
     routes: {
         '': 'list',
         '/': 'list',
-        '/tileset/:id': 'tileset'
+        '/map/:id': 'map'
     },
     list: function(response) {
         var that = this;
-        (new TilesetList()).fetch({
+        (new Bones.models.Tilesets()).fetch({
             success: function(collection) {
-                var view = new TilesetListView({ collection: collection });
-                response(new PageView({ view: view }));
+                var view = new Bones.views.Maps({ collection: collection });
+                response(new Bones.views.App({ view: view }));
             },
             error: function() {
-                var view = new ErrorView({ message: 'Error loading tilesets.' });
-                response(new PageView({ view: view }));
+                var view = new Bones.views.Error({ message: 'Error loading tilesets.' });
+                response(new Bones.views.App({ view: view }));
             }
         });
     },
-    tileset: function(id, response) {
+    map: function(id, response) {
         var that = this;
-        (new Tileset({ id: id })).fetch({
+        (new Bones.models.Tileset({ id: id })).fetch({
             success: function(model) {
-                var view = new TilesetView({ model: model });
-                response(new PageView({ view: view }));
+                var view = new Bones.views.Map({ model: model });
+                response(new Bones.views.App({ view: view }));
             },
             error: function() {
-                var view = new ErrorView({ message: 'Tileset not found.' });
-                response(new PageView({ view: view }));
+                var view = new Bones.views.Error({ message: 'Tileset not found.' });
+                response(new Bones.views.App({ view: view }));
             }
         });
     }
 });
 
-if (typeof module !== 'undefined') {
-    module.exports = { Router: Router };
-}
+(typeof module !== 'undefined') && (module.exports = Bones.controllers);
+

@@ -13,7 +13,7 @@ a {
 
 .header,
 .overlay .title,
-ul.tilesets span.thumb-name,
+.thumb .thumb-name,
 .wax-tooltip,
 .wax-legends {
   background:url(../images/mask75.png);
@@ -111,18 +111,18 @@ ul.tilesets span.thumb-name,
 .header .buttons .icon { float:left; }
 
 /**
- * TilesetListView ============================================================
+ * Maps =======================================================================
  */
-.tilesets {}
-.tilesets li {
+.maps {}
+.maps li {
   width:250px;
   height:250px;
   float:left;
   position:relative;
   }
 
-.tilesets a,
-.tilesets span { display:block; }
+.maps a,
+.maps span { display:block; }
 
 .thumb {
   width:249px;
@@ -160,7 +160,7 @@ ul.tilesets span.thumb-name,
   }
 
 /**
- * TilesetView ================================================================
+ * Map ========================================================================
  */
 .olMap {
   background:#888 url(../images/canvas.png);

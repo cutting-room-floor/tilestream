@@ -10,11 +10,14 @@ if (typeof require !== 'undefined') {
     Bones = require('bones');
 }
 
+var Bones = Bones || {};
+Bones.models = Bones.models || {};
+
 // Tileset
 // ---
 // A single tileset, corresponding to an `.mbtiles` file. `model.id` is the
 // file basename, e.g. `foo.mbtiles` has an `id` of `foo`.
-var Tileset = Backbone.Model.extend({
+Bones.models.Tileset = Backbone.Model.extend({
     initialize: function(attributes) {
         Backbone.Model.prototype.initialize.call(this, attributes);
         // Convert representation of baselayer into a true Tileset model.
@@ -77,17 +80,13 @@ var Tileset = Backbone.Model.extend({
     }
 });
 
-// TilesetList
-// -------
+// Tilesets
+// --------
 // Collection of all tileset models.
-var TilesetList = Backbone.Collection.extend({
-    model: Tileset,
+Bones.models.Tilesets = Backbone.Collection.extend({
+    model: Bones.models.Tileset,
     url: '/api/Tileset'
 });
 
-if (typeof module !== 'undefined') {
-    module.exports = {
-        Tileset: Tileset,
-        TilesetList: TilesetList
-    };
-}
+(typeof module !== 'undefined') && (module.exports = Bones.models);
+
