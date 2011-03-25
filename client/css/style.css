@@ -188,6 +188,8 @@ ul.tilesets span.thumb-name,
   left:0px;
   right:0px;
   bottom:0px;
+  height:100%;
+  width:100%;
   }
 
 .wax-tooltip {
@@ -254,9 +256,8 @@ input[type=button]:active,
   bottom:20px;
   width:280px;
   position:fixed;
-  background:url(../images/mask25.png);
+  background:url(../images/hud.png) 0% 100% repeat-x;
   text-shadow:#000 0px 1px 1px;
-  overflow: auto;
   opacity:0;
   z-index:-1;
   transition:opacity .5s, z-index .5s;
@@ -267,11 +268,6 @@ input[type=button]:active,
 .hud.active {
   opacity:1;
   z-index:80;
-  }
-
-.hud ul {
-  padding-bottom:120px;
-  background:url(../images/hud.png) 0% 100% repeat-x;
   }
 
 .hud li {
