@@ -6,7 +6,7 @@ var argv = require('optimist').argv,
     command = argv._.length ? argv._[0] : 'start';
 
 if (argv.help) {
-    console.log('Usage: tilestream [COMMAND] [OPTION]');
+    console.log('Usage: %s [COMMAND] [OPTION]', appName);
     console.log('Commands:');
     for (var command in app.commands) {
         var name = app.commands[command].name || command;
