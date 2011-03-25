@@ -83,6 +83,14 @@ Commandline options:
         --tileHost=HOST    Tile server hostname(s). Defaults to localhost.
         --tiles=PATH       Path to tiles directory.
 
+
+Tests
+-----
+You can run the TileStream tests using expresso:
+
+    PATH=bin expresso modules/tilestream/test/tilestream.test.js
+
+
 Contributors
 ------------
 - [Young Hahn](http://github.com/yhahn)
