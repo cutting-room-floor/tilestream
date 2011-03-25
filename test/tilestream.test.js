@@ -63,7 +63,7 @@ module.exports = {
                 }, SyntaxError);
                 assert.equal(map.id, 'control_room');
                 assert.equal(map.type, 'baselayer');
-                assert.equal(map.bounds, "-180,-85.05112877980659,540,89.99075251648905");
+                assert.equal(map.bounds, "-180,-85.05112877980659,180,89.99075251648905");
             }
         );
     },
@@ -80,7 +80,7 @@ module.exports = {
                 assert.equal(maps.length, 1);
                 assert.equal(maps[0].id, 'control_room');
                 assert.equal(maps[0].type, 'baselayer');
-                assert.equal(maps[0].bounds, "-180,-85.05112877980659,540,89.99075251648905");
+                assert.equal(maps[0].bounds, "-180,-85.05112877980659,180,89.99075251648905");
             }
         );
     },
