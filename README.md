@@ -40,7 +40,7 @@ Start TileStream:
 
     bin/tilestream
 
-TileStream should now be accessible from a browser at `http://localhost:9000`.
+TileStream should now be accessible from a browser at `http://localhost:8888`.
 
 [3]:http://developer.apple.com/technologies/tools/xcode.html
 
@@ -61,13 +61,13 @@ Start TileStream:
 
     PATH=bin tilestream
 
-TileStream should now be accessible from a browser at `http://localhost:9000`.
+TileStream should now be accessible from a browser at `http://localhost:8888`.
 
 
 Usage
 -----
 MBTiles files should be placed in the `tiles` directory. Each
-tileset can be previewed at `http://localhost:9000/tileset/[filename]` where
+tileset can be previewed at `http://localhost:8888/tileset/[filename]` where
 `[filename]` is the name of the tileset file without the `.mbtiles` extension.
 
 Commandline options:
@@ -76,12 +76,12 @@ Commandline options:
     Commands:
       start
         start server
-        --uiPort=PORT      UI server port. Defaults to 9000.
+        --config=PATH      Pass options via JSON config file at PATH.
+        --uiPort=PORT      UI server port. Defaults to 8888.
         --uiHost=HOST      UI server hostname. Defaults to localhost.
-        --tilePort=PORT    Tile server port. Defaults to 9000.
+        --tilePort=PORT    Tile server port. Defaults to 8888.
         --tileHost=HOST    Tile server hostname(s). Defaults to localhost.
         --tiles=PATH       Path to tiles directory.
-
 
 Contributors
 ------------

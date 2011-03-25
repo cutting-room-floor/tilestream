@@ -14,9 +14,9 @@ module.exports = function(options) {
     }
 
     options = options || {};
-    options.uiPort = options.uiPort || 9000;
+    options.uiPort = options.uiPort || 8888;
     options.uiHost = options.uiHost || false;
-    options.tilePort = options.tilePort || 9000;
+    options.tilePort = options.tilePort || 8888;
     options.tileHost = options.tileHost ? options.tileHost.split(',') : [];
     options.tiles = options.tiles || path.join(process.cwd(), 'tiles');
     // @TODO: how to alter these hashes with commandline options?
@@ -50,9 +50,9 @@ module.exports = function(options) {
             description: 'start server',
             options: {
                 '--config=PATH': 'Pass options via JSON config file at PATH.',
-                '--uiPort=PORT': 'UI server port. Defaults to 9000.',
+                '--uiPort=PORT': 'UI server port. Defaults to 8888.',
                 '--uiHost=HOST': 'UI server hostname. Defaults to localhost.',
-                '--tilePort=PORT': 'Tile server port. Defaults to 9000.',
+                '--tilePort=PORT': 'Tile server port. Defaults to 8888.',
                 '--tileHost=HOST': 'Tile server hostname(s). Defaults to localhost.',
                 '--tiles=PATH': 'Path to tiles directory.'
             },
