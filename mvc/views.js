@@ -85,28 +85,6 @@ var OpenLayersView = Backbone.View.extend({
             minzoom: this.model.get('minzoom'),
             maxzoom: this.model.get('maxzoom')
         };
-        if (this.model.get('type') === 'overlay') {
-            if (this.model.get('baselayer')) {
-                var baselayer = this.model.get('baselayer');
-                // Ensure the zoom levels of the baselayer intersect with those
-                // of the overlay.
-                if (
-                    _.intersect(
-                        _.range(this.model.get('minzoom'), this.model.get('maxzoom')),
-                        _.range(baselayer.get('minzoom'), baselayer.get('maxzoom'))
-                    ).length === 0
-                ) {
-                    var view = new ErrorView({
-                      message: 'The default baselayer does not cover enough zoom levels.'
-                    });
-                    new PageView({ view: view });
-                }
-                wax.layers.push(baselayer.id);
-            }
-            else {
-                wax.layers.push('<default>');
-            }
-        }
         wax.zoom = this.model.get('minzoom') < 2 ? 2 : 0;
         return wax;
     }

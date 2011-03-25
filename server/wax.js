@@ -108,7 +108,7 @@ module.exports = function(app, settings) {
         });
 
         // Generate wax for the provided layer
-        function layerWax(layer) {
+        function layerWax(layer, index) {
             var minzoom = layer.get('minzoom'),
                 maxzoom = layer.get('maxzoom'),
                 hostnames = [],
@@ -126,7 +126,7 @@ module.exports = function(app, settings) {
                         1.19432856674,0.597164283371
                     ],
                     'layername': layer.id,
-                    'isBaseLayer': (layer.get('type') === 'baselayer'),
+                    'isBaseLayer': index === 0,
                     'visibility': true,
                     'maxExtent': [
                         '@new OpenLayers.Bounds',
