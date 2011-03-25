@@ -65,15 +65,14 @@ var Tileset = Backbone.Model.extend({
     // [1]: http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#lon.2Flat_to_tile_numbers_2
     toZXY: function() {
         var center = this.get('center');
-        center.lat = -1 * center.lat; // TMS is flipped from OSM calc below.
         var z = this.get('minzoom');
-        var lat_rad = center.lat * Math.PI / 180;
+        var lat_rad = center.lat * Math.PI / 180 * -1; // -1 for TMS (flipped from OSM)
         var x = parseInt((center.lon + 180.0) / 360.0 * Math.pow(2, z));
         var y = parseInt((1.0 - Math.log(Math.tan(lat_rad) + (1 / Math.cos(lat_rad))) / Math.PI) / 2.0 * Math.pow(2, z));
-
         return [z, x, y];
     },
     thumb: function(zxy) {
+        zxy = zxy || this.toZXY();
         return this.layerURL()[0] + ['1.0.0', this.get('id'), zxy[0], zxy[1], zxy[2]].join('/') + '.png';
     }
 });
