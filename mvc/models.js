@@ -5,9 +5,9 @@
 // because even within the `if()` IE will wipe globally defined variables if
 // `var` is included, leaving us with broken objects.
 if (typeof require !== 'undefined') {
-    Settings = require('tilestream/settings'),
+    _ = require('underscore')._,
     Backbone = require('backbone.js'),
-    _ = require('underscore')._;
+    Bones = require('bones');
 }
 
 // Tileset
@@ -37,13 +37,13 @@ var Tileset = Backbone.Model.extend({
     // trailing slash, e.g. http://localhost:8889/ or http://mapbox/tilestream/
     // in an Array.
     layerURL: function() {
-        // Servers defined in `settings.js`.
-        if (Settings.tile_hostnames.length) {
-            return Settings.tile_hostnames;
+        // Servers defined in `Bones.settings`.
+        if (Bones.settings.tileHost.length) {
+            return Bones.settings.tileHost;
         // Autodetect server from window object.
         } else if (window.location && window.location.hostname) {
             // Attempt to autodetect URL.
-            var baseURL = window.location.protocol + '//' + window.location.hostname + ':' + Settings.port;
+            var baseURL = window.location.protocol + '//' + window.location.hostname + ':' + Bones.settings.tilePort;
             var args = window.location.pathname.split('/');
             // Path already ends with trailing slash.
             if (args[args.length - 1] === '') {

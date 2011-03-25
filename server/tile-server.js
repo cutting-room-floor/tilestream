@@ -7,6 +7,8 @@ var _ = require('underscore')._,
     Tile = require('tilelive').Tile;
 
 module.exports = function(app, settings) {
+    app.enable('jsonp callback');
+
     // Route middleware. Validates an mbtiles file specified in a tile or
     // download route.
     var validateTileset = function(req, res, next) {

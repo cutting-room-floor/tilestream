@@ -162,8 +162,8 @@ module.exports = function(app, settings) {
                     "http://c.tile.mapbox.com/"
                 ];
                 options.isBaseLayer = true;
-            } else if (settings.tile_hostnames.length !== 0) {
-                hostnames = settings.tile_hostnames;
+            } else if (settings.tileHost.length !== 0) {
+                hostnames = settings.tileHost;
             } else {
                 hostnames.push('http://' + req.headers.host + '/');
             }

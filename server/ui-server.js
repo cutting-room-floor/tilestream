@@ -1,11 +1,62 @@
 // Routes for the UI server. Suitable for dynamic content that should not be
 // cached aggressively.
-var models = require('tilestream/mvc/models'),
-    Router = require('tilestream/mvc/controllers').Router;
+var fs = require('fs'),
+    path = require('path'),
+    express = require('express'),
+    mirror = require('mirror'),
+    Bones = require('bones'),
+    controllers = require('../mvc/controllers'),
+    models = require('../mvc/models');
 
 module.exports = function(server, settings) {
+    server.enable('jsonp callback');
+
+    // Initialize bones, bones templates, server-side mixins.
+    Bones.Bones(server);
+    Bones.settings = settings;
+    require('./models-server')(settings);
+
+    // Add templates to the Bones template cache.
+    var templatePath = path.join(__dirname, '..', 'templates'),
+        templateFiles = fs.readdirSync(templatePath);
+    for (var i = 0; i < templateFiles.length; i++) {
+        var key = path.basename(templateFiles[i], '.hbs');
+        Bones.templates[key] = fs.readFileSync(
+            path.join(templatePath, templateFiles[i]),
+            'utf-8'
+        );
+    }
+
     // Set up the backbone router
-    new Router();
+    new controllers.Router();
+
+    // Static assets, mirrored module assets, and options mirrored to client.
+    server.use(express.staticProvider(path.join(__dirname, '..', 'client')));
+    server.get('/vendor.js', mirror.assets([
+        'underscore/underscore.js',
+        'backbone/backbone.js',
+        'handlebars/handlebars.js',
+        'bones/bones.js',
+        'openlayers_slim/OpenLayers.js',
+        'wax/control/lib/gridutil.js',
+        'wax/build/wax.ol.min.js',
+        'wax/lib/record.js',
+        'tilestream/mvc/controllers.js',
+        'tilestream/mvc/models.js',
+        'tilestream/mvc/views.js'
+    ]));
+    server.get('/vendor.css', mirror.assets(['wax/theme/controls.css']));
+    server.get('/theme/default/style.css', mirror.file('openlayers_slim/theme/default/style.css'));
+    server.get('/settings.js', function(req, res, next) {
+        res.send(
+            'var Bones = Bones || {};\n' +
+            'Bones.settings = ' + JSON.stringify(settings) + ';',
+            { 'Content-Type': 'text/javascript' }
+        );
+    });
+
+    // Add map wax endpoint.
+    require('./wax')(server, settings);
 
     // Route middleware for validating a model.
     function validateModel(req, res, next) {
@@ -24,14 +75,6 @@ module.exports = function(server, settings) {
             next(new Error('Invalid collection.'));
         }
     };
-
-    // Send settings to the browser.
-    server.get('/settings.js', function(req, res, next) {
-        res.send(
-            require('tilestream/settings').toJS(),
-            { 'Content-Type': 'text/javascript' }
-        );
-    });
 
     // Generic GET endpoint for collection loading.
     server.get('/api/:model', validateCollection, function(req, res, next) {

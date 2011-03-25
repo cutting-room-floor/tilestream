@@ -2,10 +2,9 @@
 // because even within the `if()` IE will wipe globally defined variables if
 // `var` is included, leaving us with broken objects.
 if (typeof require !== 'undefined') {
-    Bones = require('bones'),
-    Settings = require('tilestream/settings'),
+    _ = require('underscore')._
     Backbone = require('backbone.js'),
-    _ = require('underscore')._;
+    Bones = require('bones');
 }
 
 // PageView
@@ -161,7 +160,7 @@ var TilesetView = HUDView.extend({
     },
     render: function() {
         $(this.el).html(this.template('TilesetView', {
-            features: Settings.features,
+            features: Bones.settings.features,
             id: this.model.get('id'),
             name: this.model.get('name'),
             zoom: _.range(this.model.get('minzoom'), this.model.get('maxzoom') + 1),

@@ -59,22 +59,28 @@ Download and unpack TileStream. Build & install:
 
 Start TileStream:
 
-    bin/tilestream
+    PATH=bin tilestream
 
 TileStream should now be accessible from a browser at `http://localhost:9000`.
 
 
-Configuration
--------------
-Optional. Edit `settings.js` to change server settings including port, tiles
-directory, and default baselayer.
-
-
 Usage
 -----
-MBTiles files should be placed in the `modules/tilestream/tiles` directory. Each
+MBTiles files should be placed in the `tiles` directory. Each
 tileset can be previewed at `http://localhost:9000/tileset/[filename]` where
 `[filename]` is the name of the tileset file without the `.mbtiles` extension.
+
+Commandline options:
+
+    Usage: tilestream [COMMAND] [OPTION]
+    Commands:
+      start
+        start server
+        --uiPort=PORT      UI server port. Defaults to 9000.
+        --uiHost=HOST      UI server hostname. Defaults to localhost.
+        --tilePort=PORT    Tile server port. Defaults to 9000.
+        --tileHost=HOST    Tile server hostname(s). Defaults to localhost.
+        --tiles=PATH       Path to tiles directory.
 
 
 Contributors
