@@ -208,8 +208,16 @@ MBTiles.prototype.info = function(callback) {
                             row.maxy, info.minzoom, true);
                         var llTile = mercator.xyz_to_bbox(row.minx,
                             row.miny, info.minzoom, true);
-                        info.bounds = [llTile[0], llTile[1],
-                            urTile[2], urTile[3]].join(',');
+                        // @TODO bounds are limited to "sensible" values here
+                        // as sometimes tilesets are rendered with "negative"
+                        // and/or other extremity tiles. Revisit this if there
+                        // are actual use cases for out-of-bounds bounds.
+                        info.bounds = [
+                            llTile[0] > -180 ? llTile[0] : -180,
+                            llTile[1] > -90 ? llTile[1] : -90,
+                            urTile[2] < 180 ? urTile[2] : 180,
+                            urTile[3] < 90 ? urTile[3] : 90
+                        ].join(',');
                     }
                     next();
                 }
