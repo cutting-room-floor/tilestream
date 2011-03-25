@@ -1,41 +1,12 @@
 // Routes for the tile server. Suitable for HTTP cacheable content with a
 // long TTL.
-var _ = require('underscore'),
+var _ = require('underscore')._,
     Step = require('step'),
     fs = require('fs'),
     path = require('path'),
-    compress = require('compress'),
-    Tile = require('tilelive').Tile,
-    errorTile;
+    Tile = require('tilelive').Tile;
 
-function inflate(buffer, callback) {
-    var gz = new compress.Gunzip();
-    var data = '';
-    gz.write(buffer, function(err, chunk) {
-        if (err) {
-            callback(err);
-            callback = undefined;
-        }
-        else data += chunk;
-    });
-    gz.close(function(err, chunk) {
-        if (err) {
-            if (callback) callback(err);
-        }
-        else data = callback(null, data + chunk);
-    });
-}
-
-module.exports = function(app, settings) {
-    // Load errorTile into memory at require time. Blocking.
-    if (!errorTile) {
-        errorTile = fs.readFileSync(path.join(__dirname,
-            '..',
-            'client',
-            'images',
-            'errortile.png'));
-    }
-
+module.exports = function(server, settings) {
     // Route middleware. Validates an mbtiles file specified in a tile or
     // download route.
     var validateTileset = function(req, res, next) {
@@ -44,9 +15,7 @@ module.exports = function(app, settings) {
             if (exists) {
                 return next();
             } else {
-                res.send(errorTile, {
-                    'Content-Type':'image/png',
-                }, 404);
+                res.send('Not found.', 404);
             }
         });
     };
@@ -96,9 +65,7 @@ module.exports = function(app, settings) {
                     settings.header_defaults,
                     data[1]));
             } else if (err.toString() === 'Tile does not exist') {
-                res.send(errorTile, {
-                    'Content-Type':'image/png',
-                }, 404);
+                res.send('Not found.', 404);
             } else {
                 res.send(err.toString(), 500);
             }
