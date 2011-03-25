@@ -1,8 +1,18 @@
 var _ = require('underscore')._,
+    fs = require('fs'),
     path = require('path'),
     express = require('express');
 
 module.exports = function(options) {
+    // Allow options to be passed via `--config [JSON file]`.
+    if (options && options.config) {
+        try {
+            options = JSON.parse(fs.readFileSync(options.config, 'utf8'));
+        } catch(e) {
+            console.log('Invalid JSON config file: ' + options.config);
+        }
+    }
+
     options = options || {};
     options.uiPort = options.uiPort || 9000;
     options.uiHost = options.uiHost || false;
@@ -39,6 +49,7 @@ module.exports = function(options) {
             name: 'start',
             description: 'start server',
             options: {
+                '--config=PATH': 'Pass options via JSON config file at PATH.',
                 '--uiPort=PORT': 'UI server port. Defaults to 9000.',
                 '--uiHost=HOST': 'UI server hostname. Defaults to localhost.',
                 '--tilePort=PORT': 'Tile server port. Defaults to 9000.',
