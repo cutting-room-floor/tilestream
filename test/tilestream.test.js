@@ -1,24 +1,12 @@
-require.paths.splice(0, require.paths.length);
-require.paths.unshift(
-    __dirname + '/../lib/node',
-    __dirname + '/../'
-);
-
-var assert = require('assert');
-var servers = require('tilestream.js');
-var settings = require('settings');
-
-// Override settings for test environment.
-settings.tiles = __dirname + '/fixtures';
-settings.features = {
-    'download': true,
-    'info': true
-};
+var assert = require('assert'),
+    tilestream = require('tilestream')({
+        tiles: __dirname + '/fixtures'
+    });
 
 module.exports = {
     'tile': function() {
         assert.response(
-            servers.tile_server,
+            tilestream.tileServer,
             { url: '/1.0.0/control_room/3/4/5.png' },
             { status: 200 },
             function(res) {
@@ -32,28 +20,24 @@ module.exports = {
     },
     'error tile': function() {
         assert.response(
-            servers.tile_server,
+            tilestream.tileServer,
             { url: '/1.0.0/control_room/-1/-1/-1.png' },
-            { status: 404 },
-            function(res) {
-                assert.equal(res.headers['content-length'], 1454);
-                assert.equal(res.headers['content-type'], 'image/png');
-            }
+            { status: 404 }
         );
     },
     'mbtiles download': function() {
         assert.response(
-            servers.tile_server,
+            tilestream.tileServer,
             { url: '/download/control_room.mbtiles' },
             { status: 200 },
             function(res) {
-                assert.equal(res.body.length, 2976208);
+                assert.equal(res.body.length, 2976209);
             }
         );
     },
     'load map': function() {
         assert.response(
-            servers.ui_server,
+            tilestream.uiServer,
             { url: '/api/Tileset/control_room' },
             { status: 200 },
             function(res) {
@@ -69,7 +53,7 @@ module.exports = {
     },
     'load maps': function() {
         assert.response(
-            servers.ui_server,
+            tilestream.uiServer,
             { url: '/api/Tileset' },
             { status: 200 },
             function(res) {
@@ -86,42 +70,33 @@ module.exports = {
     },
     'ssviews list': function() {
         assert.response(
-            servers.ui_server,
+            tilestream.uiServer,
             { url: '/' },
-            { status: 200 },
-            function(res) {
-                assert.ok(res.body.indexOf('<label>control_room</label>') >= 0, 'Map markup.');
-            }
+            { status: 200, body: /control_room<\/span/ }
         );
     },
     'ssviews map': function() {
         assert.response(
-            servers.ui_server,
+            tilestream.uiServer,
             { url: '/tileset/control_room' },
-            { status: 200 },
-            function(res) {
-                assert.ok(res.body.indexOf('<a href="#!/tileset/control_room">control_room</a>') >= 0, 'Map markup.');
-            }
+            { status: 200, body: /control_room<\/a/ }
         );
         assert.response(
-            servers.ui_server,
+            tilestream.uiServer,
             { url: '/?_escaped_fragment_=/tileset/control_room' },
-            { status: 200 },
-            function(res) {
-                assert.ok(res.body.indexOf('<a href="#!/tileset/control_room">control_room</a>') >= 0, 'Map markup.');
-            }
+            { status: 200, body: /control_room<\/a/ }
         );
     },
     'settings': function() {
         assert.response(
-            servers.ui_server,
+            tilestream.uiServer,
             { url: '/settings.js' },
             { status: 200 }
         );
     },
     'wax endpoint': function() {
         assert.response(
-            servers.ui_server,
+            tilestream.uiServer,
             { url: '/wax.json?el=openlayers-map&layers%5B%5D=control_room&center%5B%5D=0&center%5B%5D=0&zoom=-1&callback=_jqjsp&_1298387967133=' },
             { status: 200 },
             function(res) {
@@ -132,7 +107,7 @@ module.exports = {
             }
         );
         assert.response(
-            servers.ui_server,
+            tilestream.uiServer,
             { url: '/wax.json?el=openlayers-map&center%5B%5D=0&center%5B%5D=0&zoom=-1&callback=_jqjsp&_1298387967133=' },
             { status: 400 }
         );
