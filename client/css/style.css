@@ -56,7 +56,7 @@ ul.tilesets span.thumb-name,
   left:0px;
   right:0px;
   height:20px;
-  padding:10px 20px;
+  padding:10px;
 
   opacity:1;
   z-index:80;
@@ -67,6 +67,23 @@ ul.tilesets span.thumb-name,
 
 .header .breadcrumb a,
 .header .breadcrumb span { float:left; }
+
+.header .breadcrumb {
+  padding-left:140px;
+  position:relative;
+  }
+
+.header .breadcrumb .logo {
+  position:absolute;
+  display:block;
+  width:140px;
+  height:30px;
+  left:0px;
+  top:-5px;
+  overflow:hidden;
+  text-indent:-9999px;
+  background:url(../images/sprite.png) -100px -20px no-repeat;
+  }
 
 .header .buttons {
   font-size:11px;
@@ -92,42 +109,6 @@ ul.tilesets span.thumb-name,
   }
 
 .header .buttons .icon { float:left; }
-
-.header .exits {
-  font-size:11px;
-  font-weight:bold;
-  text-transform:uppercase;
-
-  position:absolute;
-  right:250px;
-  top:10px;
-  background:url(../images/mask25.png);
-  border-radius:3px;
-  -moz-border-radius:3px;
-  -webkit-border-radius:3px;
-  }
-
-.tabs {
-  float:left;
-  padding-left:50px;
-  }
-
-.tabs a {
-  float:left;
-  color:#aaa;
-  padding:5px 15px 4px 10px;
-  background:url(../images/mask25.png);
-  }
-
-.tabs a.active {
-  color: #fff;
-  background:url(../images/mask75.png);
-  }
-
-.header input[type='text'] {
-  width:150px;
-  float:left;
-  }
 
 /**
  * TilesetListView ============================================================

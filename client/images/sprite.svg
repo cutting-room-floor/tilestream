@@ -16,7 +16,7 @@
    version="1.1"
    inkscape:version="0.48.0 r9654"
    sodipodi:docname="sprite.svg"
-   inkscape:export-filename="/home/devseed/tilestream/client/images/sprite.png"
+   inkscape:export-filename="/home/devseed/tilestream/modules/tilestream/client/images/sprite.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -123,15 +123,18 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="65.586347"
-     inkscape:cy="387.47737"
+     inkscape:cx="120.21871"
+     inkscape:cy="205.19473"
      inkscape:document-units="px"
-     inkscape:current-layer="svg2"
+     inkscape:current-layer="layer1"
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:snap-page="false"
-     inkscape:object-nodes="true">
+     inkscape:object-nodes="false"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-nodes="false">
     <inkscape:grid
        type="xygrid"
        id="grid2985"
@@ -148,7 +151,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -171,13 +174,19 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-652.36217)"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
+    <path
+       inkscape:connector-curvature="0"
+       id="path3833"
+       d="m 113.66878,675.86218 c 0,0 -3.33756,2.66874 -3.33756,4.66876 0,2.66666 1.33964,2.66873 2.00624,4.66874 0.66668,2 -0.67287,2.67083 -2.00624,3.33749 l -3.33744,1.33126 1.33122,1.33125 -3.99377,1.9875 1.33123,1.35 -2.66246,2.66249 5.325,1.33126 1.10622,-2.23126 -0.43122,2.8875 5.66245,0.675 0.33755,-2.6625 0.33746,2.6625 5.66254,-0.675 -0.675,-2.6625 1.35,2.6625 5.325,-1.33124 -3.675,-3.99376 1.66877,-0.3375 -2.325,-2.6625 1.66869,-0.3375 -2.00623,-1.98749 c 0,0 0.23649,-1.2091 -2.00623,-4.01251 -2.66665,-3.33332 -6.00001,-2.66665 -6.00001,-5.99999 0,-1.33333 2.00624,-2.6625 2.00624,-2.6625 l -2.66245,0 z m -1.16255,2.5125 c -0.16877,0.25314 -0.50623,0.9375 -0.50623,2.2875 0,1.8 3,1.8 3,5.4 0,2.99999 -2.4,4.19999 -2.4,4.19999 0,0 1.5,-1.8 1.5,-4.19999 0,-3 -2.7,-3 -2.7,-5.4 0,-1.04254 0.86854,-2.03184 1.10623,-2.2875 z M 115,683.06218 c 0,0 3,1.2 3,4.79999 0,3 -2.4,4.8 -2.4,4.8 0,0 1.2,-2.4 1.2,-4.8 0,-2.99999 -1.8,-4.79999 -1.8,-4.79999 z"
+       style="opacity:0.75;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
     <g
        id="g4194"
        transform="translate(0,20)">
       <path
          transform="matrix(1,0,0,0.93333333,0,659.02884)"
-         d="M 95,62.5 C 95,83.210678 74.852814,100 50,100 25.147186,100 5,83.210678 5,62.5 5,41.789322 25.147186,25 50,25 74.852814,25 95,41.789322 95,62.5 z"
+         d="m 95,62.5 a 45,37.5 0 1 1 -90,0 45,37.5 0 1 1 90,0 z"
          sodipodi:ry="37.5"
          sodipodi:rx="45"
          sodipodi:cy="62.5"
@@ -206,6 +215,35 @@
          style="color:#000000;fill:url(#radialGradient4205);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.99999994;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
          inkscape:connector-curvature="0" />
     </g>
+    <path
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.99999994;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 113.66878,675.36218 c 0,0 -3.33756,2.66874 -3.33756,4.66876 0,2.66666 1.33964,2.66873 2.00624,4.66874 0.66668,2 -0.67287,2.67083 -2.00624,3.33749 l -3.33744,1.33126 1.33122,1.33125 -3.99377,1.9875 1.33123,1.35 -2.66246,2.66249 5.325,1.33126 1.10622,-2.23126 -0.43122,2.8875 5.66245,0.675 0.33755,-2.6625 0.33746,2.6625 5.66254,-0.675 -0.675,-2.6625 1.35,2.6625 5.325,-1.33124 -3.675,-3.99376 1.66877,-0.3375 -2.325,-2.6625 1.66869,-0.3375 -2.00623,-1.98749 c 0,0 0.23649,-1.2091 -2.00623,-4.01251 -2.66665,-3.33332 -6.00001,-2.66665 -6.00001,-5.99999 0,-1.33333 2.00624,-2.6625 2.00624,-2.6625 l -2.66245,0 z m -1.16255,2.5125 c -0.16877,0.25314 -0.50623,0.9375 -0.50623,2.2875 0,1.8 3,1.8 3,5.4 0,2.99999 -2.4,4.19999 -2.4,4.19999 0,0 1.5,-1.8 1.5,-4.19999 0,-3 -2.7,-3 -2.7,-5.4 0,-1.04254 0.86854,-2.03184 1.10623,-2.2875 z M 115,682.56218 c 0,0 3,1.2 3,4.79999 0,3 -2.4,4.8 -2.4,4.8 0,0 1.2,-2.4 1.2,-4.8 0,-2.99999 -1.8,-4.79999 -1.8,-4.79999 z"
+       id="path5994"
+       inkscape:connector-curvature="0" />
+    <text
+       sodipodi:linespacing="110%"
+       id="text3812"
+       y="693.36218"
+       x="132.5"
+       style="font-size:16px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:110.00000238%;letter-spacing:1.5px;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.75;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:PetitaBold;-inkscape-font-specification:PetitaBold Bold"
+       xml:space="preserve"><tspan
+         dx="0 0 0 0 0 0 0 -0.4194304 -0.4194304 -0.4194304"
+         y="693.36218"
+         x="132.5"
+         id="tspan3814"
+         sodipodi:role="line">TILESTREAM</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:110.00000238%;letter-spacing:1.5px;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:PetitaBold;-inkscape-font-specification:PetitaBold Bold"
+       x="132.5"
+       y="692.86218"
+       id="text3808"
+       sodipodi:linespacing="110%"><tspan
+         sodipodi:role="line"
+         id="tspan3810"
+         x="132.5"
+         y="692.86218"
+         dx="0 0 0 0 0 0 0 -0.4194304 -0.4194304 -0.4194304">TILESTREAM</tspan></text>
   </g>
   <path
      style="color:#000000;fill:#ffffff;fill-opacity:0.75294118;fill-rule:nonzero;stroke:none;stroke-width:0.99999994;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
