@@ -6,7 +6,7 @@ var _ = require('underscore')._,
     path = require('path'),
     Tile = require('tilelive').Tile;
 
-module.exports = function(server, settings) {
+module.exports = function(app, settings) {
     // Route middleware. Validates an mbtiles file specified in a tile or
     // download route.
     var validateTileset = function(req, res, next) {
