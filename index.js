@@ -29,22 +29,23 @@ module.exports = function(options) {
         info: true
     };
 
+    var exports = {};
     if (options.uiPort == options.tilePort) {
-        var server = express.createServer(),
-            uiServer = server,
-            tileServer = server;
+        exports.server = express.createServer();
+        exports.uiServer = exports.server;
+        exports.tileServer = exports.server;
     } else {
-        var server = false,
-            uiServer = express.createServer(),
-            tileServer = express.createServer();
+        exports.server = false;
+        exports.uiServer = express.createServer();
+        exports.tileServer = express.createServer();
     }
 
     // Bootstrap.
     require('tilestream/server/bootstrap')(options);
-    require('tilestream/server/ui-server')(uiServer, options);
-    require('tilestream/server/tile-server')(tileServer, options);
+    require('tilestream/server/ui-server')(exports.uiServer, options);
+    require('tilestream/server/tile-server')(exports.tileServer, options);
 
-    var commands = {
+    exports.commands = {
         'start': {
             name: 'start',
             description: 'start server',
@@ -57,21 +58,17 @@ module.exports = function(options) {
                 '--tiles=PATH': 'Path to tiles directory.'
             },
             command: function(argv, callback) {
-                if (server) {
-                    server.listen(options.uiPort);
+                if (exports.server) {
+                    exports.server.listen(options.uiPort);
                     console.log('Started server on port %d.', options.uiPort);
                 } else {
-                    uiServer.listen(options.uiPort);
-                    tileServer.listen(options.tilePort);
+                    exports.uiServer.listen(options.uiPort);
+                    exports.tileServer.listen(options.tilePort);
                     console.log('Started ui server on port %d.', options.uiPort);
                     console.log('Started tile server on port %d.', options.tilePort);
                 }
             }
         }
     };
-    return {
-        commands: commands,
-        uiServer: uiServer,
-        tileServer: tileServer
-    };
+    return exports;
 };
