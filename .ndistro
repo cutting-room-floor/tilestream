@@ -19,10 +19,10 @@ module developmentseed node-sqlite3 2.0.11 sqlite3
 module developmentseed bones 0.0.7
 module kkaefer node-zlib 1.0.2 zlib
 module developmentseed mirror 0.0.1
+module mapbox wax 1.0.3
+module developmentseed openlayers_slim v1.10
 
 # Needs tag
-module mapbox wax
-module developmentseed openlayers_slim
 module mapbox tilelive.js
 module substack node-optimist master optimist
 
