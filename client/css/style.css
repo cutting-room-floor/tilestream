@@ -1,5 +1,5 @@
 body {
-  background:#888;
+  background:#888 url(../images/bg.png);
   color:#ccc;
   font:15px/20px Arial,Helvetica,sans-serif;
   }
@@ -130,61 +130,50 @@ ul.tilesets span.thumb-name,
   }
 
 /**
- * MapListView ================================================================
- */
-ul.maps {
-  position:absolute;
-  top:0px;
-  left:0;
-  right:0;
-  bottom:0;
-  background:url(../images/bg.png);
-  }
-
-/**
  * TilesetListView ============================================================
  */
-ul.tilesets {
-  position:absolute;
-  top:40px;
-  left:0px;
-  right:0px;
-  bottom:0px;
-  background:url(../images/bg.png);
+.tilesets {}
+.tilesets li {
+  width:250px;
+  height:250px;
+  float:left;
+  position:relative;
   }
 
-ul.tilesets li { float:left; }
+.tilesets a,
+.tilesets span { display:block; }
 
-ul.tilesets a.thumb-link {
+.thumb {
   width:249px;
-  margin:0px 1px 1px 0px;
-  position:relative;
+  height:249px;
   font-weight:bold;
   display:block;
+  background:#888 url(../images/canvas.png);
+  position:relative;
   }
 
-ul.tilesets span.thumb-name {
+.thumb .thumb-name {
   opacity:0;
-  display:block;
   position:absolute;
   left:0px;
   bottom:0px;
   right:0px;
   padding:10px 20px;
+  min-height:20px;
   }
 
-ul.tilesets a:hover span.thumb-name {
+.thumb:hover .thumb-name {
   opacity:1;
   -moz-transition:opacity .25s;
   -webkit-transition:opacity .25s;
   }
 
-ul.tilesets span.thumb,
-ul.tilesets span.map-thumb,
-ul.tilesets span.baselayer-thumb {
-  display:block;
-  width:249px;
-  height:249px;
+.thumb .thumb-layer {
+  position:absolute;
+  left:0px;
+  top:0px;
+  bottom:0px;
+  right:0px;
   background-position:50% 50%;
   background-repeat:no-repeat;
   }
@@ -193,7 +182,7 @@ ul.tilesets span.baselayer-thumb {
  * TilesetView ================================================================
  */
 .olMap {
-  background:url(../images/canvas.png);
+  background:#888 url(../images/canvas.png);
   position:absolute;
   top:0px;
   left:0px;
