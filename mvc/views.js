@@ -26,8 +26,10 @@ Backbone.View = Backbone.View.extend({
                     return true;
                 }
             });
-            Backbone.history.saveLocation(fragment);
-            return false;
+            if (matched) {
+                Backbone.history.saveLocation(fragment);
+                return false;
+            }
         }
         return true;
     }
