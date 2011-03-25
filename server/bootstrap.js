@@ -1,4 +1,4 @@
-// Application bootstrap. Ensures that files directories exist at server start.
+// Application bootstrap. Ensures that tiles directory exists at server start.
 module.exports = function(settings) {
     var fs = require('fs');
     try {
