@@ -7,6 +7,32 @@ if (typeof require !== 'undefined') {
     Bones = require('bones');
 }
 
+// Add `route()` method for handling normally linked paths into hash paths.
+// Because IE7 provides an absolute URL for `attr('href')`, regex out the
+// internal path and use it as the fragment.
+Backbone.View = Backbone.View.extend({
+    events: {
+        'click a.route': 'route'
+    },
+    route: function(ev) {
+        var fragment = $(ev.currentTarget).get(0).getAttribute('href', 2);
+        if ($.browser.msie && $.browser.version < 8) {
+            fragment = /^([a-z]+:\/\/.+?)?(\/.+?)$/.exec(fragment)[2];
+        }
+        if (fragment.charAt(0) === '/') {
+            var matched = _.any(Backbone.history.handlers, function(handler) {
+                if (handler.route.test(fragment)) {
+                    handler.callback(fragment);
+                    return true;
+                }
+            });
+            Backbone.history.saveLocation(fragment);
+            return false;
+        }
+        return true;
+    }
+});
+
 // PageView
 // --------
 // View representing the entire page viewport. The view that should "fill" the
@@ -96,9 +122,9 @@ var HUDView = Backbone.View.extend({
     initialize: function(options) {
         _.bindAll(this, 'hud', 'show', 'hide');
     },
-    events: {
+    events: _.extend({
         'click .buttons a': 'hud'
-    },
+    }, Backbone.View.prototype.events),
     hud: function(ev) {
         var link = $(ev.currentTarget);
         var hud = !link.is('.active')

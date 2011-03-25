@@ -25,10 +25,9 @@ var Router = Backbone.Controller.extend({
         Backbone.Controller.prototype.initialize.call(this, options);
     },
     routes: {
+        '': 'list',
         '/': 'list',
-        '!/': 'list',
-        '/tileset/:id': 'tileset',
-        '!/tileset/:id': 'tileset'
+        '/tileset/:id': 'tileset'
     },
     list: function(response) {
         var that = this;
@@ -59,7 +58,5 @@ var Router = Backbone.Controller.extend({
 });
 
 if (typeof module !== 'undefined') {
-    module.exports = {
-        Router: Router
-    };
+    module.exports = { Router: Router };
 }

@@ -3,8 +3,12 @@
   <head>
     <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
     <title>TileStream</title>
-    <link rel='shortcut icon' href='/images/favicon.ico' type='image/x-icon' />
+    <script type='text/javascript'>
+    // Redirect requests without the hash.
+    (location.href.indexOf('#') === -1) && (window.location = '/#' + window.location.pathname);
+    </script>
 
+    <link rel='shortcut icon' href='/images/favicon.ico' type='image/x-icon' />
     <link rel='stylesheet' href='/vendor.css' type='text/css'/>
     <link rel='stylesheet' href='/css/reset.css' type='text/css'/>
     <link rel='stylesheet' href='/css/style.css' type='text/css'/>
