@@ -108,20 +108,15 @@ var HUDView = Backbone.View.extend({
         (hud) && (this.show(hud));
         return false;
     },
-    show: function(hud, callback) {
+    show: function(hud) {
+        this.hud = hud;
         $('.buttons a[href=#' + hud + ']').addClass('active');
-        this.$('.hud.' + hud).fadeIn(function() {
-            $(this).addClass('active');
-            callback && callback();
-        });
+        this.$('.hud.' + hud).addClass('active');
         return this;
     },
-    hide: function(callback) {
+    hide: function() {
         this.$('.buttons .active').removeClass('active');
-        this.$('.hud.active').fadeOut(function() {
-            $(this).removeClass('active');
-            callback && callback();
-        });
+        this.$('.hud.active').removeClass('active');
         return this;
     }
 });
@@ -237,19 +232,12 @@ var TilesetRowView = Backbone.View.extend({
         this.render().trigger('attach');
     },
     render: function() {
-        $(this.el).html(this.template('TilesetRowView', this.model.attributes));
+        $(this.el).html(this.template('TilesetRowView', {
+            id: this.model.get('id'),
+            name: this.model.get('name'),
+            thumb: this.model.thumb()
+        }));
         return this;
-    },
-    attach: function() {
-        var zxy = this.model.toZXY();
-        if (this.model.get('baselayer')) {
-            this.$('span.baselayer-thumb').css({
-                'backgroundImage': 'url(' + this.model.get('baselayer').thumb(zxy) + ')'
-            });
-        }
-        this.$('span.thumb').css({
-            'backgroundImage': 'url(' + this.model.thumb(zxy) + ')'
-        });
     }
 });
 
