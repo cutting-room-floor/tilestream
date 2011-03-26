@@ -1,131 +1,13 @@
-// Server-side specific overrides of model definitions in `shared/models.js`.
-// Defines `sync()` for Tileset and Tilest=ets, replacing the default REST
-// interface with loaders.
+// Loaders for individual and all tilesets.
 var _ = require('underscore')._,
     fs = require('fs'),
     path = require('path'),
     Step = require('step'),
     MBTiles = require('tilelive').MBTiles,
     Pool = require('tilelive').Pool,
-    SphericalMercator = require('tilelive').SphericalMercator,
-    models = require('../mvc/models');
+    SphericalMercator = require('tilelive').SphericalMercator;
 
 module.exports = function(settings) {
-    models.Tileset.prototype.sync =
-    models.Tilesets.prototype.sync = function(method, model, success, error) {
-        switch (method) {
-        case 'read':
-            if (model.id) {
-                loadTileset(model, function(err, model) {
-                    return err ? error(err) : success(model);
-                });
-            }
-            else {
-                loadTilesets(model, function(err, model) {
-                    return err ? error(err) : success(model);
-                });
-            }
-            break;
-        }
-    };
-
-    // Load a tileset model. Retrieve `.mbtiles` file stats, open the DB, retrieve
-    // metadata about the tiles.
-    function loadTileset(model, callback) {
-        if (model.id === '<default>') {
-            return callback(null, {
-                basename: 'world-light',
-                id: 'world-light',
-                name: 'world-light',
-                type: 'mapbox',
-                minzoom: 0,
-                maxzoom: 11,
-                bounds: [ -180, 90, 180, -90 ]
-            });
-        }
-
-        var filepath = path.join(settings.tiles, model.id + '.mbtiles');
-        var data = {};
-        Step(
-            function() {
-                fs.stat(filepath, this);
-            },
-            function(err, stat) {
-                if (err) return callback(new Error('Tileset not found.'));
-                data.size = stat.size;
-                data.mtime = +stat.mtime;
-                Pool.acquire('mbtiles', filepath, {}, this);
-            },
-            function(err, mbtiles) {
-                var that = this;
-                mbtiles.info(function(err, info) {
-                    Pool.release('mbtiles', filepath, mbtiles);
-                    that(err, info);
-                });
-            },
-            function(err, info) {
-                if (err) {
-                    return callback(err);
-                } else {
-                    _.extend(data, info);
-                }
-                this();
-            },
-            function(err) {
-                if (err) {
-                    callback(err);
-                }
-                else {
-                    callback(null, data);
-                }
-            }
-        );
-    }
-
-    // Load all tileset models.
-    function loadTilesets(model, callback) {
-        Step(
-            function() {
-                try {
-                    fs.readdir(settings.tiles, this);
-                } catch(err) {
-                    this(err);
-                }
-            },
-            function(err, files) {
-                if (err) {
-                    return this(new Error('Error reading tiles directory.'));
-                } else if (files.length === 0) {
-                    return this(null, []);
-                }
-                var group = this.group();
-                var tilesets = _(files).chain()
-                    .filter(function(filename) {
-                        return path.extname(filename) === '.mbtiles';
-                    })
-                    .map(function(filename) {
-                        return path.basename(filename, '.mbtiles');
-                    })
-                    .value();
-                if (tilesets.length) {
-                    for (var i = 0; i < tilesets.length; i++) {
-                        loadTileset({ id: tilesets[i] }, group());
-                    }
-                } else {
-                    this(null, []);
-                }
-            },
-            function(err, models) {
-                // Ignore errors from loading individual models (e.g.
-                // don't let one bad apple spoil the collection).
-                models = _.select(models, function(model) {
-                    return (typeof model === 'object');
-                });
-                callback(null, models);
-            }
-        );
-    }
-
     // Extend `MBTiles` class with an `info` method for retrieving metadata and
     // performing fallback queries if certain keys (like `bounds`, `minzoom`,
     // `maxzoom`) have not been provided.
@@ -226,5 +108,90 @@ module.exports = function(settings) {
         );
     };
 
-    return models;
+    // Load a tileset model. Retrieve `.mbtiles` file stats, open the DB, retrieve
+    // metadata about the tiles.
+    var load = function (model, callback) {
+        var filepath = path.join(settings.tiles, model.id + '.mbtiles');
+        var data = {};
+        Step(
+            function() {
+                fs.stat(filepath, this);
+            },
+            function(err, stat) {
+                if (err) return callback(new Error('Tileset not found.'));
+                data.size = stat.size;
+                data.mtime = +stat.mtime;
+                Pool.acquire('mbtiles', filepath, {}, this);
+            },
+            function(err, mbtiles) {
+                var that = this;
+                mbtiles.info(function(err, info) {
+                    Pool.release('mbtiles', filepath, mbtiles);
+                    that(err, info);
+                });
+            },
+            function(err, info) {
+                if (err) {
+                    return callback(err);
+                } else {
+                    _.extend(data, info);
+                }
+                this();
+            },
+            function(err) {
+                if (err) {
+                    callback(err);
+                }
+                else {
+                    callback(null, data);
+                }
+            }
+        );
+    };
+
+    // Load all tileset models.
+    var all = function (model, callback) {
+        Step(
+            function() {
+                try {
+                    fs.readdir(settings.tiles, this);
+                } catch(err) {
+                    this(err);
+                }
+            },
+            function(err, files) {
+                if (err) {
+                    return this(new Error('Error reading tiles directory.'));
+                } else if (files.length === 0) {
+                    return this(null, []);
+                }
+                var group = this.group();
+                var tilesets = _(files).chain()
+                    .filter(function(filename) {
+                        return path.extname(filename) === '.mbtiles';
+                    })
+                    .map(function(filename) {
+                        return path.basename(filename, '.mbtiles');
+                    })
+                    .value();
+                if (tilesets.length) {
+                    for (var i = 0; i < tilesets.length; i++) {
+                        load({ id: tilesets[i] }, group());
+                    }
+                } else {
+                    this(null, []);
+                }
+            },
+            function(err, models) {
+                // Ignore errors from loading individual models (e.g.
+                // don't let one bad apple spoil the collection).
+                models = _.select(models, function(model) {
+                    return (typeof model === 'object');
+                });
+                callback(null, models);
+            }
+        );
+    };
+
+    return { load: load, all: all };
 };

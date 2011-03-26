@@ -14,7 +14,7 @@ module.exports = function(server, settings) {
     // Initialize bones, bones templates, server-side mixins.
     Bones.Bones(server);
     Bones.settings = settings;
-    require('./models-server')(settings);
+    require('../mvc/models-server')(settings);
 
     // Add templates to the Bones template cache.
     var templatePath = path.join(__dirname, '..', 'templates'),
