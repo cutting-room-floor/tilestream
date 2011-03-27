@@ -88,40 +88,30 @@ module.exports = function(server, settings) {
         });
     });
 
-    // Generic GET endpoint for model loading.
-    server.get('/api/:model/*', validateModel, function(req, res, next) {
+    // REST endpoints for models.
+    server.all('/api/:model/*', validateModel, function(req, res, next) {
         var model = new models[req.param('model')]({ id: req.params[0] });
-        model.fetch({
-            success: function(model, resp) { res.send(model.toJSON()) },
-            error: function(model, resp) { res.send(resp, 500); }
-        });
-    });
-
-    // Generic POST endpoint for model creation.
-    server.post('/api/:model/*', validateModel, function(req, res, next) {
-        var model = new models[req.param('model')]({ id: req.params[0] });
-        model.save(req.body, {
-            success: function(model, resp) { res.send(resp) },
-            error: function(model, resp) { res.send(resp, 500); }
-        });
-    });
-
-    // Generic PUT endpoint for model update.
-    server.put('/api/:model/*', validateModel, function(req, res, next) {
-        var model = new models[req.param('model')]({ id: req.params[0] });
-        model.save(req.body, {
-            success: function(model, resp) { res.send(resp) },
-            error: function(model, resp) { res.send(resp, 500); }
-        });
-    });
-
-    // Generic DELETE endpoint for model deletion.
-    server.del('/api/:model/*', validateModel, function(req, res, next) {
-        var model = new models[req.param('model')]({ id: req.params[0] });
-        model.destroy({
-            success: function(model, resp) { res.send({}) },
-            error: function(model, resp) { res.send(resp, 500); }
-        });
+        switch (req.method) {
+        case 'GET':
+            model.fetch({
+                success: function(model, resp) { res.send(model.toJSON()) },
+                error: function(model, resp) { res.send(resp, 500); }
+            });
+            break;
+        case 'POST':
+        case 'PUT':
+            model.save(req.body, {
+                success: function(model, resp) { res.send(resp) },
+                error: function(model, resp) { res.send(resp, 500); }
+            });
+            break;
+        case 'DELETE':
+            model.destroy({
+                success: function(model, resp) { res.send({}) },
+                error: function(model, resp) { res.send(resp, 500); }
+            });
+            break;
+        }
     });
 }
 
