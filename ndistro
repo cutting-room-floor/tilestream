@@ -107,7 +107,7 @@ bin() {
     for bin in ../modules/$mod/bin/*; do
       local name=${bin##*/}
       log "installing bin/$name"
-      local shebang=$(head -n 1 $bin)
+      local shebang="$(head -n 1 $bin)"
       if test "$shebang" = "#!/usr/bin/env node"; then
         sed "s|/usr/bin/env node|$ROOT/bin/node|" $bin \
           > ./$name \
