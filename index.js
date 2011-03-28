@@ -7,7 +7,8 @@ module.exports = function(options) {
     // Allow options to be passed via `--config [JSON file]`.
     if (options && options.config) {
         try {
-            options = JSON.parse(fs.readFileSync(options.config, 'utf8'));
+            var config = JSON.parse(fs.readFileSync(options.config, 'utf8'));
+            _(options).extend(config);
         } catch(e) {
             console.log('Invalid JSON config file: ' + options.config);
         }
