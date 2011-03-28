@@ -19,9 +19,14 @@ Backbone.View = Backbone.View.extend({
         'click a.route': 'route'
     },
     route: function(ev) {
-        var fragment = $(ev.currentTarget).get(0).getAttribute('href', 2);
-        if ($.browser.msie && $.browser.version < 8) {
-            fragment = /^([a-z]+:\/\/.+?)?(\/.+?)$/.exec(fragment)[2];
+        var fragment;
+        if (_.isString(ev)) {
+            fragment = ev;
+        } else {
+            fragment = $(ev.currentTarget).get(0).getAttribute('href', 2);
+            if ($.browser.msie && $.browser.version < 8) {
+                fragment = /^([a-z]+:\/\/.+?)?(\/.+?)$/.exec(fragment)[2];
+            }
         }
         if (fragment.charAt(0) === '/') {
             var matched = _.any(Backbone.history.handlers, function(handler) {
