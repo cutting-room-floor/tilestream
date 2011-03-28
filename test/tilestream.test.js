@@ -72,7 +72,7 @@ module.exports = {
         assert.response(
             tilestream.uiServer,
             { url: '/' },
-            { status: 200, body: /control_room<\/span/ }
+            { status: 200, body: /name\">control_room/ }
         );
     },
     'ssviews map': function() {
