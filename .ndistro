@@ -21,13 +21,11 @@ module kkaefer node-zlib 1.0.2 zlib
 module developmentseed mirror 0.0.1
 module mapbox wax 1.0.3
 module developmentseed openlayers_slim v1.10
-
-# Needs tag
-module mapbox tilelive.js
-module substack node-optimist master optimist
+module mapbox tilelive.js 2.0.1
+module substack node-optimist fe084bddeaefd003a76c36d5633d65e8ffb4b474 optimist
 
 # Main module
-module mapbox tilestream master
+module mapbox tilestream 0.0.4
 
 # Module layout workarounds
 cd $ROOT
