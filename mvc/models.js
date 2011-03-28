@@ -77,6 +77,18 @@ Bones.models.Tileset = Backbone.Model.extend({
     thumb: function(zxy) {
         zxy = zxy || this.toZXY();
         return this.layerURL()[0] + ['1.0.0', this.get('id'), zxy[0], zxy[1], zxy[2]].join('/') + '.png';
+    },
+    wax: function() {
+        return {
+            layers: [this.get('id')],
+            center: [
+                this.get('center').lon,
+                this.get('center').lat
+            ],
+            zoom: 0,
+            minzoom: this.get('minzoom'),
+            maxzoom: this.get('maxzoom')
+        };
     }
 });
 

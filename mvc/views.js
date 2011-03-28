@@ -85,6 +85,7 @@ Bones.views.Error = Backbone.View.extend({
 // ----------
 // A web map client for displaying tile-based maps.
 Bones.views.MapClient = Backbone.View.extend({
+    className: 'MapClient',
     id: 'openlayers-map',
     initialize: function(options) {
         _.bindAll(this, 'ready');
@@ -108,15 +109,9 @@ Bones.views.MapClient = Backbone.View.extend({
         return '/wax.json?' + $.param(wax);
     },
     generateWax: function(callback) {
-        var wax = {
-            el: $(this.el).attr('id'),
-            layers: [this.model.id],
-            center: [this.model.get('center').lon, this.model.get('center').lat],
-            zoom: 0,
-            minzoom: this.model.get('minzoom'),
-            maxzoom: this.model.get('maxzoom')
-        };
-        wax.zoom = this.model.get('minzoom') < 2 ? 2 : 0;
+        var wax = this.model.wax();
+        wax.el = $(this.el).attr('id');
+        wax.zoom = ((this.model.get('minzoom') + 2) <= this.model.get('maxzoom')) ? 2 : wax.zoom;
         return wax;
     }
 });
