@@ -146,7 +146,7 @@ module.exports = function(app, settings) {
             }
 
             // Return the proper subset of resolutions for this layer, using
-			// request query overrides of minzoom/maxzoom if present.
+            // request query overrides of minzoom/maxzoom if present.
             (req.query.minzoom && req.query.minzoom > minzoom) && (minzoom = req.query.minzoom);
             (req.query.maxzoom && req.query.maxzoom < maxzoom) && (maxzoom = req.query.maxzoom);
             options.resolutions = options.serverResolutions.slice(
