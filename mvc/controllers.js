@@ -13,8 +13,10 @@ var Bones = Bones || {};
 Bones.controllers = Bones.controllers || {};
 
 Bones.controllers.Router = Backbone.Controller.extend({
+    Collection: Bones.models.Tilesets,
+    Model: Bones.models.Tileset,
     initialize: function(options) {
-        _.bindAll(this, 'list', 'tileset');
+        _.bindAll(this, 'list', 'map');
     },
     routes: {
         '': 'list',
@@ -23,7 +25,7 @@ Bones.controllers.Router = Backbone.Controller.extend({
     },
     list: function(response) {
         var that = this;
-        (new Bones.models.Tilesets()).fetch({
+        (new this.Collection()).fetch({
             success: function(collection) {
                 var view = new Bones.views.Maps({ collection: collection });
                 response(new Bones.views.App({ view: view }));
@@ -36,7 +38,7 @@ Bones.controllers.Router = Backbone.Controller.extend({
     },
     map: function(id, response) {
         var that = this;
-        (new Bones.models.Tileset({ id: id })).fetch({
+        (new this.Model({ id: id })).fetch({
             success: function(model) {
                 var view = new Bones.views.Map({ model: model });
                 response(new Bones.views.App({ view: view }));
