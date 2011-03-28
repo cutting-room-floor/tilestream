@@ -42,9 +42,9 @@ module.exports = function(server, settings) {
         'wax/control/lib/gridutil.js',
         'wax/build/wax.ol.min.js',
         'wax/lib/record.js',
-        'tilestream/mvc/controllers.js',
         'tilestream/mvc/models.js',
         'tilestream/mvc/views.js',
+        'tilestream/mvc/controllers.js',
         'tilestream/client/js/app.js'
     ]));
     server.get('/vendor.css', mirror.assets(['wax/theme/controls.css']));
