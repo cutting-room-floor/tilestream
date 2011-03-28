@@ -61,7 +61,7 @@ Bones.models.Tileset = Backbone.Model.extend({
             }
         // Server side, *TODO* needs a solution.
         } else {
-            return ['http://localhost:9000/'];
+            return ['http://localhost:8888/'];
         }
     },
     // Get ZXY of tile of tileset's center and minzoom. From [OSM wiki][1].
