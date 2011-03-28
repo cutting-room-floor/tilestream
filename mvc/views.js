@@ -113,17 +113,19 @@ Bones.views.MapClient = Backbone.View.extend({
     record: function(data) {
         if (data && data.wax) {
             this.openlayers = wax.Record(data.wax);
-            this.openlayers.events.register(
-                'moveend',
-                this.openlayers,
-                this.zoom
-            );
-            this.openlayers.events.register(
-                'zoomend',
-                this.openlayers,
-                this.zoom
-            );
-            this.zoom({element: this.openlayers.div});
+            if (this.openlayers.events && this.openlayers.events.register) {
+                this.openlayers.events.register(
+                    'moveend',
+                    this.openlayers,
+                    this.zoom
+                );
+                this.openlayers.events.register(
+                    'zoomend',
+                    this.openlayers,
+                    this.zoom
+                );
+                this.zoom({element: this.openlayers.div});
+            }
         }
     },
     zoom: function(e) {
