@@ -49,10 +49,24 @@ module.exports = function(server, settings) {
     ]));
     server.get('/vendor.css', mirror.assets(['wax/theme/controls.css']));
     server.get('/theme/default/style.css', mirror.file('openlayers_slim/theme/default/style.css'));
+
+    // Settings endpoint. Filter  settings down to only those that should be
+    // accessible by the client.
     server.get('/settings.js', function(req, res, next) {
+        var pub = ['uiHost', 'tileHost', 'uiPort', 'tilePort', 'features'],
+            filtered = {};
+        _(settings).each(function(val, key) {
+            _(pub).include(key) && (filtered[key] = val);
+        });
+        filtered.uiHost = filtered.uiHost
+            ? filtered.uiHost
+            : 'http://' + req.headers.host + '/';
+        filtered.tileHost = filtered.tileHost.length
+            ? filtered.tileHost
+            : ['http://' + req.headers.host + '/'];
         res.send(
             'var Bones = Bones || {};\n' +
-            'Bones.settings = ' + JSON.stringify(settings) + ';',
+            'Bones.settings = ' + JSON.stringify(filtered) + ';',
             { 'Content-Type': 'text/javascript' }
         );
     });
