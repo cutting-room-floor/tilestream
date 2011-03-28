@@ -267,6 +267,7 @@ input[type=button]:active,
   width:49.9%;
   }
 
+.hud span.label,
 .hud label {
   display:block;
   font-size:11px;
