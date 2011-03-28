@@ -1,5 +1,5 @@
 body {
-  background:#888 url(../images/bg.png);
+  background:#444 url(../images/bg.png);
   color:#ccc;
   font:15px/20px Arial,Helvetica,sans-serif;
   }
@@ -113,23 +113,28 @@ a {
 /**
  * Maps =======================================================================
  */
-.maps {}
+.maps { padding:60px 0px 0px 20px; }
+
 .maps li {
-  width:250px;
-  height:250px;
+  width:240px;
+  height:240px;
+  margin:0px 10px 10px 0px;
   float:left;
   position:relative;
+  box-shadow:#222 0px 1px 10px;
+  -moz-box-shadow:#222 0px 1px 10px;
+  -webkit-box-shadow:#222 0px 1px 10px;
   }
 
 .maps a,
 .maps span { display:block; }
 
 .thumb {
-  width:249px;
-  height:249px;
+  width:240px;
+  height:240px;
   font-weight:bold;
   display:block;
-  background:#888 url(../images/canvas.png);
+  background:#ddd url(../images/bg.png);
   position:relative;
   }
 
@@ -163,7 +168,7 @@ a {
  * Map ========================================================================
  */
 .MapClient {
-  background:#888 url(../images/canvas.png);
+  background:#ddd url(../images/bg.png);
   position:absolute;
   top:0px;
   left:0px;
@@ -384,30 +389,27 @@ form input { margin:0px 0px 10px; }
  * ErrorView ==================================================================
  */
 .error {
-  background:url(../images/bg.png);
   position:absolute;
-  top:0px;
+  top:60px;
   right:0px;
   bottom:0px;
-  left:0px;
+  left:20px;
   }
 
 .error .message {
   position:absolute
   left:0px;
   top:0px;
-  width:249px;
-  height:249px;
-  line-height:249px;
+  width:240px;
+  height:240px;
+  line-height:240px;
 
   white-space:nowrap;
   overflow:hidden;
   text-align:center;
 
-  color:#333;
   font-size:20px;
   font-weight:bold;
-  text-shadow:#ccc 0px 1px;
   background:url(../images/mask25.png);
   }
 
