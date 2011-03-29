@@ -189,19 +189,16 @@ Bones.views.Map = Bones.views.HUD.extend({
             return parseInt(value * 100, 10) * .01;
             break;
         case 'url':
-            var that = this;
-            return _.map(this.model.layerURL(), function(layer) {
-                return layer + '1.0.0/' + that.model.get('id') + '/{z}/{x}/{y}';
+            var id = this.model.id;
+            return _.map(value, function(layer) {
+                return layer + '1.0.0/' + id + '/{z}/{x}/{y}';
             });
             break;
         case 'download':
-            return this.model.layerURL()[0]
-                + 'download/'
-                + this.model.get('id')
-                + '.mbtiles';
+            return value + 'download/' + this.model.id + '.mbtiles';
             break;
         case 'size':
-            return (Math.ceil(parseInt(this.model.get('size')) / 1048576)) + ' MB';
+            return (Math.ceil(parseInt(value) / 1048576)) + ' MB';
             break;
         }
     },
@@ -219,9 +216,9 @@ Bones.views.Map = Bones.views.HUD.extend({
                 e: this.format('deg', this.model.get('bounds')[2]),
                 n: this.format('deg', this.model.get('bounds')[3])
             },
-            url: this.format('url'),
-            download: this.format('download'),
-            size: this.format('size')
+            url: this.format('url', this.model.layerURL()),
+            download: this.format('download', this.model.layerURL()[0]),
+            size: this.format('size', this.model.get('size'))
         }));
         this.map = new Bones.views.MapClient({model: this.model});
         this.bind('ready', this.map.ready);
