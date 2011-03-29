@@ -64,6 +64,7 @@ Bones.views.App = Backbone.View.extend({
             return this;
         }
         // Client side.
+        $('body').attr('class', '');
         $('#app').html(this.options.view.el);
         this.options.view.trigger('ready');
         return this;
@@ -164,11 +165,13 @@ Bones.views.HUD = Backbone.View.extend({
         this.hud = hud;
         $('.buttons a[href=#' + hud + ']').addClass('active');
         this.$('.hud.' + hud).addClass('active');
+        $('body').addClass('hudActive');
         return this;
     },
     hide: function() {
         this.$('.buttons .active').removeClass('active');
         this.$('.hud.active').removeClass('active');
+        $('body').removeClass('hudActive');
         return this;
     }
 });

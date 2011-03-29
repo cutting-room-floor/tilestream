@@ -182,14 +182,23 @@ a {
   z-index:0;
   }
 
-.wax-tooltip {
-  top:60px;
-  left:0px;
-  padding:10px 20px;
-  max-width:260px;
+.wax-tooltip,
+.wax-legends {
+  left:auto;
+  right:20px;
+  transition:right .25s;
+  -moz-transition:right .25s;
+  -webkit-transition:right .25s;
   }
 
-.wax-popup { padding-right:40px; }
+.hudActive .wax-legends,
+.hudActive .wax-tooltip { right:300px; }
+
+.wax-tooltip {
+  top:60px;
+  padding:10px 40px 10px 20px;
+  max-width:260px;
+  }
 
 .wax-popup .close {
   top:10px;
@@ -197,6 +206,7 @@ a {
   }
 
 .wax-legends {
+  bottom:20px;
   padding:0px;
   max-width:300px;
   }
@@ -241,24 +251,21 @@ input[type=button]:active,
 
 .hud.active,
 .hud {
-  right:0px;
+  right:-280px;
   top:60px;
   bottom:20px;
   width:280px;
   position:fixed;
   background:url(../images/hud.png) 0% 100% repeat-x;
   text-shadow:#000 0px 1px 1px;
-  opacity:0;
-  filter:alpha(opacity=0);
   z-index:-1;
-  transition:opacity .5s, z-index .5s;
-  -moz-transition:opacity .5s, z-index .5s;
-  -webkit-transition:opacity .5s, z-index .5s;
+  transition:right .25s, z-index .5s;
+  -moz-transition:right .25s, z-index .5s;
+  -webkit-transition:right .25s, z-index .5s;
   }
 
 .hud.active {
-  opacity:1;
-  filter:none;
+  right:0px;
   z-index:80;
   }
 
