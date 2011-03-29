@@ -13,17 +13,13 @@ a {
 
 .header,
 .overlay .title,
-.thumb .thumb-name,
-.wax-tooltip,
-.wax-legends {
+.thumb .thumb-name {
   background:url(../images/mask75.png);
   text-shadow:#000 0px 1px 1px;
   }
 
 .hud,
-.header,
-.wax-tooltip,
-.wax-legends {
+.header {
   box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
   -moz-box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
   -webkit-box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
@@ -32,7 +28,6 @@ a {
 /**
  * Icons ======================================================================
  */
-.wax-tooltip .close,
 .icon {
   display:block;
   width:20px;
@@ -45,7 +40,6 @@ a {
 .icon.right         { background-position:0px 0px; }
 .icon.info          { background-position:-20px 0px; }
 .icon.download      { background-position:-40px 0px; }
-.wax-tooltip .close { background-position:-60px 0px; }
 
 /**
  * Header =====================================================================
@@ -182,42 +176,6 @@ a {
   z-index:0;
   }
 
-.wax-tooltip,
-.wax-legends {
-  left:auto;
-  right:20px;
-  transition:right .25s;
-  -moz-transition:right .25s;
-  -webkit-transition:right .25s;
-  }
-
-.hudActive .wax-legends,
-.hudActive .wax-tooltip { right:300px; }
-
-.wax-tooltip {
-  top:60px;
-  padding:10px 40px 10px 20px;
-  max-width:260px;
-  }
-
-.wax-popup .close {
-  top:10px;
-  right:10px;
-  }
-
-.wax-legends {
-  bottom:20px;
-  padding:0px;
-  max-width:300px;
-  }
-
-.wax-legend {
-  padding:10px 20px;
-  background:url(../images/stroke.png) 0% 0% repeat-x;
-  }
-
-.wax-legend:first-child { background:transparent; }
-
 .zooms {
   background:url(../images/mask25.png);
   border-radius:3px;
@@ -236,7 +194,6 @@ a {
 
 input[type=submit]:active,
 input[type=button]:active,
-.wax-popup .close,
 .header .buttons .active,
 .zooms .active {
   color:#fff;
@@ -426,3 +383,22 @@ form input { margin:0px 0px 10px; }
   background:url(../images/mask25.png);
   }
 
+/**
+ * Map controls ===============================================================
+ * Override styles for map controls within the context of the TileStream UI.
+ */
+.wax-tooltip,
+.wax-legends {
+  transition:right .25s;
+  -moz-transition:right .25s;
+  -webkit-transition:right .25s;
+  }
+
+.wax-tooltip,
+.wax-legends { right:20px; }
+
+.wax-tooltip { top:60px; }
+.wax-legends { bottom:20px; }
+
+.hudActive .wax-legends,
+.hudActive .wax-tooltip { right:300px; }

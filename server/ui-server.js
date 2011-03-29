@@ -47,7 +47,6 @@ module.exports = function(server, settings) {
         'tilestream/mvc/controllers.js',
         'tilestream/client/js/app.js'
     ]));
-    server.get('/vendor.css', mirror.assets(['wax/theme/controls.css'], {'Content-Type': 'text/css'}));
     server.get('/theme/default/style.css', mirror.file('openlayers_slim/theme/default/style.css'));
 
     // Settings endpoint. Filter  settings down to only those that should be
