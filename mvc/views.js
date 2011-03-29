@@ -186,7 +186,7 @@ Bones.views.Map = Bones.views.HUD.extend({
     format: function(type, value) {
         switch (type) {
         case 'deg':
-            return parseInt(value * 100, 10) * .01;
+            return parseInt(value * 100, 10) / 100;
             break;
         case 'url':
             var id = this.model.id;
