@@ -259,19 +259,6 @@ input[type=button]:active,
 .hud h1,
 .hud label { color:#fff; }
 
-.olImageLoadError {
-  display:none;
-  }
-
-.olMap .olHandlerBoxZoomBox {
-  position:absolute;
-  background:url(../images/mask25.png);
-  font-size:1px;
-  border:0px;
-  opacity:1;
-  filter:none;
-  }
-
 /**
  * Download link ==============================================================
  */
