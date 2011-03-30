@@ -19,13 +19,13 @@ module developmentseed node-sqlite3 2.0.11 sqlite3
 module developmentseed bones 0.0.7
 module kkaefer node-zlib 1.0.3 zlib
 module developmentseed mirror 0.0.1
-module mapbox wax 1.0.3
+module mapbox wax 1.0.4
 module developmentseed openlayers_slim v1.10
 module mapbox tilelive.js 2.0.1
 module substack node-optimist fe084bddeaefd003a76c36d5633d65e8ffb4b474 optimist
 
 # Main module
-module mapbox tilestream 0.0.5
+module mapbox tilestream 0.0.6
 
 # Module layout workarounds
 cd $ROOT
