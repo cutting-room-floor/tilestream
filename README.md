@@ -38,7 +38,7 @@ Download and unpack TileStream. Build & install:
 
 Start TileStream:
 
-    bin/tilestream
+    bin/node bin/tilestream
 
 TileStream should now be accessible from a browser at `http://localhost:8888`.
 
@@ -59,7 +59,7 @@ Download and unpack TileStream. Build & install:
 
 Start TileStream:
 
-    PATH=bin tilestream
+    bin/node bin/tilestream
 
 TileStream should now be accessible from a browser at `http://localhost:8888`.
 
@@ -93,8 +93,8 @@ You can run the TileStream tests using expresso:
 
 Contributors
 ------------
-- [Young Hahn](http://github.com/yhahn)
-- [Tom MacWright](http://github.com/tmcw)
-- [Will White](http://github.com/willwhite)
-- [Konstantin Käfer](http://github.com/kkaefer)
-- [Dane Springmeyer](http://github.com/springmeyer)
+- [Young Hahn](https://github.com/yhahn)
+- [Tom MacWright](https://github.com/tmcw)
+- [Will White](https://github.com/willwhite)
+- [Konstantin Käfer](https://github.com/kkaefer)
+- [Dane Springmeyer](https://github.com/springmeyer)
