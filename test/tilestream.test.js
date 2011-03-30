@@ -1,6 +1,10 @@
 var assert = require('assert'),
     tilestream = require('tilestream')({
-        tiles: __dirname + '/fixtures'
+        tiles: __dirname + '/fixtures/tiles',
+        uiHost: 'http://locahost:8888',
+        tileHost: 'http://localhost:8888',
+        uiPort: 8888,
+        tilePort: 8888
     });
 
 module.exports = {
@@ -110,21 +114,98 @@ module.exports = {
         );
     },
     'wax endpoint': function() {
+        var fs = require('fs'),
+            fixtures = {
+                layers: JSON.parse(fs.readFileSync(__dirname + '/fixtures/wax/wax.layers.json', 'utf8')),
+                el:     JSON.parse(fs.readFileSync(__dirname + '/fixtures/wax/wax.el.json', 'utf8')),
+                center: JSON.parse(fs.readFileSync(__dirname + '/fixtures/wax/wax.center.json', 'utf8')),
+                options: JSON.parse(fs.readFileSync(__dirname + '/fixtures/wax/wax.options.json', 'utf8'))
+            };
         assert.response(
             tilestream.uiServer,
-            { url: '/wax.json?el=openlayers-map&layers%5B%5D=control_room&center%5B%5D=0&center%5B%5D=0&zoom=-1&callback=_jqjsp&_1298387967133=' },
-            { status: 200 },
-            function(res) {
-                assert.doesNotThrow(function() {
-                    var matches = res.body.match(/\_jqjsp\((.+)\);/);
-                    JSON.parse(matches[1]);
-                });
-            }
+            { url: '/wax.json?api=foo' },
+            { status: 400, body: /`api` is invalid/ }
+        );
+
+        assert.response(
+            tilestream.uiServer,
+            { url: '/wax.json' },
+            { status: 400, body: /`layers` is invalid/ }
         );
         assert.response(
             tilestream.uiServer,
-            { url: '/wax.json?el=openlayers-map&center%5B%5D=0&center%5B%5D=0&zoom=-1&callback=_jqjsp&_1298387967133=' },
-            { status: 400 }
+            { url: '/wax.json?layers=foo' },
+            { status: 400, body: /`layers` is invalid/ }
+        );
+        assert.response(
+            tilestream.uiServer,
+            { url: '/wax.json?layers[]=foo' },
+            { status: 400, body: /`layers` is invalid/ }
+        );
+        assert.response(
+            tilestream.uiServer,
+            { url: '/wax.json?layers[]=control_room' },
+            { status: 200 },
+            function(res) {
+                assert.deepEqual(fixtures.layers, JSON.parse(res.body));
+            }
+        );
+
+        assert.response(
+            tilestream.uiServer,
+            { url: '/wax.json?layers[]=control_room&el[]=foo' },
+            { status: 400, body: /`el` is invalid/ }
+        );
+        assert.response(
+            tilestream.uiServer,
+            { url: '/wax.json?layers[]=control_room&el=foo' },
+            { status: 200 },
+            function(res) {
+                assert.deepEqual(fixtures.el, JSON.parse(res.body));
+            }
+        );
+
+        assert.response(
+            tilestream.uiServer,
+            { url: '/wax.json?layers[]=control_room&center=foo' },
+            { status: 400, body: /`center` is invalid/ }
+        );
+        assert.response(
+            tilestream.uiServer,
+            { url: '/wax.json?layers[]=control_room&center[]=0' },
+            { status: 400, body: /`center` is invalid/ }
+        );
+        assert.response(
+            tilestream.uiServer,
+            { url: '/wax.json?layers[]=control_room&center[]=0&center[]=0&center[]=foo' },
+            { status: 400, body: /`center` is invalid/ }
+        );
+        assert.response(
+            tilestream.uiServer,
+            { url: '/wax.json?layers[]=control_room&center[]=40&center[]=40&center[]=2' },
+            { status: 200 },
+            function(res) {
+                assert.deepEqual(fixtures.center, JSON.parse(res.body));
+            }
+        );
+
+        assert.response(
+            tilestream.uiServer,
+            { url: '/wax.json?layers[]=control_room&options=foo' },
+            { status: 400, body: /`options` is invalid/ }
+        );
+        assert.response(
+            tilestream.uiServer,
+            { url: '/wax.json?layers[]=control_room&options[]=foo' },
+            { status: 400, body: /`options` is invalid/ }
+        );
+        assert.response(
+            tilestream.uiServer,
+            { url: '/wax.json?layers[]=control_room&options[]=tooltips' },
+            { status: 200 },
+            function(res) {
+                assert.deepEqual(fixtures.options, JSON.parse(res.body));
+            }
         );
     }
 }

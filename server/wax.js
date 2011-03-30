@@ -1,131 +1,78 @@
 var _ = require('underscore'),
     Step = require('step'),
-    models = require('tilestream/mvc/models'),
-    path = require('path');
+    models = require('../mvc/models');
 
-module.exports = function(app, settings) {
-    // Loader for layers. Validates `req.query` to ensure it is usable.
-    function load(req, res, next) {
-        var valid = (_.isString(req.query.el) &&
-            _.isArray(req.query.layers) &&
-            _.isArray(req.query.center) &&
-            req.query.layers.length > 0 &&
-            req.query.center.length === 2);
-        if (!valid) return res.send('Invalid request.', 400);
+var defaults = {
+    name: '',
+    el: 'map',
+    api: 'ol',
+    size: [500, 300],
+    center: [0, 0, 0],
+    layers: [],
+    options: ['zoomwheel', 'legend', 'tooltips']
+};
 
-        var layers = [];
-        Step(
-            function() {
-                var group = this.group();
-                for (var i = 0; i < req.query.layers.length; i++) {
-                    var id = req.query.layers[i];
-                    var tileset = new models.Tileset({id: id});
-                    var next = group();
-                    layers.push(tileset);
-                    tileset.fetch({ success: next, error: next });
-                }
-            },
-            function() {
-                layers = _.select(layers, function(layer) {
-                    return layer.get('name');
-                });
-                if (layers.length !== req.query.layers.length) {
-                    res.send('Invalid layer specified.', 400);
-                } else {
-                    res.layers = layers;
-                    next();
-                }
-            }
-        );
-    };
-
-    // OpenLayers Wax API Endpoint
-    // ---------------------------
-    // Provides and API for generating wax documents based on request query
-    // string.
-    //
-    // Possible query parameters include:
-    //
-    // - `el` - ID of the DOM element that should be attached to.
-    // - `layers` - List of layer IDs to include in the wax file. In front to
-    //    back order.
-    //     layers[]=test_project&layers[]=broadband-virginia_23ecea
-    // - `center` - List containing the longitude and latitude
-    //     center[]=66.5&center[]=55.8
-    // - `zoom` - Integer for inital zoom level.
-    // - `minzoom` - Override the minimum zoom level for all layers in the map.
-    // - `maxzoom` - Override the maximum zoom level for all layers in the map.
-    //
-    app.get('/wax.json', load, function(req, res, next) {
-        var zoom = req.query.zoom || 0;
-        res.send({ 'wax':
-            ['@group',
-                ['@new OpenLayers.Map',
-                    req.query.el,
-                    {
-                        'layers': _.map(res.layers, layerWax),
-                        'units': 'm',
-                        'maxResolution': 1.40625,
-                        'maxExtent': [
-                            '@new OpenLayers.Bounds',
-                            -20037508.34,
-                            -20037508.34,
-                            20037508.34,
-                            20037508.34
-                        ],
-                        'projection': [
-                            '@new OpenLayers.Projection',
-                            'EPSG:900913'
-                        ],
-                        'displayProjection': [
-                            '@new OpenLayers.Projection',
-                            'EPSG:900913'
-                        ],
-                        'controls': [
-                            ['@new OpenLayers.Control.Navigation',
-                                {'zoomWheelEnabled': true}
+// Wax generation APIs. Each API object should have a `generate` method that
+// returns a wax JSON record object.
+var Waxer = {
+    ol: {
+        generate: function(layers, params, hosts) {
+            return { wax:
+                ['@group',
+                    ['@new OpenLayers.Map',
+                        params.el,
+                        {
+                            layers: _(layers).map(this.layerWax(hosts)),
+                            units: 'm',
+                            maxResolution: 1.40625,
+                            theme: hosts.uiHost + 'maps/ol/dark.css',
+                            maxExtent: [
+                                '@new OpenLayers.Bounds',
+                                -20037508.34,-20037508.34,
+                                20037508.34,20037508.34
                             ],
-                            ['@new OpenLayers.Control.Attribution'],
-                            ['@new wax.ol.Interaction'],
-                            ['@new wax.ol.Legend']
-                        ]
-                    }
-                ],
-                ['@inject setCenter',
-                    ['@group',
-                        ['@new OpenLayers.LonLat',
-                            req.query.center[0],
-                            req.query.center[1]
-                        ],
-                        ['@inject transform',
-                            ['@new OpenLayers.Projection', 'EPSG:4326'],
-                            ['@new OpenLayers.Projection', 'EPSG:900913']
-                        ]
+                            projection: [
+                                '@new OpenLayers.Projection',
+                                'EPSG:900913'
+                            ],
+                            displayProjection: [
+                                '@new OpenLayers.Projection',
+                                'EPSG:900913'
+                            ],
+                            controls: this.generateControls(params.options)
+                        }
                     ],
-                    req.query.zoom || 0
+                    ['@inject setCenter',
+                        ['@group',
+                            ['@new OpenLayers.LonLat',
+                                params.center[0], params.center[1]
+                            ],
+                            ['@inject transform',
+                                ['@new OpenLayers.Projection', 'EPSG:4326'],
+                                ['@new OpenLayers.Projection', 'EPSG:900913']
+                            ]
+                        ], params.center[2]
+                    ]
                 ]
-            ]
-        });
-
-        // Generate wax for the provided layer
-        function layerWax(layer, index) {
-            var minzoom = layer.get('minzoom'),
-                maxzoom = layer.get('maxzoom'),
-                hostnames = [],
-                options = {
+            };
+        },
+        layerWax: function(hosts) {
+            return function(layer, index) {
+                var options = {
                     'projection': ['@new OpenLayers.Projection', 'EPSG:900913'],
                     'wrapDateLine': false,
                     'type': 'png',
                     'buffer': 0,
                     'transitionEffect': 'resize',
                     'serverResolutions': [
-                        156543.0339,78271.51695,39135.758475,19567.8792375,9783.93961875,
-                        4891.96980938,2445.98490469,1222.99245234,611.496226172,
-                        305.748113086,152.874056543,76.4370282715,38.2185141357,
-                        19.1092570679,9.55462853394,4.77731426697,2.38865713348,
-                        1.19432856674,0.597164283371
+                        156543.0339, 78271.51695, 39135.758475, 19567.8792375,
+                        9783.93961875, 4891.96980938, 2445.98490469,
+                        1222.99245234, 611.496226172,
+                        305.748113086, 152.874056543, 76.4370282715, 38.2185141357,
+                        19.1092570679, 9.55462853394, 4.77731426697, 2.38865713348,
+                        1.19432856674, 0.597164283371
                     ],
-                    'layername': layer.id,
+                    'layername': layer.get('id'),
                     'isBaseLayer': index === 0,
                     'visibility': true,
                     'maxExtent': [
@@ -138,41 +85,132 @@ module.exports = function(app, settings) {
                     'wrapDateLine': false
                 };
 
-            // Set the layer bounds. If the layer bounds exceed that of the world,
-            // do not set `maxExtent` as OpenLayers does not render the contiguous
-            // dateline-wrapped world correctly in this scenario.
-            if (layer.get('bounds')[0] <= -180 && layer.get('bounds')[2] >= 180) {
-                options.wrapDateLine = true;
-            }
+                // Set the layer bounds. If the layer bounds exceed that of the world,
+                // do not set `maxExtent` as OpenLayers does not render the contiguous
+                // dateline-wrapped world correctly in this scenario.
+                if (layer.get('bounds')[0] <= -180 && layer.get('bounds')[2] >= 180) {
+                    options.wrapDateLine = true;
+                }
 
-            // Return the proper subset of resolutions for this layer, using
-            // request query overrides of minzoom/maxzoom if present.
-            (req.query.minzoom && req.query.minzoom > minzoom) && (minzoom = req.query.minzoom);
-            (req.query.maxzoom && req.query.maxzoom < maxzoom) && (maxzoom = req.query.maxzoom);
-            options.resolutions = options.serverResolutions.slice(
-                minzoom,
-                maxzoom + 1
-            );
+                // Return the proper subset of resolutions for this layer.
+                options.resolutions = options.serverResolutions.slice(
+                    layer.get('minzoom'),
+                    layer.get('maxzoom') + 1
+                );
 
-            // If no hosts specified in settings, try to auto-detect host.
-            if (layer.get('type') === 'mapbox') {
-                hostnames = [
-                    "http://a.tile.mapbox.com/",
-                    "http://b.tile.mapbox.com/",
-                    "http://c.tile.mapbox.com/"
+                return ['@new OpenLayers.Layer.TMS',
+                    layer.get('name'),
+                    hosts.tileHost,
+                    options
                 ];
-                options.isBaseLayer = true;
-            } else if (settings.tileHost.length !== 0) {
-                hostnames = settings.tileHost;
-            } else {
-                hostnames.push('http://' + req.headers.host + '/');
             }
-
-            return ['@new OpenLayers.Layer.TMS',
-                layer.get('name'),
-                hostnames,
-                options
-            ];
+        },
+        generateControls: function(controls) {
+            var wax = {
+                zoomwheel: ['@new OpenLayers.Control.Navigation',
+                    {'zoomWheelEnabled': true}
+                ],
+                zoomwheelOff: ['@new OpenLayers.Control.Navigation',
+                    {'zoomWheelEnabled': false}
+                ],
+                zoompan: ['@new OpenLayers.Control.ZoomPanel'],
+                tooltips: ['@new wax.ol.Interaction'],
+                legend: ['@new wax.ol.Legend']
+            };
+            _(controls).include('zoomwheel') || controls.unshift('zoomwheelOff');
+            return _(controls).map(function(c) { return wax[c]; });
         }
+    }
+};
+
+module.exports = function(app, settings) {
+    // Loader for layers. Validates `req.query` to ensure it is usable.
+    function load(req, res, next) {
+        // Load defaults from Map model for each query property.
+        var properties = ['el', 'api', 'size', 'center', 'options'],
+            numeric = ['size', 'center'];
+        _(properties).each(function(key) {
+            req.query[key] = req.query[key] || defaults[key];
+            req.query[key] = _(req.query[key].toJSON).isFunction()
+                ? req.query[key].toJSON()
+                : req.query[key];
+            if (_(numeric).include(key) && _(req.query[key]).isArray()) {
+                req.query[key] = _(req.query[key]).map(function(value) {
+                    return parseFloat(value);
+                });
+            }
+        });
+        // Exception for `layers`.
+        req.query.layers = req.query.layers || [];
+
+        // Validate all query properties.
+        var checkOption = function(option) {
+            return _(['zoomwheel', 'zoompan', 'legend', 'tooltips']).include(option);
+        };
+        if (!_(req.query.el).isString()) return res.send('`el` is invalid.', 400);
+        if (!_(_(Waxer).keys()).include(req.query.api)) return res.send('`api` is invalid.', 400);
+        if (!_(req.query.size).isArray()) return res.send('`size` is invalid.', 400);
+        if (_(req.query.size).size() !== 2) return res.send('`size` is invalid.', 400);
+        if (!_(req.query.size).all(_.isNumber)) return res.send('`size` is invalid.', 400);
+        if (!_(req.query.center).isArray()) return res.send('`center` is invalid.', 400);
+        if (_(req.query.center).size() !== 3) return res.send('`center` is invalid.', 400);
+        if (!_(req.query.center).all(_.isNumber)) return res.send('`center` is invalid.', 400);
+        if (!_(req.query.layers).isArray()) return res.send('`layers` is invalid.', 400);
+        if (_(req.query.layers).size() === 0) return res.send('`layers` is invalid.', 400);
+        if (!_(req.query.options).isArray()) return res.send('`options` is invalid.', 400);
+        if (!_(req.query.options).all(checkOption)) return res.send('`options` is invalid.', 400);
+
+        var loadLayer = function(id, callback) {
+            var tileset = new models.Tileset({ id: id });
+            tileset.fetch({
+                success: function(model) { callback(null, model) },
+                error: function(model, err) { callback(err) }
+            });
+        };
+        Step(
+            function() {
+                var group = this.group();
+                if (!req.query.layers.length) next();
+                _.map(req.query.layers, function(id) {
+                    loadLayer(id, group());
+                });
+            },
+            function(err, layers) {
+                if (err) return res.send('`layers` is invalid', 400);
+                res.layers = layers;
+                next();
+            }
+        );
+    };
+
+    // Wax API Endpoint
+    // ----------------
+    // Provides and API for generating wax documents based on request query
+    // string.
+    //
+    // Possible query parameters include:
+    //
+    // - `el` - ID of the DOM element that should be attached to.
+    // - `layers` - List of layer IDs to include in the wax file. In front to
+    //    back order.
+    //        layers[]=test_project&layers[]=broadband-virginia_23ecea
+    // - `center` - List in the form [<lon>, <lat>, <zoom>]
+    //        center[]=66.5&center[]=55.8&&center[]=2
+    app.get('/wax.json', load, function(req, res, next) {
+        var hosts = {
+            uiHost: settings.uiHost || 'http://' + req.headers.host + '/',
+            tileHost: settings.tileHost.length
+                ? settings.tileHost
+                : ['http://' + req.headers.host + '/']
+        };
+        res.send(Waxer[req.query.api].generate(res.layers, req.query, hosts));
     });
-}
+
+    // Expose Waxer, defaults, load middleware as exports.
+    return {
+        Waxer: Waxer,
+        defaults: defaults,
+        load: load
+    };
+};
+
