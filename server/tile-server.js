@@ -8,6 +8,7 @@ var _ = require('underscore')._,
 
 module.exports = function(app, settings) {
     app.enable('jsonp callback');
+    app.error(Error.HTTP.handler(settings));
 
     // Route middleware. Validates an mbtiles file specified in a tile or
     // download route.
@@ -15,9 +16,9 @@ module.exports = function(app, settings) {
         res.mapfile = path.join(settings.tiles, req.params[0] + '.mbtiles');
         path.exists(res.mapfile, function(exists) {
             if (exists) {
-                return next();
+                next();
             } else {
-                res.send('Not found.', 404);
+                next(new Error.HTTP('Tileset not found.', 404));
             }
         });
     };

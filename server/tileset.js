@@ -118,7 +118,7 @@ module.exports = function(settings) {
                 fs.stat(filepath, this);
             },
             function(err, stat) {
-                if (err) return callback(new Error('Tileset not found.'));
+                if (err) return callback(new Error.HTTP('Tileset not found.', 404));
                 data.size = stat.size;
                 data.mtime = +stat.mtime;
                 Pool.acquire('mbtiles', filepath, {}, this);

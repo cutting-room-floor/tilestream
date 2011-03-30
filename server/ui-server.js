@@ -10,6 +10,7 @@ var fs = require('fs'),
 
 module.exports = function(server, settings) {
     server.enable('jsonp callback');
+    server.error(Error.HTTP.handler(settings));
 
     // Initialize bones, bones templates, server-side mixins.
     Bones.Bones(server);
@@ -78,7 +79,7 @@ module.exports = function(server, settings) {
         if (models[req.param('model')]) {
             next();
         } else {
-            next(new Error('Invalid model.'));
+            next(new Error.HTTP('Invalid model.', 400));
         }
     };
 
@@ -87,7 +88,7 @@ module.exports = function(server, settings) {
         if (models[req.param('model') + 'List'] || models[req.param('model') + 's']) {
             next();
         } else {
-            next(new Error('Invalid collection.'));
+            next(new Error.HTTP('Invalid collection.', 400));
         }
     };
 
@@ -97,7 +98,7 @@ module.exports = function(server, settings) {
         var list = new Collection([], { id: req.params[0] });
         list.fetch({
             success: function(model, resp) { res.send(model.toJSON()) },
-            error: function(model, resp) { res.send(resp, 500); }
+            error: function(model, err) { next(err); }
         });
     });
 
@@ -108,20 +109,20 @@ module.exports = function(server, settings) {
         case 'GET':
             model.fetch({
                 success: function(model, resp) { res.send(model.toJSON()) },
-                error: function(model, resp) { res.send(resp, 500); }
+                error: function(model, err) { next(err); }
             });
             break;
         case 'POST':
         case 'PUT':
             model.save(req.body, {
                 success: function(model, resp) { res.send(resp) },
-                error: function(model, resp) { res.send(resp, 500); }
+                error: function(model, err) { next(err); }
             });
             break;
         case 'DELETE':
             model.destroy({
                 success: function(model, resp) { res.send({}) },
-                error: function(model, resp) { res.send(resp, 500); }
+                error: function(model, err) { next(err); }
             });
             break;
         }
