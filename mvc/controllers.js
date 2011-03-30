@@ -30,8 +30,11 @@ Bones.controllers.Router = Backbone.Controller.extend({
                 var view = new Bones.views.Maps({ collection: collection });
                 response(new Bones.views.App({ view: view }));
             },
-            error: function() {
-                var view = new Bones.views.Error({ message: 'Error loading tilesets.' });
+            error: function(model, xhr) {
+                try { var response = JSON.parse(xhr.responseText); }
+                catch(err) { var response = { message: 'Server is offline.' }; }
+
+                var view = new Bones.views.Error({ message: response.message });
                 response(new Bones.views.App({ view: view }));
             }
         });
@@ -43,8 +46,11 @@ Bones.controllers.Router = Backbone.Controller.extend({
                 var view = new Bones.views.Map({ model: model });
                 response(new Bones.views.App({ view: view }));
             },
-            error: function() {
-                var view = new Bones.views.Error({ message: 'Tileset not found.' });
+            error: function(model, xhr) {
+                try { var response = JSON.parse(xhr.responseText); }
+                catch(err) { var response = { message: 'Server is offline.' }; }
+
+                var view = new Bones.views.Error({ message: response.message });
                 response(new Bones.views.App({ view: view }));
             }
         });
