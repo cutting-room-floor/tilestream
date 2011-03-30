@@ -37,8 +37,7 @@ Bones.models.Tileset = Backbone.Model.extend({
         return '/api/Tileset/' + this.id;
     },
     // Return the base URLs of TileStream tile servers including a single
-    // trailing slash, e.g. http://localhost:8889/ or http://mapbox/tilestream/
-    // in an Array.
+    // trailing slash, e.g. http://localhost:8889/ in an Array.
     layerURL: function() {
         // Servers defined in `Bones.settings`.
         if (Bones.settings.tileHost.length) {
@@ -83,11 +82,9 @@ Bones.models.Tileset = Backbone.Model.extend({
             layers: [this.get('id')],
             center: [
                 this.get('center').lon,
-                this.get('center').lat
-            ],
-            zoom: 0,
-            minzoom: this.get('minzoom'),
-            maxzoom: this.get('maxzoom')
+                this.get('center').lat,
+                this.get('minzoom')
+            ]
         };
     }
 });

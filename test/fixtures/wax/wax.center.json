@@ -1,0 +1,123 @@
+{
+    "wax": [
+        "@group",
+        [
+            "@new OpenLayers.Map",
+            "map",
+            {
+                "layers": [
+                    [
+                        "@new OpenLayers.Layer.TMS",
+                        "control_room",
+                        [
+                            "http://localhost:8888"
+                        ],
+                        {
+                            "projection": [
+                                "@new OpenLayers.Projection",
+                                "EPSG:900913"
+                            ],
+                            "wrapDateLine": true,
+                            "type": "png",
+                            "buffer": 0,
+                            "transitionEffect": "resize",
+                            "serverResolutions": [
+                                156543.0339,
+                                78271.51695,
+                                39135.758475,
+                                19567.8792375,
+                                9783.93961875,
+                                4891.96980938,
+                                2445.98490469,
+                                1222.99245234,
+                                611.496226172,
+                                305.748113086,
+                                152.874056543,
+                                76.4370282715,
+                                38.2185141357,
+                                19.1092570679,
+                                9.55462853394,
+                                4.77731426697,
+                                2.38865713348,
+                                1.19432856674,
+                                0.597164283371
+                            ],
+                            "layername": "control_room",
+                            "isBaseLayer": true,
+                            "visibility": true,
+                            "maxExtent": [
+                                "@new OpenLayers.Bounds",
+                                -20037508.34,
+                                -20037508.34,
+                                20037508.34,
+                                20037508.34
+                            ],
+                            "resolutions": [
+                                156543.0339,
+                                78271.51695,
+                                39135.758475,
+                                19567.8792375,
+                                9783.93961875
+                            ]
+                        }
+                    ]
+                ],
+                "units": "m",
+                "maxResolution": 1.40625,
+                "theme": "http://locahost:8888maps/ol/dark.css",
+                "maxExtent": [
+                    "@new OpenLayers.Bounds",
+                    -20037508.34,
+                    -20037508.34,
+                    20037508.34,
+                    20037508.34
+                ],
+                "projection": [
+                    "@new OpenLayers.Projection",
+                    "EPSG:900913"
+                ],
+                "displayProjection": [
+                    "@new OpenLayers.Projection",
+                    "EPSG:900913"
+                ],
+                "controls": [
+                    [
+                        "@new OpenLayers.Control.Navigation",
+                        {
+                            "zoomWheelEnabled": true
+                        }
+                    ],
+                    [
+                        "@new wax.ol.Legend"
+                    ],
+                    [
+                        "@new wax.ol.Interaction"
+                    ]
+                ]
+            }
+        ],
+        [
+            "@inject setCenter",
+            [
+                "@group",
+                [
+                    "@new OpenLayers.LonLat",
+                    40,
+                    40
+                ],
+                [
+                    "@inject transform",
+                    [
+                        "@new OpenLayers.Projection",
+                        "EPSG:4326"
+                    ],
+                    [
+                        "@new OpenLayers.Projection",
+                        "EPSG:900913"
+                    ]
+                ]
+            ],
+            2
+        ]
+    ]
+}
