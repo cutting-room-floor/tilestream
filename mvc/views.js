@@ -111,10 +111,7 @@ Bones.views.MapClient = Backbone.View.extend({
         return '/wax.json?' + $.param(wax);
     },
     generateWax: function(callback) {
-        var wax = this.model.wax();
-        wax.el = $(this.el).attr('id');
-        wax.zoom = ((this.model.get('minzoom') + 2) <= this.model.get('maxzoom')) ? 2 : wax.zoom;
-        return wax;
+        return _(this.model.wax()).extend({el: $(this.el).attr('id')});
     },
     record: function(data) {
         if (data && data.wax) {
