@@ -1,5 +1,5 @@
 body {
-  background:#444 url(../images/bg.png);
+  background:#444 url(../images/bg.png) 50% 0%;
   color:#ccc;
   font:15px/20px Arial,Helvetica,sans-serif;
   }
@@ -108,13 +108,21 @@ a {
 /**
  * Maps =======================================================================
  */
-.maps { padding:60px 0px 0px 20px; }
+.maps {
+  padding:60px 0px 0px;
+  text-align:center;
+  line-height:0px;
+  }
 
 .maps li {
+  display:inline-block;
+  *display:inline; /* IE7 only */
+  text-align:left;
   width:240px;
   height:240px;
-  margin:0px 10px 10px 0px;
-  float:left;
+  margin:0px 10px 20px;
+  overflow:hidden;
+  line-height:20px;
   position:relative;
   box-shadow:#222 0px 1px 10px;
   -moz-box-shadow:#222 0px 1px 10px;
