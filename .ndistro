@@ -25,7 +25,7 @@ module mapbox tilelive.js 2.0.1
 module substack node-optimist fe084bddeaefd003a76c36d5633d65e8ffb4b474 optimist
 
 # Main module
-module mapbox tilestream 0.0.6
+module mapbox tilestream 0.0.7
 
 # Module layout workarounds
 cd $ROOT
