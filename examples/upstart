@@ -17,7 +17,7 @@ stop on runlevel [016]
 
 script
     chdir $TILESTREAM_HOME
-    exec NODE_ENV=production $TILESTREAM_HOME/bin/node tilestream.js >> /var/log/tilestream.log 2>&1
+    NODE_ENV=production exec $TILESTREAM_HOME/bin/node tilestream.js >> /var/log/tilestream.log 2>&1
 end script
 
 respawn
