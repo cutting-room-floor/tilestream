@@ -5,7 +5,8 @@ var _ = require('underscore')._,
     Step = require('step'),
     MBTiles = require('tilelive').MBTiles,
     Pool = require('tilelive').Pool,
-    SphericalMercator = require('tilelive').SphericalMercator;
+    SphericalMercator = require('tilelive').SphericalMercator,
+    tilesets = {};
 
 module.exports = function(settings) {
     // Extend `MBTiles` class with an `info` method for retrieving metadata and
@@ -17,8 +18,24 @@ module.exports = function(settings) {
         info.basename = path.basename(that.filename);
         info.id = info.basename.replace(path.extname(that.filename), '');
         Step(
+            // Check db integrity. Commented out for now -- if lower TTL does
+            // not prevent serving/caching of incomplete tilesets in proxy
+            // cache scenarios, consider putting this back in. Note that even
+            // `PRAGMA quick_check` can be a very expensive operation on large
+            // databases.
+            // function() {
+            //     var end = this;
+            //     that.db.get('PRAGMA quick_check(1)', function(err, row) {
+            //         if (!(row && row.integrity_check && row.integrity_check === 'ok')) {
+            //             end(new Error('Corrupted database.'));
+            //         } else {
+            //             end(null);
+            //         }
+            //     });
+            // },
             // Load metadata table
-            function() {
+            function(err) {
+                if (err) return callback(err);
                 var end = this;
                 that.db.all("SELECT name, value FROM metadata", function(err, rows) {
                     if (rows) for (var i = 0; i < rows.length; i++) {
@@ -119,11 +136,24 @@ module.exports = function(settings) {
             },
             function(err, stat) {
                 if (err) return callback(new Error.HTTP('Tileset not found.', 404));
+
                 data.size = stat.size;
                 data.mtime = +stat.mtime;
-                Pool.acquire('mbtiles', filepath, {}, this);
+                data.status = false;
+                if (tilesets[model.id] && tilesets[model.id].mtime === data.mtime) {
+                    if (tilesets[model.id].status) {
+                        return callback(null, tilesets[model.id]);
+                    } else {
+                        return callback(new Error.HTTP('Tileset not found.', 404));
+                    }
+                } else {
+                    tilesets[model.id] = data;
+                    Pool.acquire('mbtiles', filepath, {}, this);
+                }
             },
             function(err, mbtiles) {
+                if (err) return callback(err);
+
                 var that = this;
                 mbtiles.info(function(err, info) {
                     Pool.release('mbtiles', filepath, mbtiles);
@@ -131,20 +161,10 @@ module.exports = function(settings) {
                 });
             },
             function(err, info) {
-                if (err) {
-                    return callback(err);
-                } else {
-                    _.extend(data, info);
-                }
-                this();
-            },
-            function(err) {
-                if (err) {
-                    callback(err);
-                }
-                else {
-                    callback(null, data);
-                }
+                if (err) return callback(err);
+
+                _.extend(data, info, {status: true});
+                callback(null, data);
             }
         );
     };
