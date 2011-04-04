@@ -23,6 +23,12 @@ if (argv.help) {
         }
     }
 } else if (app.commands[command]) {
-    app.commands[command].command(argv, function() {});
+    if (app.init) {
+        app.init(argv, function() {
+            app.commands[command].command(argv, function() {});
+        });
+    } else {
+        app.commands[command].command(argv, function() {});
+    }
 }
 

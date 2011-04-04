@@ -46,6 +46,12 @@ module.exports = function(options) {
     require('tilestream/server/ui-server')(exports.uiServer, options);
     require('tilestream/server/tile-server')(exports.tileServer, options);
 
+    // The init callback is called prior to any commands, allowing for
+    // asynchronous setup operations to finish before moving on.
+    exports.init = function(options, callback) {
+        require('tilestream/server/tileset')(options).all({}, callback);
+        console.log('Loading tilesets...');
+    };
     exports.commands = {
         'start': {
             name: 'start',
