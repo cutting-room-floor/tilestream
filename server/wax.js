@@ -51,7 +51,12 @@ var Waxer = {
                                 ['@new OpenLayers.Projection', 'EPSG:4326'],
                                 ['@new OpenLayers.Projection', 'EPSG:900913']
                             ]
-                        ], params.center[2]
+                        ],
+                        // OpenLayers sets zoom level relative to the minimum
+                        // zoom level of the base layer, e.g. a map with zooms
+                        // 3-10 has a zoom level of '0' initially when on zoom
+                        // level 3.
+                        params.center[2] - layers[0].get('minzoom')
                     ]
                 ]
             };
