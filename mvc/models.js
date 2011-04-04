@@ -63,23 +63,12 @@ Bones.models.Tileset = Backbone.Model.extend({
             return ['http://localhost:8888/'];
         }
     },
-    // Get the "mid" zoom level of this tileset. Useful for thumbnails/overview
-    // images for tilesets.
-    thumbzoom: function() {
-        var range = this.get('maxzoom') - this.get('minzoom');
-        if (range <= 1) {
-            return this.get('maxzoom');
-        } else {
-            return Math.floor(range * 0.5) + this.get('minzoom');
-        }
-    },
     // Get ZXY of tile of tileset's center and minzoom. From [OSM wiki][1].
     // [1]: http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#lon.2Flat_to_tile_numbers_2
     toZXY: function() {
-        var center = this.get('center');
-        var z = this.thumbzoom();
-        var lat_rad = center.lat * Math.PI / 180 * -1; // -1 for TMS (flipped from OSM)
-        var x = parseInt((center.lon + 180.0) / 360.0 * Math.pow(2, z));
+        var z = this.get('center')[2];
+        var lat_rad = this.get('center')[1] * Math.PI / 180 * -1; // -1 for TMS (flipped from OSM)
+        var x = parseInt((this.get('center')[0] + 180.0) / 360.0 * Math.pow(2, z));
         var y = parseInt((1.0 - Math.log(Math.tan(lat_rad) + (1 / Math.cos(lat_rad))) / Math.PI) / 2.0 * Math.pow(2, z));
         return [z, x, y];
     },
@@ -89,12 +78,9 @@ Bones.models.Tileset = Backbone.Model.extend({
     },
     wax: function() {
         return {
+            api: 'ol',
             layers: [this.get('id')],
-            center: [
-                this.get('center').lon,
-                this.get('center').lat,
-                this.thumbzoom()
-            ]
+            center: this.get('center')
         };
     }
 });

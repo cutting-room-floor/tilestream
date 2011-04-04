@@ -113,13 +113,15 @@ module.exports = function(settings) {
             // Return info
             function(err) {
                 if (err) return callback(err);
+                var range = parseInt(info.maxzoom) - parseInt(info.minzoom);
                 info.minzoom = parseInt(info.minzoom);
                 info.maxzoom = parseInt(info.maxzoom);
                 info.bounds = _.map(info.bounds.split(','), function(val) { return parseFloat(val) });
-                info.center = {
-                    lat: (info.bounds[3] - info.bounds[1]) / 2 + info.bounds[1],
-                    lon: (info.bounds[2] - info.bounds[0]) / 2 + info.bounds[0]
-                }
+                info.center = [
+                    (info.bounds[2] - info.bounds[0]) / 2 + info.bounds[0],
+                    (info.bounds[3] - info.bounds[1]) / 2 + info.bounds[1],
+                    (range <= 1) ? info.maxzoom : Math.floor(range * 0.5) + info.minzoom
+                ];
                 callback(null, info);
             }
         );
