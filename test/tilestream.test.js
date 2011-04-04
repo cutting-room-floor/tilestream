@@ -16,7 +16,7 @@ module.exports = {
             function(res) {
                 assert.equal(res.headers['content-length'], 63554);
                 assert.equal(res.headers['content-type'], 'image/png');
-                assert.equal(res.headers['cache-control'], 'max-age=31536000');
+                assert.equal(res.headers['cache-control'], 'max-age=3600');
                 assert.ok(res.headers['last-modified']);
                 assert.ok(res.headers['e-tag']);
             }
