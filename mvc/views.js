@@ -94,7 +94,7 @@ Bones.views.MapClient = Backbone.View.extend({
     className: 'MapClient',
     id: 'openlayers-map',
     initialize: function(options) {
-        _.bindAll(this, 'ready', 'zoom', 'record');
+        _.bindAll(this, 'ready', 'zoom', 'record', 'ol', 'olNav');
     },
     ready: function() {
         var that = this;
@@ -115,25 +115,19 @@ Bones.views.MapClient = Backbone.View.extend({
     },
     record: function(data) {
         if (data && data.wax) {
-            this.openlayers = wax.Record(data.wax);
-            if (this.openlayers.events && this.openlayers.events.register) {
-                this.openlayers.events.register(
-                    'moveend',
-                    this.openlayers,
-                    this.zoom
-                );
-                this.openlayers.events.register(
-                    'zoomend',
-                    this.openlayers,
-                    this.zoom
-                );
-                this.zoom({element: this.openlayers.div});
-            }
+            var api = this.generateWax().api;
+            this.map = wax.Record(data.wax);
+            _(this[api]).isFunction() && this[api]();
         }
     },
-    zoom: function(e) {
+    ol: function() {
+        this.map.events.register('moveend', this.map, this.olNav);
+        this.map.events.register('zoomend', this.map, this.olNav);
+        this.olNav({element: this.map.div});
+    },
+    olNav: function(e) {
         if (!$('.zoom').size()) return;
-        var zoom = this.model.get('minzoom') + this.openlayers.getZoom();
+        var zoom = this.model.get('minzoom') + this.map.getZoom();
         $('.zoom.active').removeClass('active');
         $('.zoom-' + zoom).addClass('active');
     }
