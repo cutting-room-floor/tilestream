@@ -94,7 +94,10 @@ Bones.models.Tileset = Backbone.Model.extend({
 // Collection of all tileset models.
 Bones.models.Tilesets = Backbone.Collection.extend({
     model: Bones.models.Tileset,
-    url: '/api/Tileset'
+    url: '/api/Tileset',
+    comparator: function(model) {
+        return (model.get('name') || model.get('id')).toLowerCase();
+    }
 });
 
 (typeof module !== 'undefined') && (module.exports = Bones.models);

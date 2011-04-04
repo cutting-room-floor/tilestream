@@ -185,9 +185,14 @@ module.exports = function(settings) {
             function(err, models) {
                 // Ignore errors from loading individual models (e.g.
                 // don't let one bad apple spoil the collection).
-                models = _.select(models, function(model) {
-                    return (typeof model === 'object');
-                });
+                models = _(models).chain()
+                    .select(function(model) {
+                        return (typeof model === 'object');
+                    })
+                    .sortBy(function(model) {
+                        return (model.name || model.id).toLowerCase();
+                    })
+                    .value();
                 callback(null, models);
             }
         );

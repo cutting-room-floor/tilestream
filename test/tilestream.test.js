@@ -81,9 +81,9 @@ module.exports = {
                     maps = JSON.parse(res.body);
                 }, SyntaxError);
                 assert.equal(maps.length, 2);
-                assert.equal(maps[1].id, 'control_room');
-                assert.equal(maps[1].type, 'baselayer');
-                assert.equal(maps[1].bounds, "-180,-85.05112877980659,180,89.99075251648905");
+                assert.equal(maps[0].id, 'control_room');
+                assert.equal(maps[0].type, 'baselayer');
+                assert.equal(maps[0].bounds, "-180,-85.05112877980659,180,89.99075251648905");
             }
         );
     },
