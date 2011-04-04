@@ -21,9 +21,9 @@ module.exports = function(options) {
     options.tileHost = options.tileHost ? options.tileHost.split(',') : [];
     options.tiles = options.tiles || path.join(process.cwd(), 'tiles');
     // @TODO: how to alter these hashes with commandline options?
-    // Default tile response headers. Sets max-age to one year.
+    // Default tile response headers. Sets max-age to one hour.
     options.header_defaults = {
-        'Cache-Control': 'max-age=' + 60 * 60 * 24 * 365
+        'Cache-Control': 'max-age=' + 60 * 60
     };
     options.features = {
         download: true,
