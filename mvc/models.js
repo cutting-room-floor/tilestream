@@ -82,6 +82,11 @@ Bones.models.Tileset = Backbone.Model.extend({
             layers: [this.get('id')],
             center: this.get('center')
         };
+    },
+    // Pass through function for determining the server-side filepath of a
+    // Tileset model.
+    filepath: function(path) {
+        return path + '/' + this.id + '.mbtiles';
     }
 });
 
@@ -93,6 +98,11 @@ Bones.models.Tilesets = Backbone.Collection.extend({
     url: '/api/Tileset',
     comparator: function(model) {
         return (model.get('name') || model.get('id')).toLowerCase();
+    },
+    // Pass through function for determining the server-side filepath of a
+    // Tilesets collection.
+    filepath: function(path) {
+        return path;
     }
 });
 

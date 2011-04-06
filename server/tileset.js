@@ -8,7 +8,6 @@ var _ = require('underscore')._,
     SphericalMercator = require('tilelive').SphericalMercator,
     tilesets = {};
 
-module.exports = function(settings) {
     // Extend `MBTiles` class with an `info` method for retrieving metadata and
     // performing fallback queries if certain keys (like `bounds`, `minzoom`,
     // `maxzoom`) have not been provided.
@@ -129,8 +128,7 @@ module.exports = function(settings) {
 
     // Load a tileset model. Retrieve `.mbtiles` file stats, open the DB, retrieve
     // metadata about the tiles.
-    var load = function (model, callback) {
-        var filepath = path.join(settings.tiles, model.id + '.mbtiles');
+    var load = function (filepath, callback) {
         var data = {};
         Step(
             function() {
@@ -142,14 +140,14 @@ module.exports = function(settings) {
                 data.size = stat.size;
                 data.mtime = +stat.mtime;
                 data.status = false;
-                if (tilesets[model.id] && tilesets[model.id].mtime === data.mtime) {
-                    if (tilesets[model.id].status) {
-                        return callback(null, tilesets[model.id]);
+                if (tilesets[filepath] && tilesets[filepath].mtime === data.mtime) {
+                    if (tilesets[filepath].status) {
+                        return callback(null, tilesets[filepath]);
                     } else {
                         return callback(new Error.HTTP('Tileset not found.', 404));
                     }
                 } else {
-                    tilesets[model.id] = data;
+                    tilesets[filepath] = data;
                     Pool.acquire('mbtiles', filepath, {}, this);
                 }
             },
@@ -172,11 +170,11 @@ module.exports = function(settings) {
     };
 
     // Load all tileset models.
-    var all = function (model, callback) {
+    var all = function (filepath, callback) {
         Step(
             function() {
                 try {
-                    fs.readdir(settings.tiles, this);
+                    fs.readdir(filepath, this);
                 } catch(err) {
                     this(err);
                 }
@@ -198,7 +196,7 @@ module.exports = function(settings) {
                     .value();
                 if (tilesets.length) {
                     for (var i = 0; i < tilesets.length; i++) {
-                        load({ id: tilesets[i] }, group());
+                        load(path.join(filepath, tilesets[i] + '.mbtiles'), group());
                     }
                 } else {
                     this(null, []);
@@ -220,5 +218,8 @@ module.exports = function(settings) {
         );
     };
 
-    return { load: load, all: all };
-};
+    module.exports = {
+        load: load,
+        all: all
+    };
+
