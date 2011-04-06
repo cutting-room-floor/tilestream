@@ -166,8 +166,9 @@ module.exports = function(app, settings) {
         if (!_(req.query.options).all(checkOption)) return res.send('`options` is invalid.', 400);
 
         var loadLayer = function(id, callback) {
-            var tileset = new models.Tileset({ id: id });
-            tileset.fetch({
+            req.model = req.model || {};
+            req.model.options = req.model.options || {};
+            (new models.Tileset({ id: id }, req.model.options)).fetch({
                 success: function(model) { callback(null, model) },
                 error: function(model, err) { callback(err) }
             });
