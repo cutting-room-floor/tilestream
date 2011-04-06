@@ -94,8 +94,10 @@ module.exports = function(server, settings) {
 
     // Generic GET endpoint for collection loading.
     server.get('/api/:model', validateCollection, function(req, res, next) {
+        req.model = req.model || {};
+        req.model.options = req.model.options || {};
         var Collection = models[req.param('model') + 'List'] || models[req.param('model') + 's'];
-        var list = new Collection([], { id: req.params[0] });
+        var list = new Collection([], req.model.options);
         list.fetch({
             success: function(model, resp) { res.send(model.toJSON()) },
             error: function(model, err) { next(err); }
@@ -104,7 +106,9 @@ module.exports = function(server, settings) {
 
     // REST endpoints for models.
     server.all('/api/:model/*', validateModel, function(req, res, next) {
-        var model = new models[req.param('model')]({ id: req.params[0] });
+        req.model = req.model || {};
+        req.model.options = req.model.options || {};
+        var model = new models[req.param('model')]({ id: req.params[0] }, req.model.options);
         switch (req.method) {
         case 'GET':
             model.fetch({
