@@ -4,7 +4,8 @@ var _ = require('underscore')._,
     Step = require('step'),
     fs = require('fs'),
     path = require('path'),
-    Tile = require('tilelive').Tile;
+    Tile = require('tilelive').Tile,
+    models = require('../mvc/models');
 
 module.exports = function(app, settings) {
     app.enable('jsonp callback');
@@ -13,12 +14,19 @@ module.exports = function(app, settings) {
     // Route middleware. Validates an mbtiles file specified in a tile or
     // download route.
     var validateTileset = function(req, res, next) {
-        res.mapfile = path.join(settings.tiles, req.params[0] + '.mbtiles');
-        path.exists(res.mapfile, function(exists) {
-            if (exists) {
+        req.model = req.model || {};
+        req.model.options = req.model.options || {};
+        var model = new models.Tileset(
+            { id: req.params[0] },
+            req.model.options
+        );
+        model.fetch({
+            success: function(model) {
+                res.mapfile = model.filepath(settings.tiles);
                 next();
-            } else {
-                next(new Error.HTTP('Tileset not found.', 404));
+            },
+            error: function(model, err) {
+                next(err);
             }
         });
     };
