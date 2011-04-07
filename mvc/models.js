@@ -18,50 +18,21 @@ Bones.models = Bones.models || {};
 // A single tileset, corresponding to an `.mbtiles` file. `model.id` is the
 // file basename, e.g. `foo.mbtiles` has an `id` of `foo`.
 Bones.models.Tileset = Backbone.Model.extend({
-    initialize: function(attributes) {
-        Backbone.Model.prototype.initialize.call(this, attributes);
-        // Convert representation of baselayer into a true Tileset model.
-        if (typeof this.get('baselayer') !== 'undefined') {
-            this.set({ baselayer: new Tileset(this.get('baselayer')) });
+    initialize: function(attributes, options) {
+        options = options || {};
+        if (this.collection) {
+            this.uiHost = this.collection.uiHost;
+            this.tileHost = this.collection.tileHost;
+        } else {
+            this.uiHost = options.uiHost;
+            this.tileHost = options.tileHost;
         }
-    },
-    parse: function(response){
-        var model = Backbone.Model.prototype.parse.call(this, response);
-        // Convert representation of baselayer into a true Tileset model.
-        if (typeof model.baselayer !== 'undefined') {
-            model.baselayer = new Tileset(model.baselayer);
-        }
-        return model;
     },
     url: function() {
         return '/api/Tileset/' + this.id;
     },
-    // Return the base URLs of TileStream tile servers including a single
-    // trailing slash, e.g. http://localhost:8889/ in an Array.
     layerURL: function() {
-        // Servers defined in `Bones.settings`.
-        if (Bones.settings.tileHost.length) {
-            return Bones.settings.tileHost;
-        // Autodetect server from window object.
-        } else if (window.location && window.location.hostname) {
-            // Attempt to autodetect URL.
-            var baseURL = window.location.protocol + '//' + window.location.hostname + ':' + Bones.settings.tilePort;
-            var args = window.location.pathname.split('/');
-            // Path already ends with trailing slash.
-            if (args[args.length - 1] === '') {
-                return [baseURL + args.join('/')];
-            // index.html or similar trailing filename.
-            } else if (args[args.length - 1].indexOf('.') !== -1) {
-                args.pop();
-                return [baseURL + args.join('/') + '/'];
-            // Path beyond domain.
-            } else {
-                return [baseURL + args.join('/') + '/'];
-            }
-        // Server side, *TODO* needs a solution.
-        } else {
-            return ['http://localhost:8888/'];
-        }
+        return this.tileHost;
     },
     // Get ZXY of tile of tileset's center and minzoom. From [OSM wiki][1].
     // [1]: http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#lon.2Flat_to_tile_numbers_2
@@ -94,6 +65,11 @@ Bones.models.Tileset = Backbone.Model.extend({
 // --------
 // Collection of all tileset models.
 Bones.models.Tilesets = Backbone.Collection.extend({
+    initialize: function(models, options) {
+        options = options || {};
+        this.uiHost = options.uiHost;
+        this.tileHost = options.tileHost;
+    },
     model: Bones.models.Tileset,
     url: '/api/Tileset',
     comparator: function(model) {

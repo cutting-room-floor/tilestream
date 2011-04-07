@@ -16,7 +16,16 @@ Bones.controllers.Router = Backbone.Controller.extend({
     Collection: Bones.models.Tilesets,
     Model: Bones.models.Tileset,
     initialize: function(options) {
-        _.bindAll(this, 'list', 'map');
+        _.bindAll(this, 'list', 'map', 'getOptions');
+    },
+    getOptions: function(response) {
+        var options = {};
+        if (response.req && response.req.model && response.req.model.options) {
+            options = response.req.model.options;
+        } else if (Bones.settings) {
+            options = Bones.settings;
+        }
+        return options;
     },
     routes: {
         '': 'list',
@@ -25,7 +34,7 @@ Bones.controllers.Router = Backbone.Controller.extend({
     },
     list: function(response) {
         var that = this;
-        var options = (response.req && response.req.model && response.req.model.options) || {};
+        var options = this.getOptions(response);
         (new this.Collection([], options)).fetch({
             success: function(collection) {
                 var view = new Bones.views.Maps({ collection: collection });
@@ -42,7 +51,7 @@ Bones.controllers.Router = Backbone.Controller.extend({
     },
     map: function(id, response) {
         var that = this;
-        var options = (response.req && response.req.model && response.req.model.options) || {};
+        var options = this.getOptions(response);
         (new this.Model({ id: id }, options)).fetch({
             success: function(model) {
                 var view = new Bones.views.Map({ model: model });

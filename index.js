@@ -16,9 +16,7 @@ module.exports = function(options) {
 
     options = options || {};
     options.uiPort = options.uiPort || 8888;
-    options.uiHost = options.uiHost || false;
     options.tilePort = options.tilePort || 8888;
-    options.tileHost = options.tileHost ? options.tileHost.split(',') : [];
     options.tiles = options.tiles || path.join(process.cwd(), 'tiles');
     // @TODO: how to alter these hashes with commandline options?
     // Default tile response headers. Sets max-age to one hour.
@@ -41,6 +39,11 @@ module.exports = function(options) {
         exports.tileServer = express.createServer();
     }
 
+    // Add host info middleware.
+    var host = require('./server/host')(options);
+    exports.uiServer.use(host);
+    exports.tileServer.use(host);
+
     // Bootstrap.
     require('tilestream/server/bootstrap')(options);
     require('tilestream/server/ui-server')(exports.uiServer, options);
@@ -59,9 +62,7 @@ module.exports = function(options) {
             options: {
                 '--config=PATH': 'Pass options via JSON config file at PATH.',
                 '--uiPort=PORT': 'UI server port. Defaults to 8888.',
-                '--uiHost=HOST': 'UI server hostname. Defaults to localhost.',
                 '--tilePort=PORT': 'Tile server port. Defaults to 8888.',
-                '--tileHost=HOST': 'Tile server hostname(s). Defaults to localhost.',
                 '--tiles=PATH': 'Path to tiles directory.'
             },
             command: function(argv, callback) {

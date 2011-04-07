@@ -203,12 +203,7 @@ module.exports = function(app, settings) {
     // - `center` - List in the form [<lon>, <lat>, <zoom>]
     //        center[]=66.5&center[]=55.8&&center[]=2
     app.get('/wax.json', load, function(req, res, next) {
-        var hosts = {
-            uiHost: settings.uiHost || 'http://' + req.headers.host + '/',
-            tileHost: settings.tileHost.length
-                ? settings.tileHost
-                : ['http://' + req.headers.host + '/']
-        };
+        var hosts = { uiHost: req.uiHost, tileHost: req.tileHost };
         res.send(Waxer[req.query.api].generate(res.layers, req.query, hosts));
     });
 

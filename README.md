@@ -78,9 +78,7 @@ Commandline options:
         start server
         --config=PATH      Pass options via JSON config file at PATH.
         --uiPort=PORT      UI server port. Defaults to 8888.
-        --uiHost=HOST      UI server hostname. Defaults to localhost.
         --tilePort=PORT    Tile server port. Defaults to 8888.
-        --tileHost=HOST    Tile server hostname(s). Defaults to localhost.
         --tiles=PATH       Path to tiles directory.
 
 

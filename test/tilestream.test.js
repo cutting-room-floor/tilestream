@@ -1,8 +1,6 @@
 var assert = require('assert'),
     tilestream = require('tilestream')({
         tiles: __dirname + '/fixtures/tiles',
-        uiHost: 'http://locahost:8888',
-        tileHost: 'http://localhost:8888',
         uiPort: 8888,
         tilePort: 8888
     });
