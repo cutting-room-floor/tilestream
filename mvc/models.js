@@ -23,9 +23,9 @@ Backbone.Model.prototype.initialize = function(attributes, options) {
         this.options = options;
     }
     if (this.models) {
-        _(this.models).each(function(model) {
+        _(this.models).each(_(function(model) {
             model.options = this.options;
-        });
+        }).bind(this));
     }
 };
 
