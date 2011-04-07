@@ -157,12 +157,23 @@ Bones.views.HUD = Backbone.View.extend({
         $('.buttons a[href=#' + hud + ']').addClass('active');
         this.$('.hud.' + hud).addClass('active');
         $('body').addClass('hudActive');
+        $('body').addClass('hud'
+            + hud.charAt(0).toUpperCase()
+            + hud.slice(1)
+        );
         return this;
     },
     hide: function() {
         this.$('.buttons .active').removeClass('active');
         this.$('.hud.active').removeClass('active');
         $('body').removeClass('hudActive');
+        if (this.hud && this.hud.length > 0) {
+            $('body').removeClass('hud'
+                + this.hud.charAt(0).toUpperCase()
+                + this.hud.slice(1)
+            );
+            this.hud = '';
+        }
         return this;
     }
 });
