@@ -153,7 +153,7 @@ Bones.views.HUD = Backbone.View.extend({
         return false;
     },
     show: function(hud) {
-        this.hud = hud;
+        this.active = hud;
         $('.buttons a[href=#' + hud + ']').addClass('active');
         this.$('.hud.' + hud).addClass('active');
         $('body').addClass('hudActive');
@@ -167,12 +167,12 @@ Bones.views.HUD = Backbone.View.extend({
         this.$('.buttons .active').removeClass('active');
         this.$('.hud.active').removeClass('active');
         $('body').removeClass('hudActive');
-        if (this.hud && this.hud.length > 0) {
+        if (this.active && this.active.length > 0) {
             $('body').removeClass('hud'
-                + this.hud.charAt(0).toUpperCase()
-                + this.hud.slice(1)
+                + this.active.charAt(0).toUpperCase()
+                + this.active.slice(1)
             );
-            this.hud = '';
+            this.active = '';
         }
         return this;
     }
