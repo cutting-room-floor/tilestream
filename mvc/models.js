@@ -13,26 +13,36 @@ if (typeof require !== 'undefined') {
 var Bones = Bones || {};
 Bones.models = Bones.models || {};
 
+// Set options on initialize.
+Backbone.Collection.prototype.initialize =
+Backbone.Model.prototype.initialize = function(attributes, options) {
+    options = options || {};
+    if (this.collection && this.collection.options) {
+        this.options = this.collection.options;
+    } else {
+        this.options = options;
+    }
+    if (this.models) {
+        _(this.models).each(function(model) {
+            model.options = this.options;
+        });
+    }
+};
+
 // Tileset
 // ---
 // A single tileset, corresponding to an `.mbtiles` file. `model.id` is the
 // file basename, e.g. `foo.mbtiles` has an `id` of `foo`.
 Bones.models.Tileset = Backbone.Model.extend({
-    initialize: function(attributes, options) {
-        options = options || {};
-        if (this.collection) {
-            this.uiHost = this.collection.uiHost;
-            this.tileHost = this.collection.tileHost;
-        } else {
-            this.uiHost = options.uiHost;
-            this.tileHost = options.tileHost;
-        }
-    },
     url: function() {
         return '/api/Tileset/' + this.id;
     },
     layerURL: function() {
-        return this.tileHost;
+        if (this.options.tileHost) {
+            return this.options.tileHost;
+        } else {
+            return ['http://localhost:8888/'];
+        }
     },
     // Get ZXY of tile of tileset's center and minzoom. From [OSM wiki][1].
     // [1]: http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#lon.2Flat_to_tile_numbers_2
@@ -65,11 +75,6 @@ Bones.models.Tileset = Backbone.Model.extend({
 // --------
 // Collection of all tileset models.
 Bones.models.Tilesets = Backbone.Collection.extend({
-    initialize: function(models, options) {
-        options = options || {};
-        this.uiHost = options.uiHost;
-        this.tileHost = options.tileHost;
-    },
     model: Bones.models.Tileset,
     url: '/api/Tileset',
     comparator: function(model) {

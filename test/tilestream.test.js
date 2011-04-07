@@ -1,9 +1,11 @@
-var assert = require('assert'),
+var _ = require('underscore')._,
+    assert = require('assert'),
     tilestream = require('tilestream')({
         tiles: __dirname + '/fixtures/tiles',
         uiPort: 8888,
         tilePort: 8888
-    });
+    }),
+    request = { headers: { 'host': 'localhost:8888' } };
 
 module.exports = {
     'tile': function() {
@@ -142,7 +144,7 @@ module.exports = {
         );
         assert.response(
             tilestream.uiServer,
-            { url: '/wax.json?layers[]=control_room' },
+            _.extend({ url: '/wax.json?layers[]=control_room' }, request),
             { status: 200 },
             function(res) {
                 assert.deepEqual(fixtures.layers, JSON.parse(res.body));
@@ -156,7 +158,7 @@ module.exports = {
         );
         assert.response(
             tilestream.uiServer,
-            { url: '/wax.json?layers[]=control_room&el=foo' },
+            _.extend({ url: '/wax.json?layers[]=control_room&el=foo' }, request),
             { status: 200 },
             function(res) {
                 assert.deepEqual(fixtures.el, JSON.parse(res.body));
@@ -180,7 +182,7 @@ module.exports = {
         );
         assert.response(
             tilestream.uiServer,
-            { url: '/wax.json?layers[]=control_room&center[]=40&center[]=40&center[]=2' },
+            _.extend({ url: '/wax.json?layers[]=control_room&center[]=40&center[]=40&center[]=2' }, request),
             { status: 200 },
             function(res) {
                 assert.deepEqual(fixtures.center, JSON.parse(res.body));
@@ -199,7 +201,7 @@ module.exports = {
         );
         assert.response(
             tilestream.uiServer,
-            { url: '/wax.json?layers[]=control_room&options[]=tooltips' },
+            _.extend({ url: '/wax.json?layers[]=control_room&options[]=tooltips' }, request),
             { status: 200 },
             function(res) {
                 assert.deepEqual(fixtures.options, JSON.parse(res.body));
