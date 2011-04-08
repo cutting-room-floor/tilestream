@@ -41,8 +41,8 @@ module.exports = function(options) {
 
     // Add host info middleware.
     var host = require('./server/host')(options);
-    exports.uiServer.use(host);
-    exports.tileServer.use(host);
+    exports.uiServer.use(host.middleware);
+    exports.tileServer.use(host.middleware);
 
     // Bootstrap.
     require('tilestream/server/bootstrap')(options);
@@ -63,6 +63,7 @@ module.exports = function(options) {
                 '--config=PATH': 'Pass options via JSON config file at PATH.',
                 '--uiPort=PORT': 'UI server port. Defaults to 8888.',
                 '--tilePort=PORT': 'Tile server port. Defaults to 8888.',
+                '--subdomains=LIST': 'Comma separated list of subdomains to use for tiles.',
                 '--tiles=PATH': 'Path to tiles directory.'
             },
             command: function(argv, callback) {
