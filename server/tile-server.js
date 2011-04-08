@@ -138,7 +138,7 @@ module.exports = function(app, settings) {
     });
 
     // Basic route for the root. Useful for checking the health of the server.
-    app.get('/', function(req, res, next) {
+    app.get('/status', function(req, res, next) {
         res.send('TileStream', 200);
     });
 };
