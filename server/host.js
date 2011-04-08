@@ -6,13 +6,14 @@ module.exports = function(settings) {
     var host = {
         removeTileSubdomain: function(host) {
             // If subdomain already exists on the request host, remove it.
-            var subdomains = settings.subdomains.split(',');
-            var hostComponents = host.split('.');
-            if (_.include(subdomains, hostComponents.shift())) {
-               return hostComponents.join('.');
-            } else {
-                return host;
+            if (settings.subdomains) {
+                var subdomains = settings.subdomains.split(',');
+                var hostComponents = host.split('.');
+                if (_.include(subdomains, hostComponents.shift())) {
+                   return hostComponents.join('.');
+                }
             }
+            return host;
         },
         middleware: _(function(req, res, next) {
             if (req.headers && req.headers.host && !req.uiHost) {
