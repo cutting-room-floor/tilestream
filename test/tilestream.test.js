@@ -3,7 +3,8 @@ var _ = require('underscore')._,
     tilestream = require('tilestream')({
         tiles: __dirname + '/fixtures/tiles',
         uiPort: 8888,
-        tilePort: 8888
+        tilePort: 8888,
+        subdomains: 'a,b,c,d'
     }),
     request = { headers: { 'host': 'localhost:8888' } };
 

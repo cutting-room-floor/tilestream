@@ -10,7 +10,10 @@
                         "@new OpenLayers.Layer.TMS",
                         "control_room",
                         [
-                            "http://localhost:8888/"
+                            "http://a.localhost:8888/",
+                            "http://b.localhost:8888/",
+                            "http://c.localhost:8888/",
+                            "http://d.localhost:8888/"
                         ],
                         {
                             "projection": [
