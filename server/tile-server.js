@@ -53,28 +53,9 @@ module.exports = function(app, settings) {
     if (settings.features && settings.features.download) {
         var download = /^\/download\/([\w+|\d+|.|-]*)?.mbtiles/;
         app.get(download, validateTileset, function(req, res, next) {
-            // nginx proxy available. Use `X-Accel-Redirect` headers to send
-            // file. Requires the following lines to be provided in the nginx
-            // configuration file:
-            //
-            //     # The path in `alias` should include a trailing slash.
-            //     location /tiles {
-            //         internal;
-            //         alias [path to tiles];
-            //     }
-            if (req.headers['x-nginx-proxy']) {
-                res.send('', _({
-                    'X-Accel-Redirect': res.mapfile.replace(settings.tiles, '/tiles'),
-                    'Content-Type': 'application/octet-stream'
-                }).extend(settings.header_defaults), 200);
-            // Serve file using express `res.sendfile`. Likely to break for
-            // large (e.g. > 1gb) file downloads.
-            } else {
-                _(res.headers).extend(settings.header_defaults);
-                res.sendfile(res.mapfile, function(err, path) {
-                    return err && next(err);
-                });
-            }
+            res.sendfile(res.mapfile, function(err, path) {
+                return err && next(err);
+            });
         });
     }
 
