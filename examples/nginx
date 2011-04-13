@@ -36,4 +36,11 @@ server {
     location / {
         proxy_pass http://tiles;
     }
+
+    # Supply the path to your tiles directory here.
+    # The path in `alias` should include a trailing slash.
+    location /tiles {
+        internal;
+        alias /var/www/tilestream/tiles/;
+    }
 }
