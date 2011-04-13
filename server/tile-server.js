@@ -53,6 +53,7 @@ module.exports = function(app, settings) {
     if (settings.features && settings.features.download) {
         var download = /^\/download\/([\w+|\d+|.|-]*)?.mbtiles/;
         app.get(download, validateTileset, function(req, res, next) {
+            _(res.headers).extend(settings.header_defaults);
             res.sendfile(res.mapfile, function(err, path) {
                 return err && next(err);
             });
