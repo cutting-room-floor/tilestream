@@ -37,15 +37,15 @@ Bones.controllers.Router = Backbone.Controller.extend({
         var options = this.getOptions(response);
         (new this.Collection([], options)).fetch({
             success: function(collection) {
-                var view = new Bones.views.Maps({ collection: collection });
-                response(new Bones.views.App({ view: view }));
+                options.view = new Bones.views.Maps({ collection: collection });
+                response(new Bones.views.App(options));
             },
             error: function(model, xhr) {
-                try { var response = JSON.parse(xhr.responseText); }
-                catch(err) { var response = { message: 'Server is offline.' }; }
+                try { var r = JSON.parse(xhr.responseText); }
+                catch(err) { var r = { message: 'Server is offline.' }; }
 
-                var view = new Bones.views.Error({ message: response.message });
-                response(new Bones.views.App({ view: view }));
+                options.view = new Bones.views.Error({ message: r.message });
+                response(new Bones.views.App(options));
             }
         });
     },
@@ -54,15 +54,15 @@ Bones.controllers.Router = Backbone.Controller.extend({
         var options = this.getOptions(response);
         (new this.Model({ id: id }, options)).fetch({
             success: function(model) {
-                var view = new Bones.views.Map({ model: model });
-                response(new Bones.views.App({ view: view }));
+                options.view = new Bones.views.Map({ model: model });
+                response(new Bones.views.App(options));
             },
             error: function(model, xhr) {
-                try { var response = JSON.parse(xhr.responseText); }
-                catch(err) { var response = { message: 'Server is offline.' }; }
+                try { var r = JSON.parse(xhr.responseText); }
+                catch(err) { var r = { message: 'Server is offline.' }; }
 
-                var view = new Bones.views.Error({ message: response.message });
-                response(new Bones.views.App({ view: view }));
+                options.view = new Bones.views.Error({ message: r.message });
+                response(new Bones.views.App(options));
             }
         });
     }
