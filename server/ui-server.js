@@ -9,6 +9,17 @@ var fs = require('fs'),
     models = require('../mvc/models');
 
 module.exports = function(server, settings) {
+    if (settings.syslog) {
+        var logger = require('syslog').createClient(514, 'localhost', { name: 'tilestream' });
+        server.error(function(err, req, res, next) {
+            err.method = req.method;
+            err.url = req.url;
+            err.headers = req.headers;
+            logger.error(JSON.stringify(err));
+            next();
+        });
+    }
+
     server.enable('jsonp callback');
     server.error(Error.HTTP.handler(settings));
 

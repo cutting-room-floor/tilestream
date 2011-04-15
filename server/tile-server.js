@@ -8,6 +8,17 @@ var _ = require('underscore')._,
     models = require('../mvc/models');
 
 module.exports = function(app, settings) {
+    if (settings.syslog) {
+        var logger = require('syslog').createClient(514, 'localhost', { name: 'tilestream' });
+        app.error(function(err, req, res, next) {
+            err.method = req.method;
+            err.url = req.url;
+            err.headers = req.headers;
+            logger.error(JSON.stringify(err));
+            next();
+        });
+    }
+
     app.enable('jsonp callback');
     app.error(Error.HTTP.handler(settings));
 
