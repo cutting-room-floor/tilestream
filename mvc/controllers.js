@@ -40,13 +40,7 @@ Bones.controllers.Router = Backbone.Controller.extend({
                 options.view = new Bones.views.Maps({ collection: collection });
                 response(new Bones.views.App(options));
             },
-            error: function(model, xhr) {
-                try { var r = JSON.parse(xhr.responseText); }
-                catch(err) { var r = { message: 'Server is offline.' }; }
-
-                options.view = new Bones.views.Error({ message: r.message });
-                response(new Bones.views.App(options));
-            }
+            error: _(this.error).bind({options: options, response: response})
         });
     },
     map: function(id, response) {
@@ -57,14 +51,17 @@ Bones.controllers.Router = Backbone.Controller.extend({
                 options.view = new Bones.views.Map({ model: model });
                 response(new Bones.views.App(options));
             },
-            error: function(model, xhr) {
-                try { var r = JSON.parse(xhr.responseText); }
-                catch(err) { var r = { message: 'Server is offline.' }; }
-
-                options.view = new Bones.views.Error({ message: r.message });
-                response(new Bones.views.App(options));
-            }
+            error: _(this.error).bind({options: options, response: response})
         });
+    },
+    // Error view callback. Must have `this.response` and `this.options`.
+    error: function(model, xhr) {
+        var options = this.options;
+        try { options.error = JSON.parse(xhr.responseText).message; }
+        catch(err) { options.error = 'Server is offline.'; }
+
+        options.view = new Bones.views.Error(options);
+        this.response(new Bones.views.App(options));
     }
 });
 
