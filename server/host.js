@@ -16,8 +16,13 @@ module.exports = function(settings) {
             return host;
         },
         middleware: _(function(req, res, next) {
-            if (req.headers && req.headers.host && !req.uiHost) {
+            req.model = req.model || {};
+            req.model.options = req.model.options || {};
+            if (!req.basepath) {
                 req.basepath = '/';
+                req.model.options.basepath = req.basepath;
+            }
+            if (req.headers && req.headers.host && !req.uiHost) {
                 req.uiHost = 'http://' + req.headers.host + '/';
                 if (settings.subdomains) {
                     // Add subdomains for tiles.
@@ -31,11 +36,8 @@ module.exports = function(settings) {
                     // Use the same host for UI and tiles.
                     req.tileHost = ['http://' + req.headers.host + '/'];
                 }
-                req.model = req.model || {};
-                req.model.options = req.model.options || {};
                 req.model.options.uiHost = req.uiHost;
                 req.model.options.tileHost = req.tileHost;
-                req.model.options.basepath = req.basepath;
             }
             next();
         }).bind(this)
