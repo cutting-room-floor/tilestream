@@ -95,7 +95,9 @@ Commandline options:
         --config=PATH      Pass options via JSON config file at PATH.
         --uiPort=PORT      UI server port. Defaults to 8888.
         --tilePort=PORT    Tile server port. Defaults to 8888.
+        --subdomains=LIST  Comma separated list of subdomains to use for tiles.
         --tiles=PATH       Path to tiles directory.
+        --syslog           Log to syslog instead of stdout.
 
 
 Tests
