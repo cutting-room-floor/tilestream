@@ -58,15 +58,13 @@ Bones.views.App = Backbone.View.extend({
     render: function() {
         // Server side.
         if (Bones.server) {
-            this.el = this.template('App', {
-                content: this.options.view.html()
-            });
-            return this;
-        }
+            this.el = this.template('App', this.options);
         // Client side.
-        $('body').attr('class', '');
-        $('#app').html(this.options.view.el);
-        this.options.view.trigger('ready');
+        } else {
+            $('body').attr('class', '');
+            $('#app').html(this.options.view.el);
+            this.options.view.trigger('ready');
+        }
         return this;
     }
 });
