@@ -87,7 +87,7 @@ module.exports = function(server, settings) {
     };
 
     // Generic GET endpoint for collection loading.
-    server.get('/api/:model', validateCollection, function(req, res, next) {
+    var getCollection = function(req, res, next) {
         req.model = req.model || {};
         req.model.options = req.model.options || {};
         var Collection = models[req.param('model') + 'List'] || models[req.param('model') + 's'];
@@ -96,10 +96,12 @@ module.exports = function(server, settings) {
             success: function(model, resp) { res.send(model.toJSON()) },
             error: function(model, err) { next(err); }
         });
-    });
+    };
+    server.get('/api/:model', validateCollection, getCollection);
+    server.get('/v1/:model', validateCollection, getCollection);
 
     // REST endpoints for models.
-    server.all('/api/:model/*', validateModel, function(req, res, next) {
+    var getModel = function(req, res, next) {
         req.model = req.model || {};
         req.model.options = req.model.options || {};
         var model = new models[req.param('model')]({ id: req.params[0] }, req.model.options);
@@ -124,6 +126,8 @@ module.exports = function(server, settings) {
             });
             break;
         }
-    });
+    };
+    server.all('/api/:model/*', validateModel, getModel);
+    server.all('/v1/:model/*', validateModel, getModel);
 }
 

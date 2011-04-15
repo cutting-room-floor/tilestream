@@ -71,10 +71,43 @@ module.exports = {
             }
         );
     },
+    'load map v1': function() {
+        assert.response(
+            tilestream.uiServer,
+            { url: '/v1/Tileset/control_room' },
+            { status: 200 },
+            function(res) {
+                var map;
+                assert.doesNotThrow(function() {
+                    map = JSON.parse(res.body);
+                }, SyntaxError);
+                assert.equal(map.id, 'control_room');
+                assert.equal(map.type, 'baselayer');
+                assert.equal(map.bounds, "-180,-85.05112877980659,180,89.99075251648905");
+            }
+        );
+    },
     'load maps': function() {
         assert.response(
             tilestream.uiServer,
             { url: '/api/Tileset' },
+            { status: 200 },
+            function(res) {
+                var maps;
+                assert.doesNotThrow(function() {
+                    maps = JSON.parse(res.body);
+                }, SyntaxError);
+                assert.equal(maps.length, 2);
+                assert.equal(maps[0].id, 'control_room');
+                assert.equal(maps[0].type, 'baselayer');
+                assert.equal(maps[0].bounds, "-180,-85.05112877980659,180,89.99075251648905");
+            }
+        );
+    },
+    'load maps v1': function() {
+        assert.response(
+            tilestream.uiServer,
+            { url: '/v1/Tileset' },
             { status: 200 },
             function(res) {
                 var maps;
@@ -146,6 +179,14 @@ module.exports = {
         assert.response(
             tilestream.uiServer,
             _.extend({ url: '/api/wax.json?layers[]=control_room' }, request),
+            { status: 200 },
+            function(res) {
+                assert.deepEqual(fixtures.layers, JSON.parse(res.body));
+            }
+        );
+        assert.response(
+            tilestream.uiServer,
+            _.extend({ url: '/v1/wax.json?layers[]=control_room' }, request),
             { status: 200 },
             function(res) {
                 assert.deepEqual(fixtures.layers, JSON.parse(res.body));
