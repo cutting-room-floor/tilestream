@@ -5,9 +5,10 @@
     <title>TileStream</title>
     <script type='text/javascript'>
     // Redirect requests without the hash.
+    var basepath = '{{basepath}}';
     location.href.indexOf('#') === -1 &&
-    window.location.pathname !== '/' &&
-    (window.location = '/#' + window.location.pathname);
+    window.location.pathname !== basepath &&
+    (window.location = basepath + '#' + window.location.pathname.substr(basepath.length - 1));
     </script>
 
     <link rel='shortcut icon' href='/images/favicon.ico' type='image/x-icon' />

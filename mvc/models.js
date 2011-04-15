@@ -67,7 +67,7 @@ Bones.models.Tileset = Backbone.Model.extend({
     // Pass through function for determining the server-side filepath of a
     // Tileset model.
     filepath: function(path) {
-        return path + '/' + this.id + '.mbtiles';
+        return path + this.options.basepath + this.id + '.mbtiles';
     }
 });
 

@@ -29,6 +29,8 @@ Backbone.View = Backbone.View.extend({
     route: function(ev) {
         var fragment = this.href(ev.currentTarget);
         if (fragment.charAt(0) === '/') {
+            // Remove the basepath from the fragment, but leave a /.
+            fragment = fragment.substr(Bones.settings.basepath.length - 1);
             var matched = _.any(Backbone.history.handlers, function(handler) {
                 if (handler.route.test(fragment)) {
                     handler.callback(fragment);
@@ -205,7 +207,7 @@ Bones.views.Map = Bones.views.HUD.extend({
     },
     render: function() {
         $(this.el).html(this.template('Map', {
-            basepath: this.options.basepath,
+            basepath: this.model.options.basepath,
             features: Bones.settings.features,
             id: this.model.get('id'),
             name: this.model.get('name'),
@@ -260,7 +262,7 @@ Bones.views.MapThumb = Backbone.View.extend({
     },
     render: function() {
         $(this.el).html(this.template('MapThumb', {
-            basepath: this.options.basepath,
+            basepath: this.model.options.basepath,
             id: this.model.get('id'),
             name: this.model.get('name'),
             thumb: this.model.thumb()
