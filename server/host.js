@@ -17,6 +17,7 @@ module.exports = function(settings) {
         },
         middleware: _(function(req, res, next) {
             if (req.headers && req.headers.host && !req.uiHost) {
+                req.basepath = '/';
                 req.uiHost = 'http://' + req.headers.host + '/';
                 if (settings.subdomains) {
                     // Add subdomains for tiles.
@@ -34,7 +35,7 @@ module.exports = function(settings) {
                 req.model.options = req.model.options || {};
                 req.model.options.uiHost = req.uiHost;
                 req.model.options.tileHost = req.tileHost;
-                req.model.options.basepath = '/';
+                req.model.options.basepath = req.basepath;
             }
             next();
         }).bind(this)
