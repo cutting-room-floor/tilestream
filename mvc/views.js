@@ -18,16 +18,16 @@ Backbone.View = Backbone.View.extend({
     events: {
         'click a.route': 'route'
     },
-    route: function(ev) {
-        var fragment;
-        if (_.isString(ev)) {
-            fragment = ev;
+    href: function(el) {
+        var href = $(el).get(0).getAttribute('href', 2);
+        if ($.browser.msie && $.browser.version < 8) {
+            return /^([a-z]+:\/\/.+?)?(\/.+?)$/.exec(href)[2];
         } else {
-            fragment = $(ev.currentTarget).get(0).getAttribute('href', 2);
-            if ($.browser.msie && $.browser.version < 8) {
-                fragment = /^([a-z]+:\/\/.+?)?(\/.+?)$/.exec(fragment)[2];
-            }
+            return href;
         }
+    },
+    route: function(ev) {
+        var fragment = this.href(ev.currentTarget);
         if (fragment.charAt(0) === '/') {
             var matched = _.any(Backbone.history.handlers, function(handler) {
                 if (handler.route.test(fragment)) {
@@ -104,7 +104,7 @@ Bones.views.MapClient = Backbone.View.extend({
         });
     },
     waxURL: function(wax) {
-        return '/api/wax.json?' + $.param(wax);
+        return Bones.settings.uiHost + 'api/wax.json?' + $.param(wax);
     },
     generateWax: function(callback) {
         return _(this.model.wax()).extend({el: $(this.el).attr('id')});
@@ -205,6 +205,7 @@ Bones.views.Map = Bones.views.HUD.extend({
     },
     render: function() {
         $(this.el).html(this.template('Map', {
+            basepath: this.options.basepath,
             features: Bones.settings.features,
             id: this.model.get('id'),
             name: this.model.get('name'),
@@ -238,7 +239,7 @@ Bones.views.Maps = Bones.views.HUD.extend({
         this.render().trigger('attach');
     },
     render: function() {
-        $(this.el).html(this.template('Maps'));
+        $(this.el).html(this.template('Maps', this.options));
         var that = this;
         this.collection.each(function(tileset) {
             tileset.view = new Bones.views.MapThumb({ model: tileset });
@@ -259,6 +260,7 @@ Bones.views.MapThumb = Backbone.View.extend({
     },
     render: function() {
         $(this.el).html(this.template('MapThumb', {
+            basepath: this.options.basepath,
             id: this.model.get('id'),
             name: this.model.get('name'),
             thumb: this.model.thumb()

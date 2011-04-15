@@ -34,6 +34,7 @@ module.exports = function(settings) {
                 req.model.options = req.model.options || {};
                 req.model.options.uiHost = req.uiHost;
                 req.model.options.tileHost = req.tileHost;
+                req.model.options.basepath = '/';
             }
             next();
         }).bind(this)

@@ -67,6 +67,7 @@ module.exports = function(server, settings) {
         var pub = {
             uiHost: req.uiHost,
             tileHost: req.tileHost,
+            basepath: req.basepath,
             features: settings.features
         };
         res.send(

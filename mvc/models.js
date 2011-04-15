@@ -35,7 +35,7 @@ Backbone.Model.prototype.initialize = function(attributes, options) {
 // file basename, e.g. `foo.mbtiles` has an `id` of `foo`.
 Bones.models.Tileset = Backbone.Model.extend({
     url: function() {
-        return '/api/Tileset/' + this.id;
+        return this.options.basepath + 'api/Tileset/' + this.id;
     },
     layerURL: function() {
         if (this.options.tileHost) {
@@ -76,7 +76,9 @@ Bones.models.Tileset = Backbone.Model.extend({
 // Collection of all tileset models.
 Bones.models.Tilesets = Backbone.Collection.extend({
     model: Bones.models.Tileset,
-    url: '/api/Tileset',
+    url: function() {
+        return this.options.basepath + 'api/Tileset';
+    },
     comparator: function(model) {
         return (model.get('name') || model.get('id')).toLowerCase();
     },

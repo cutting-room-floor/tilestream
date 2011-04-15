@@ -37,7 +37,8 @@ Bones.controllers.Router = Backbone.Controller.extend({
         var options = this.getOptions(response);
         (new this.Collection([], options)).fetch({
             success: function(collection) {
-                options.view = new Bones.views.Maps({ collection: collection });
+                options.collection = collection;
+                options.view = new Bones.views.Maps(options);
                 response(new Bones.views.App(options));
             },
             error: _(this.error).bind({options: options, response: response})
@@ -48,7 +49,8 @@ Bones.controllers.Router = Backbone.Controller.extend({
         var options = this.getOptions(response);
         (new this.Model({ id: id }, options)).fetch({
             success: function(model) {
-                options.view = new Bones.views.Map({ model: model });
+                options.model = model;
+                options.view = new Bones.views.Map(options);
                 response(new Bones.views.App(options));
             },
             error: _(this.error).bind({options: options, response: response})
