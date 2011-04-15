@@ -106,7 +106,7 @@ Bones.views.MapClient = Backbone.View.extend({
         });
     },
     waxURL: function(wax) {
-        return '/wax.json?' + $.param(wax);
+        return '/api/wax.json?' + $.param(wax);
     },
     generateWax: function(callback) {
         return _(this.model.wax()).extend({el: $(this.el).attr('id')});
