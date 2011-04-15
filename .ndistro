@@ -23,6 +23,7 @@ module mapbox wax 1.0.4
 module developmentseed openlayers_slim v1.10
 module mapbox tilelive.js 2.0.1
 module substack node-optimist fe084bddeaefd003a76c36d5633d65e8ffb4b474 optimist
+module developmentseed node-syslog 4e9d68baaaf2c79e3a82d5c38c77ea7f3d958db5 syslog
 
 # Main module
 module mapbox tilestream 0.0.8
@@ -33,3 +34,4 @@ cd $ROOT
 ! test -f lib/node/request && ln -s ../../modules/request/main.js lib/node/request
 ! test -f lib/node/jsdom.js && ln -s ../../modules/jsdom/lib/jsdom.js lib/node/jsdom.js
 ! test -f lib/node/jsdom && ln -s ../../modules/jsdom/lib/jsdom lib/node/jsdom
+! test -f lib/node/syslog/hostname/index.node && cd lib/node/syslog/hostname && node-waf configure build; cd $ROOT
