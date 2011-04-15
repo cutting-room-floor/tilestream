@@ -18,6 +18,7 @@ module.exports = function(options) {
     options.uiPort = options.uiPort || 8888;
     options.tilePort = options.tilePort || 8888;
     options.tiles = options.tiles || path.join(process.cwd(), 'tiles');
+    options.syslog = options.syslog || false;
     // @TODO: how to alter these hashes with commandline options?
     // Default tile response headers. Sets max-age to one hour.
     options.header_defaults = {
@@ -64,9 +65,12 @@ module.exports = function(options) {
                 '--uiPort=PORT': 'UI server port. Defaults to 8888.',
                 '--tilePort=PORT': 'Tile server port. Defaults to 8888.',
                 '--subdomains=LIST': 'Comma separated list of subdomains to use for tiles.',
-                '--tiles=PATH': 'Path to tiles directory.'
+                '--tiles=PATH': 'Path to tiles directory.',
+                '--syslog': 'Log to syslog instead of stdout.'
             },
             command: function(argv, callback) {
+                if (options.syslog) console.log('\033[1;33mNote: Logging to syslog.\033[0m');
+
                 if (exports.server) {
                     exports.server.listen(options.uiPort);
                     console.log('Started server on port %d.', options.uiPort);

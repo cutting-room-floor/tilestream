@@ -21,9 +21,6 @@ Error.HTTP.prototype.__proto__ = Error.prototype;
 Error.HTTP.handler = function(env) {
     return function(err, req, res, next){
         if (err instanceof Error.HTTP) {
-            // Dump to console.
-            util.error(err.stack);
-
             var accept = req.headers.accept || '';
             if (accept.indexOf('json') !== -1) {
                 var json =
