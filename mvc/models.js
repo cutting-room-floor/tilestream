@@ -82,9 +82,11 @@ Bones.models.Tilesets = Backbone.Collection.extend({
     comparator: function(model) {
         return (model.get('name') || model.get('id')).toLowerCase();
     },
-    // Pass through function for determining the server-side filepath of a
-    // Tilesets collection.
+    // Function for determining the server-side filepath of a Tilesets
+    // collection.
     filepath: function(path) {
+        path += this.options.basepath;
+        (path.charAt(path.length) === '/') && (path = path.substr(0, path.length - 1));
         return path;
     }
 });
