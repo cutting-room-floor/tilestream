@@ -27,7 +27,7 @@ Backbone.View = Backbone.View.extend({
         }
     },
     route: function(ev) {
-        var fragment = this.href(ev.currentTarget);
+        var fragment = _(ev).isString() ? ev : this.href(ev.currentTarget);
         if (fragment.charAt(0) === '/') {
             // Remove the basepath from the fragment, but leave a /.
             fragment = fragment.substr(Bones.settings.basepath.length - 1);
