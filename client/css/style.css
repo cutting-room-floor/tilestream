@@ -40,6 +40,7 @@ a {
 .icon.right         { background-position:0px 0px; }
 .icon.info          { background-position:-20px 0px; }
 .icon.download      { background-position:-40px 0px; }
+.icon.tilestream    { background-position:-380px -340px; }
 
 /**
  * Header =====================================================================
@@ -64,21 +65,20 @@ a {
 .header .breadcrumb span { float:left; }
 
 .header .breadcrumb {
-  padding-left:140px;
-  position:relative;
+  position:absolute;
+  left:0px;
+  top:10px;
   }
 
 .header .breadcrumb .logo {
-  position:absolute;
-  display:block;
-  width:140px;
-  height:30px;
-  left:0px;
-  top:-5px;
-  overflow:hidden;
-  text-indent:-9999px;
-  background:url(../images/sprite.png) -100px -20px no-repeat;
+  margin:-10px 10px 0px 0px;
+  padding:10px 25px 10px 15px;
+  font-size:11px;
+  text-transform:uppercase;
+  background:url(../images/sprite.png) 100% -360px no-repeat;
   }
+
+.header .breadcrumb .logo .icon { margin-right:5px; }
 
 .header .buttons {
   font-size:11px;
