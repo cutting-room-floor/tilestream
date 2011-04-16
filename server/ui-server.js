@@ -43,7 +43,6 @@ module.exports = function(server, settings) {
     new controllers.Router();
 
     // Static assets, mirrored module assets, and options mirrored to client.
-    server.use(express.staticProvider(path.join(__dirname, '..', 'client')));
     server.get('/vendor.js', mirror.assets([
         'tilestream/client/js/jquery.js',
         'underscore/underscore.js',
@@ -59,7 +58,13 @@ module.exports = function(server, settings) {
         'tilestream/mvc/controllers.js',
         'tilestream/client/js/app.js'
     ]));
+    server.get('/css/vendor.css', mirror.assets([
+        'tilestream/client/css/reset.css',
+        'tilestream/client/css/controls.css',
+        'tilestream/client/css/style.css',
+    ], {'Content-Type': 'text/css'}));
     server.get('/theme/default/style.css', mirror.file('openlayers_slim/theme/default/style.css'));
+    server.use(express.staticProvider(path.join(__dirname, '..', 'client')));
 
     // Settings endpoint. Send information that need to be shared between
     // server/client.
