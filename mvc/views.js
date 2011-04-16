@@ -206,7 +206,15 @@ Bones.views.Map = Bones.views.HUD.extend({
         }
     },
     render: function() {
+        var buttons = [];
+        Bones.settings.features.info && buttons.push({id:'info', title:'Info'});
+        Bones.settings.features.download && buttons.push({id:'download', title:'Download'});
         $(this.el).html(this.template('Map', {
+            breadcrumb: [{
+                href: this.model.options.basepath + 'map/' + this.model.get('id'),
+                title: this.model.get('name')
+            }],
+            buttons: buttons,
             basepath: this.model.options.basepath,
             features: Bones.settings.features,
             id: this.model.get('id'),

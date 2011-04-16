@@ -1,0 +1,43 @@
+<div class='info hud'>
+  <ul>
+    <li>
+      <h1>{{name}}</h1>
+      {{#description}}
+        <div class='description'>{{.}}</div>
+      {{/description}}
+    </li>
+    <li>
+      <label>Zoom levels</label>
+      <div class='zooms clearfix'>
+      {{#zoom}}
+        <span class='zoom zoom-{{.}}'>{{.}}</span>
+      {{/zoom}}
+      </div>
+    </li>
+    <li>
+      <label>Tile URL</label>
+      {{#url}}
+      <input class='text' type='text' value='{{.}}' />
+      {{/url}}
+    </li>
+    {{#type}}
+      <li>
+        <label>Type</label>
+        {{.}}
+      </li>
+    {{/type}}
+    {{#bounds}}
+      <li class='clearfix'>
+        <label>Bounds</label>
+        <div class='column'>
+          N: {{n}}&deg;<br/>
+          S: {{s}}&deg;
+        </div>
+        <div class='column'>
+          E: {{e}}&deg;<br/>
+          W: {{w}}&deg;
+        </div>
+      </li>
+    {{/bounds}}
+  </ul>
+</div>

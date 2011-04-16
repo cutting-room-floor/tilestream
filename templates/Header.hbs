@@ -1,0 +1,17 @@
+<div class='header'>
+  <h1 class='breadcrumb'>
+    <a class='route logo' href='{{basepath}}'>TileStream</a>
+    {{#breadcrumb}}
+      <span class='separator icon right'>/</span>
+      <a class='route' href='{{href}}'>{{title}}</a>
+    {{/breadcrumb}}
+  </h1>
+  <div class='buttons clearfix'>
+    {{#buttons}}
+      <a href='#{{id}}'>
+        <span class='icon {{id}}'></span>
+        {{title}}
+      </a>
+    {{/buttons}}
+  </div>
+</div>
