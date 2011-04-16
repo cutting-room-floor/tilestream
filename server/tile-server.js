@@ -61,15 +61,13 @@ module.exports = function(app, settings) {
     // If "download" feature is enabled, add route equivalent to
     // `/download/:tileset` except with handling for `:tileset` parameters that may
     // contain a `.` character.
-    if (settings.features && settings.features.download) {
-        var download = /^\/download\/([\w+|\d+|.|-]*)?.mbtiles/;
-        app.get(download, validateTileset, function(req, res, next) {
-            _(res.headers).extend(settings.header_defaults);
-            res.sendfile(res.mapfile, function(err, path) {
-                return err && next(err);
-            });
+    var download = /^\/download\/([\w+|\d+|.|-]*)?.mbtiles/;
+    app.get(download, validateTileset, function(req, res, next) {
+        _(res.headers).extend(settings.header_defaults);
+        res.sendfile(res.mapfile, function(err, path) {
+            return err && next(err);
         });
-    }
+    });
 
     // Route equivalent to `/1.0.0/:tileset/:z/:x/:y.:format` except with handling
     // for `:tileset` parameters that may contain a `.` character.

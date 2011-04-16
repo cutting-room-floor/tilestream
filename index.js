@@ -21,13 +21,7 @@ module.exports = function(options) {
     options.syslog = options.syslog || false;
     // @TODO: how to alter these hashes with commandline options?
     // Default tile response headers. Sets max-age to one hour.
-    options.header_defaults = {
-        'Cache-Control': 'max-age=' + 60 * 60
-    };
-    options.features = {
-        download: true,
-        info: true
-    };
+    options.header_defaults = { 'Cache-Control': 'max-age=' + 60 * 60 };
 
     var exports = {};
     if (options.uiPort == options.tilePort) {

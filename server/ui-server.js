@@ -64,15 +64,9 @@ module.exports = function(server, settings) {
     // Settings endpoint. Send information that need to be shared between
     // server/client.
     server.get('/settings.js', function(req, res, next) {
-        var pub = {
-            uiHost: req.uiHost,
-            tileHost: req.tileHost,
-            basepath: req.basepath,
-            features: settings.features
-        };
         res.send(
             'var Bones = Bones || {};\n' +
-            'Bones.settings = ' + JSON.stringify(pub) + ';',
+            'Bones.settings = ' + JSON.stringify(req.model.options) + ';',
             { 'Content-Type': 'text/javascript' }
         );
     });

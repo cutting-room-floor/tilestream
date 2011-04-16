@@ -179,7 +179,7 @@ Bones.views.HUD = Backbone.View.extend({
 // Map
 // ---
 // View for exploring a single Map. Provides a fullscreen map client with HUD
-// panels for enabled features (e.g. info, download, etc.)
+// panels for info, download, etc.
 Bones.views.Map = Bones.views.HUD.extend({
     initialize: function(options) {
         Bones.views.HUD.prototype.initialize.call(this, options);
@@ -206,17 +206,16 @@ Bones.views.Map = Bones.views.HUD.extend({
         }
     },
     render: function() {
-        var buttons = [];
-        Bones.settings.features.info && buttons.push({id:'info', title:'Info'});
-        Bones.settings.features.download && buttons.push({id:'download', title:'Download'});
         $(this.el).html(this.template('Map', {
             breadcrumb: [{
                 href: this.model.options.basepath + 'map/' + this.model.get('id'),
                 title: this.model.get('name')
             }],
-            buttons: buttons,
+            buttons: [
+                {id:'info', title:'Info'},
+                {id:'download', title:'Download'}
+            ],
             basepath: this.model.options.basepath,
-            features: Bones.settings.features,
             id: this.model.get('id'),
             name: this.model.get('name'),
             zoom: _.range(this.model.get('minzoom'), this.model.get('maxzoom') + 1),
