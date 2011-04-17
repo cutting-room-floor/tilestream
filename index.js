@@ -34,19 +34,20 @@ module.exports = function(options) {
         exports.tileServer = express.createServer();
     }
 
-    // Add host info middleware.
-    var host = require('./server/host')(options);
-    exports.uiServer.use(host.middleware);
-    exports.tileServer.use(host.middleware);
-
-    // Bootstrap.
-    require('tilestream/server/bootstrap')(options);
-    require('tilestream/server/ui-server')(exports.uiServer, options);
-    require('tilestream/server/tile-server')(exports.tileServer, options);
-
     // The init callback is called prior to any commands, allowing for
     // asynchronous setup operations to finish before moving on.
     exports.init = function(options, callback) {
+        // Add host info middleware.
+        var host = require('./server/host')(options);
+        exports.uiServer.use(host.middleware);
+        exports.tileServer.use(host.middleware);
+
+        // Bootstrap.
+        require('tilestream/server/bootstrap')(options);
+        require('tilestream/server/ui-server')(exports.uiServer, options);
+        require('tilestream/server/tile-server')(exports.tileServer, options);
+
+        // Load tilesets.
         require('tilestream/server/tileset').all(options.tiles, callback);
         console.log('Loading tilesets...');
     };
