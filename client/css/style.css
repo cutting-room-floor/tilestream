@@ -261,6 +261,8 @@ input[type=button]:active,
   width:49.9%;
   }
 
+form label,
+form span.label,
 .hud span.label,
 .hud label {
   display:block;
