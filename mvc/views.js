@@ -248,32 +248,17 @@ Bones.views.Maps = Bones.views.HUD.extend({
         this.render().trigger('attach');
     },
     render: function() {
-        $(this.el).html(this.template('Maps', this.options));
+        $(this.el).html(this.template('Maps', _({
+            maps: this.collection.map(function(model) {
+                return {
+                    basepath: model.options.basepath,
+                    id: model.get('id'),
+                    name: model.get('name'),
+                    thumb: model.thumb()
+                };
+            })
+        }).extend(this.options)));
         var that = this;
-        this.collection.each(function(tileset) {
-            tileset.view = new Bones.views.MapThumb({ model: tileset });
-            $('ul.maps', that.el).append(tileset.view.el);
-        });
-        return this;
-    }
-});
-
-// MapThumb
-// --------
-// Thumbnail view of a single map.
-Bones.views.MapThumb = Backbone.View.extend({
-    tagName: 'li',
-    className: 'clearfix',
-    initialize: function(options) {
-        this.render().trigger('attach');
-    },
-    render: function() {
-        $(this.el).html(this.template('MapThumb', {
-            basepath: this.model.options.basepath,
-            id: this.model.get('id'),
-            name: this.model.get('name'),
-            thumb: this.model.thumb()
-        }));
         return this;
     }
 });

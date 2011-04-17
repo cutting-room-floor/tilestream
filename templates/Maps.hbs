@@ -1,2 +1,6 @@
 {{>Header}}
-<ul class='maps clearfix'></ul>
+<ul class='maps clearfix'>
+  {{#maps}}
+  <li>{{>MapThumb}}</li>
+  {{/maps}}
+</ul>
