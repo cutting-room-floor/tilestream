@@ -76,7 +76,7 @@ tilestream.init(options, function() {
         'load map v1': function() {
             assert.response(
                 tilestream.uiServer,
-                { url: '/v1/Tileset/control_room' },
+                { url: '/api/v1/Tileset/control_room' },
                 { status: 200 },
                 function(res) {
                     var map;
@@ -109,7 +109,7 @@ tilestream.init(options, function() {
         'load maps v1': function() {
             assert.response(
                 tilestream.uiServer,
-                { url: '/v1/Tileset' },
+                { url: '/api/v1/Tileset' },
                 { status: 200 },
                 function(res) {
                     var maps;
@@ -188,7 +188,7 @@ tilestream.init(options, function() {
             );
             assert.response(
                 tilestream.uiServer,
-                _.extend({ url: '/v1/wax.json?layers[]=control_room' }, request),
+                _.extend({ url: '/api/v1/wax.json?layers[]=control_room' }, request),
                 { status: 200 },
                 function(res) {
                     assert.deepEqual(fixtures.layers, JSON.parse(res.body));

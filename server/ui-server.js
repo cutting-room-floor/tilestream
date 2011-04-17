@@ -108,8 +108,8 @@ module.exports = function(server, settings) {
             error: function(model, err) { next(err); }
         });
     };
+    server.get('/api/v1/:model', validateCollection, getCollection);
     server.get('/api/:model', validateCollection, getCollection);
-    server.get('/v1/:model', validateCollection, getCollection);
 
     // REST endpoints for models.
     var getModel = function(req, res, next) {
@@ -138,7 +138,7 @@ module.exports = function(server, settings) {
             break;
         }
     };
+    server.all('/api/v1/:model/*', validateModel, getModel);
     server.all('/api/:model/*', validateModel, getModel);
-    server.all('/v1/:model/*', validateModel, getModel);
 }
 
