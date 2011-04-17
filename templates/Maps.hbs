@@ -3,4 +3,7 @@
   {{#maps}}
   <li>{{>MapThumb}}</li>
   {{/maps}}
+  {{^maps}}
+  <li class='empty'><span>No maps found.</span></li>
+  {{/maps}}
 </ul>
