@@ -109,18 +109,19 @@ a {
  * Maps =======================================================================
  */
 .maps {
+  /* Fixes a variety of spacing problems when using `inline-block` */
+  font:0px/0px Arial,Helvetica,sans-serif;
   padding:60px 0px 0px;
   text-align:center;
-  line-height:0px;
   }
 
 .maps > span {
+  font:15px/20px Arial,Helvetica,sans-serif;
   display:inline-block;
   text-align:left;
   width:240px;
   height:240px;
   margin:0px 10px 20px;
-  line-height:20px;
   position:relative;
   overflow:hidden;
   box-shadow:#222 0px 1px 10px;
