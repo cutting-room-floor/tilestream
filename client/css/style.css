@@ -114,15 +114,15 @@ a {
   line-height:0px;
   }
 
-.maps li {
+.maps > span {
   display:inline-block;
-  *display:inline; /* IE7 only */
   text-align:left;
   width:240px;
   height:240px;
   margin:0px 10px 20px;
   line-height:20px;
   position:relative;
+  overflow:hidden;
   box-shadow:#222 0px 1px 10px;
   -moz-box-shadow:#222 0px 1px 10px;
   -webkit-box-shadow:#222 0px 1px 10px;
@@ -145,8 +145,8 @@ a {
   white-space:nowrap;
   }
 
-.maps a,
-.maps span { display:block; }
+.maps span a,
+.maps span span { display:block; }
 
 .thumb {
   width:240px;

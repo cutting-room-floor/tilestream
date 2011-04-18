@@ -1,9 +1,14 @@
 {{>Header}}
-<ul class='maps clearfix'>
+<div class='maps clearfix'>
+  {{!
+    Inline markup is used here as IE7 does not support `display: inline-block`
+    well on block level elements. Ideally this would be a ul / li combo but
+    alas...
+  }}
   {{#maps}}
-  <li>{{>MapThumb}}</li>
+  <span>{{>MapThumb}}</span>
   {{/maps}}
   {{^maps}}
-  <li class='empty'><span>No maps found.</span></li>
+  <span class='empty'><span>No maps found.</span>
   {{/maps}}
-</ul>
+</div>
