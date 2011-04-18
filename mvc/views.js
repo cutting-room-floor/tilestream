@@ -21,7 +21,7 @@ Backbone.View = Backbone.View.extend({
     href: function(el) {
         var href = $(el).get(0).getAttribute('href', 2);
         if ($.browser.msie && $.browser.version < 8) {
-            return /^([a-z]+:\/\/.+?)?(\/.+?)$/.exec(href)[2];
+            return /^([a-z]+:\/\/.+?)?(\/.*?)$/.exec(href)[2];
         } else {
             return href;
         }
