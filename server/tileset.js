@@ -33,8 +33,7 @@ var _ = require('underscore')._,
             //     });
             // },
             // Load metadata table
-            function(err) {
-                if (err) return callback(err);
+            function() {
                 var end = this;
                 that.db.all("SELECT name, value FROM metadata", function(err, rows) {
                     if (rows) for (var i = 0; i < rows.length; i++) {
