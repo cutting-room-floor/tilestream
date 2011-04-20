@@ -86,7 +86,7 @@ MBTiles files should be placed in the `tiles` directory. Each
 tileset can be previewed at `http://localhost:8888/tileset/[filename]` where
 `[filename]` is the name of the tileset file without the `.mbtiles` extension.
 
-Tilesets MBTiles filenames:
+Tileset filenames:
 
 - May contain letters (lower or upper case), numbers, underscores or dashes.
 
