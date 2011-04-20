@@ -90,14 +90,14 @@ Tilesets MBTiles filenames:
 
 - May contain letters (lower or upper case), numbers, underscores or dashes.
 
-      world-light.mbtiles
-      control_room.mbtiles
-      PartyLikeIts1999.mbtiles
+        world-light.mbtiles
+        control_room.mbtiles
+        PartyLikeIts1999.mbtiles
 
 - May not contain periods, spaces, non ASCII characters or other punctuation.
 
-      World Light.mbtiles
-      BlueWorld-1.0.mbtiles
+        World Light.mbtiles
+        BlueWorld-1.0.mbtiles
 
 Commandline options:
 
