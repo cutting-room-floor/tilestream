@@ -86,6 +86,19 @@ MBTiles files should be placed in the `tiles` directory. Each
 tileset can be previewed at `http://localhost:8888/tileset/[filename]` where
 `[filename]` is the name of the tileset file without the `.mbtiles` extension.
 
+Tilesets MBTiles filenames:
+
+- May contain letters (lower or upper case), numbers, underscores or dashes.
+
+      world-light.mbtiles
+      control_room.mbtiles
+      PartyLikeIts1999.mbtiles
+
+- May not contain periods, spaces, non ASCII characters or other punctuation.
+
+      World Light.mbtiles
+      BlueWorld-1.0.mbtiles
+
 Commandline options:
 
     Usage: tilestream [COMMAND] [OPTION]
