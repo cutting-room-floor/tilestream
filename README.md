@@ -83,7 +83,7 @@ to your `/etc/rsyslog.conf` file and restart the daemon.
 Usage
 -----
 MBTiles files should be placed in the `tiles` directory. Each
-tileset can be previewed at `http://localhost:8888/tileset/[filename]` where
+tileset can be previewed at `http://localhost:8888/map/[filename]` where
 `[filename]` is the name of the tileset file without the `.mbtiles` extension.
 
 Tileset filenames:
