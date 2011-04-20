@@ -26,7 +26,7 @@ module substack node-optimist fe084bddeaefd003a76c36d5633d65e8ffb4b474 optimist
 module developmentseed node-syslog 4e9d68baaaf2c79e3a82d5c38c77ea7f3d958db5 syslog
 
 # Main module
-module mapbox tilestream master
+module mapbox tilestream 0.0.12
 
 # Module layout workarounds
 cd $ROOT
