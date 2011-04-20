@@ -128,6 +128,12 @@ var _ = require('underscore')._,
     // Load a tileset model. Retrieve `.mbtiles` file stats, open the DB, retrieve
     // metadata about the tiles.
     var load = function (filepath, callback) {
+        // Restrict tileset IDs to alphanumeric characters,
+        // underscores and dashes.
+        if (!path.basename(filepath, '.mbtiles').match(/^[\w-]+$/)) {
+            return callback(new Error.HTTP('Tileset not found.', 404));
+        }
+
         var data = {};
         Step(
             function() {

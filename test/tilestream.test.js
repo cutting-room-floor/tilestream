@@ -25,6 +25,13 @@ tilestream.init(options, function() {
                 }
             );
         },
+        'tile invalid name': function() {
+            assert.response(
+                tilestream.tileServer,
+                { url: '/1.0.0/bad.name/0/0/0.png' },
+                { status: 404 }
+            );
+        },
         'error tile': function() {
             assert.response(
                 tilestream.tileServer,

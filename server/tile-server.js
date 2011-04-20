@@ -28,7 +28,7 @@ module.exports = function(app, settings) {
         req.model = req.model || {};
         req.model.options = req.model.options || {};
         var model = new models.Tileset(
-            { id: req.params[0] },
+            { id: req.param('tileset') },
             req.model.options
         );
         model.fetch({
@@ -58,26 +58,21 @@ module.exports = function(app, settings) {
         }
     }
 
-    // If "download" feature is enabled, add route equivalent to
-    // `/download/:tileset` except with handling for `:tileset` parameters that may
-    // contain a `.` character.
-    var download = /^\/download\/([\w+|\d+|.|-]*)?.mbtiles/;
-    app.get(download, validateTileset, function(req, res, next) {
+    // Tileset download endpoint.
+    app.get('/download/:tileset.mbtiles', validateTileset, function(req, res, next) {
         _(res.headers).extend(settings.header_defaults);
         res.sendfile(res.mapfile, function(err, path) {
             return err && next(err);
         });
     });
 
-    // Route equivalent to `/1.0.0/:tileset/:z/:x/:y.:format` except with handling
-    // for `:tileset` parameters that may contain a `.` character.
-    var tile = /^\/1.0.0\/([\w+|\d+|.|-]*)?\/([-]?\d+)\/([-]?\d+)\/([-]?\d+).(png|jpg|jpeg)/;
-    app.get(tile, validateTileset, loadMapFileHeaders, function(req, res, next) {
+    // Tile endpoint.
+    app.get('/1.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', validateTileset, loadMapFileHeaders, function(req, res, next) {
         var tile = new Tile({
             type: 'mbtiles',
             datasource: res.mapfile,
             format: req.params[4],
-            xyz: [req.params[2], req.params[3], req.params[1]]
+            xyz: [req.param('x'), req.param('y'), req.param('z')]
         });
         tile.render(function(err, data) {
             if (!err) {
@@ -94,8 +89,7 @@ module.exports = function(app, settings) {
     });
 
     // Load a tileset layer.json manifest.
-    var formatter = /^\/1.0.0\/([\w+|\d+|.|-]*)?\/layer.json/;
-    app.get(formatter, validateTileset, loadMapFileHeaders, function(req, res, next) {
+    app.get('/1.0.0/:tileset/layer.json', validateTileset, loadMapFileHeaders, function(req, res, next) {
         req.query.callback = req.query.callback || 'grid';
         var tile = new Tile({
             type: 'mbtiles',
@@ -118,14 +112,13 @@ module.exports = function(app, settings) {
     });
 
     // Load an interaction grid tile.
-    var grid = /^\/1.0.0\/([\w+|\d+|.|-]*)?\/([-]?\d+)\/([-]?\d+)\/([-]?\d+).grid.json/;
-    app.get(grid, validateTileset, loadMapFileHeaders, function(req, res, next) {
+    app.get('/1.0.0/:tileset/:z/:x/:y.grid.json', validateTileset, loadMapFileHeaders, function(req, res, next) {
         req.query.callback = req.query.callback || 'grid';
         var tile = new Tile({
             type: 'mbtiles',
             datasource: res.mapfile,
             format: 'grid.json',
-            xyz: [req.params[2], req.params[3], req.params[1]]
+            xyz: [req.param('x'), req.param('y'), req.param('z')]
         });
         tile.render(function(err, data) {
             if (!err) {
