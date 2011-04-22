@@ -60,7 +60,7 @@ Bones.controllers.Router = Backbone.Controller.extend({
     error: function(model, xhr) {
         var options = this.options;
         try { options.error = JSON.parse(xhr.responseText).message; }
-        catch(err) { options.error = 'Server is offline.'; }
+        catch(err) { options.error = 'Connection problem.'; }
 
         options.view = new Bones.views.Error(options);
         this.response(new Bones.views.App(options));
