@@ -39,6 +39,7 @@ Error.HTTP.handler = function(env) {
                 }
             }
         } else {
+            require('sys').log(err.toString());
             next(err);
         }
     };
