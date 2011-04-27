@@ -37,6 +37,12 @@ module.exports = function(options) {
     // The init callback is called prior to any commands, allowing for
     // asynchronous setup operations to finish before moving on.
     exports.init = function(options, callback) {
+        // Add logger
+        if (options.accesslog) {
+            exports.tileServer.use(express.logger());
+            exports.uiServer.use(express.logger());
+        }
+
         // Add host info middleware.
         var host = require('./server/host')(options);
         exports.uiServer.use(host.middleware);
@@ -61,6 +67,7 @@ module.exports = function(options) {
                 '--tilePort=PORT': 'Tile server port. Defaults to 8888.',
                 '--subdomains=LIST': 'Comma separated list of subdomains to use for tiles.',
                 '--tiles=PATH': 'Path to tiles directory.',
+                '--accesslog': 'Print every request to stdout.',
                 '--syslog': 'Log to syslog instead of stdout.'
             },
             command: function(argv, callback) {
