@@ -1,6 +1,7 @@
 var _ = require('underscore')._,
     fs = require('fs'),
     path = require('path'),
+    sys = require('sys'),
     express = require('express');
 
 module.exports = function(options) {
@@ -71,6 +72,7 @@ module.exports = function(options) {
                 '--syslog': 'Log to syslog instead of stdout.'
             },
             command: function(argv, callback) {
+                sys.log('Starting TileStream.')
                 if (options.syslog) console.log('\033[1;33mNote: Logging to syslog.\033[0m');
 
                 if (exports.server) {
