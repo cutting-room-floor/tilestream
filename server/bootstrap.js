@@ -25,17 +25,17 @@ Error.HTTP.handler = function(env) {
             if (accept.indexOf('json') !== -1) {
                 var json =
                 res.writeHead(err.code, { 'Content-Type': 'application/json' });
-                if (env.adminParty) {
-                    res.end(JSON.stringify({ error: err }));
-                } else {
+                if (process.connectEnv.name === 'production') {
                     res.end(JSON.stringify({ error: err.message, code: err.code }));
+                } else {
+                    res.end(JSON.stringify({ error: err }));
                 }
             } else {
                 res.writeHead(err.code, { 'Content-Type': 'text/plain' });
-                if (env.adminParty) {
-                    res.end(err.stack);
-                } else {
+                if (process.connectEnv.name === 'production') {
                     res.end(err.message);
+                } else {
+                    res.end(err.stack);
                 }
             }
         } else {
