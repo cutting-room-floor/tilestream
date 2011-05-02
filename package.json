@@ -12,7 +12,7 @@
         "node": "0.4.6"
     },
     "dependencies": {
-        "bones": "https://github.com/developmentseed/bones/tarball/1.0.0",
+        "bones": "https://github.com/developmentseed/bones/tarball/1.1",
         "expresso": "0.7.2",
         "openlayers_slim": "https://github.com/developmentseed/openlayers_slim/tarball/master",
         "step": "0.0.4",

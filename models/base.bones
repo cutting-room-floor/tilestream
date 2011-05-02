@@ -1,3 +1,5 @@
+var model;
+
 // Set options on initialize.
 Backbone.Collection.prototype.initialize =
 Backbone.Model.prototype.initialize = function(attributes, options) {
@@ -13,4 +15,3 @@ Backbone.Model.prototype.initialize = function(attributes, options) {
         }).bind(this));
     }
 };
-

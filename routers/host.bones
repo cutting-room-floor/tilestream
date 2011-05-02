@@ -22,7 +22,7 @@ router = Bones.Router.extend({
         req.model.options = req.model.options || {};
         if (!req.basepath) {
             req.basepath = '/';
-            req.model.options.basepath = req.basepath;
+            req.query.basepath = req.basepath;
         }
         if (req.headers && req.headers.host && !req.uiHost) {
             req.uiHost = 'http://' + req.headers.host + '/';
@@ -38,8 +38,8 @@ router = Bones.Router.extend({
                 // Use the same host for UI and tiles.
                 req.tileHost = ['http://' + req.headers.host + '/'];
             }
-            req.model.options.uiHost = req.uiHost;
-            req.model.options.tileHost = req.tileHost;
+            req.query.uiHost = req.uiHost;
+            req.query.tileHost = req.tileHost;
         }
         next();
     }

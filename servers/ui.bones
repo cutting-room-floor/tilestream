@@ -3,22 +3,22 @@ server = Bones.Server.extend({
         this.port = options.config.uiPort;
         this.server.enable('jsonp callback');
         this.server.error(Error.HTTP.handler(options.config));
-        this.register(models['Tileset']);
-        this.register(models['Tilesets']);
-        this.register(views['App']);
-        this.register(views['Error']);
-        this.register(views['Hud']);
-        this.register(views['Map']);
-        this.register(views['Maps']);
-        this.register(views['MapClient']);
-        this.register(controllers['Router']);
-        this.register(routers['Host']);
-        this.register(routers['Ui']);
-        this.register(routers['Wax']);
-        this.register(routers['Syslog']);
+        models['Tileset'].register(this);
+        models['Tilesets'].register(this);
+        views['App'].register(this);
+        views['Error'].register(this);
+        views['Hud'].register(this);
+        views['Map'].register(this);
+        views['Maps'].register(this);
+        views['MapClient'].register(this);
 
-        if (options.config.tilePort === options.config.uiPort) {
-            this.register(routers['Tile']);
-        }
+        routers['Host'].register(this);
+        routers['Ui'].register(this);
+        routers['Wax'].register(this);
+        routers['Syslog'].register(this);
+        routers['Core'].register(this);
+        (options.config.tilePort === options.config.uiPort) && routers['Tile'].register(this);
+
+        controllers['Router'].register(this);
     }
 });

@@ -7,51 +7,33 @@ var Step = require('step'),
 
 router = Bones.Router.extend({
     initialize: function(options) {
+        var load = _(this.load).bind(this);
         this.config = options.plugin.config;
         this.config.header = { 'Cache-Control': 'max-age=' + 60 * 60 };
-        this.server.get('/1.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.validate, this.headers, this.tile);
-        this.server.get('/1.0.0/:tileset/:z/:x/:y.grid.json', this.validate, this.headers, this.grid);
-        this.server.get('/1.0.0/:tileset/layer.json', this.validate, this.headers, this.layer);
-        this.server.get('/download/:tileset.mbtiles', this.validate, this.download);
+        this.server.get('/1.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', load, _(this.tile).bind(this));
+        this.server.get('/1.0.0/:tileset/:z/:x/:y.grid.json', load, _(this.grid).bind(this));
+        this.server.get('/1.0.0/:tileset/layer.json', load, _(this.layer).bind(this));
+        this.server.get('/download/:tileset.mbtiles', load, _(this.download).bind(this));
         this.server.get('/status', this.status);
     },
     // Basic route for checking the health of the server.
     status: function(req, res, next) {
         res.send('TileStream', 200);
     },
-    // Route middleware. Validates an mbtiles file specified in a tile or
-    // download route.
-    validate: function(req, res, next) {
-        req.model = req.model || {};
-        req.model.options = req.model.options || {};
-        var model = new models.Tileset(
-            { id: req.param('tileset') },
-            req.model.options
-        );
+    // Route middleware. Validate and load an mbtiles file specified in a tile
+    // or download route.
+    load: function(req, res, next) {
+        var model = new models.Tileset({ id: req.param('tileset') }, req.query);
         model.fetch({
-            success: function(model) {
-                res.mapfile = model.filepath(settings.tiles);
+            success: _(function(model) {
+                res.model = model;
+                res.mapfile = model.filepath(this.config.tiles);
                 next();
-            },
-            error: function(model, err) {
+            }).bind(this),
+            error: _(function(model, err) {
                 next(err);
-            }
+            }).bind(this)
         });
-    },
-    // Load HTTP headers specific to the requested mbtiles file.
-    headers: function(req, res, next) {
-        var headers = {};
-        if (res.mapfile) {
-            fs.stat(res.mapfile, function(err, stat) {
-                if (!err) {
-                    res.mapfile_headers = {
-                        'Last-Modified': stat.mtime,
-                        'E-Tag': stat.size + '-' + Number(stat.mtime)
-                    }
-                    return next();
-                }
-            });
-        }
     },
     // MBTiles download.
     download: function(req, res, next) {
@@ -62,6 +44,7 @@ router = Bones.Router.extend({
     },
     // Tile endpoint.
     tile: function(req, res, next) {
+        var config = this.config;
         var tile = new Tile({
             type: 'mbtiles',
             datasource: res.mapfile,
@@ -71,8 +54,8 @@ router = Bones.Router.extend({
         tile.render(function(err, data) {
             if (!err) {
                 res.send(data[0], _.extend({},
-                    res.mapfile_headers,
-                    this.config.header,
+                    res.model.get('headers'),
+                    config.header,
                     data[1]));
             } else if (err.toString() === 'Tile does not exist') {
                 res.send('Not found.', 404);
@@ -84,6 +67,7 @@ router = Bones.Router.extend({
     // Load a tileset layer.json manifest.
     layer: function(req, res, next) {
         req.query.callback = req.query.callback || 'grid';
+        var config = this.config;
         var tile = new Tile({
             type: 'mbtiles',
             datasource: res.mapfile,
@@ -93,8 +77,8 @@ router = Bones.Router.extend({
             if (!err) {
                 res.send(data, _.extend(
                     { 'Content-Type': 'text/javascript' },
-                    res.mapfile_headers,
-                    this.config.header
+                    res.model.get('headers'),
+                    config.header
                 ));
             } else if ((err.toString() === 'Key does not exist') || !data) {
                 res.send('layer.json not found', 404);
@@ -106,6 +90,7 @@ router = Bones.Router.extend({
     // Load an interaction grid tile.
     grid: function(req, res, next) {
         req.query.callback = req.query.callback || 'grid';
+        var config = this.config;
         var tile = new Tile({
             type: 'mbtiles',
             datasource: res.mapfile,
@@ -118,8 +103,8 @@ router = Bones.Router.extend({
                     req.query.callback + '(' + data + ');',
                     _.extend(
                         {'Content-Type': 'text/javascript; charset=utf-8'},
-                        res.mapfile_headers,
-                        this.config.header
+                        res.model.get('headers'),
+                        config.header
                     )
                 );
             }

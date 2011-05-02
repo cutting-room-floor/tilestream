@@ -8,8 +8,8 @@ server = Bones.Server.extend({
         this.port = options.config.tilePort;
         this.server.enable('jsonp callback');
         this.server.error(Error.HTTP.handler(options.config));
-        this.register(routers['Syslog']);
-        this.register(routers['Tile']);
+        routers['Syslog'].register(this);
+        routers['Tile'].register(this);
     },
     start: function() {
         this.server && this.server.listen(this.port);
