@@ -15,8 +15,10 @@
         "bones": "https://github.com/developmentseed/bones/tarball/1.0.0",
         "expresso": "0.7.2",
         "openlayers_slim": "https://github.com/developmentseed/openlayers_slim/tarball/master",
+        "step": "0.0.4",
         "syslog": "0.1.1",
-        "tilelive": "2.0.1",
+        "tilelive": "2.0.2",
+        "underscore": "1.1.5",
         "wax": "https://github.com/mapbox/wax/tarball/master"
     },
     "devDependencies": {},
