@@ -14,10 +14,8 @@
     "dependencies": {
         "bones": "https://github.com/developmentseed/bones/tarball/1.0.0",
         "expresso": "0.7.2",
-        "openlayers_slim": "https://github.com/mapbox/openlayers_slim/tarball/v1.10",
         "syslog": "0.1.1",
-        "tilelive": "2.0.1",
-        "wax": "https://github.com/mapbox/wax/tarball/1.0.4"
+        "tilelive": "2.0.1"
     },
     "devDependencies": {},
     "bundledDependencies": []
