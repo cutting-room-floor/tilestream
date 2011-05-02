@@ -1,30 +1,27 @@
 // Routes for the tile server. Suitable for HTTP cacheable content with a
 // long TTL.
-var _ = require('underscore')._,
-    Step = require('step'),
+var Step = require('step'),
     fs = require('fs'),
     path = require('path'),
-    Tile = require('tilelive').Tile,
-    models = require('../mvc/models');
+    Tile = require('tilelive').Tile;
 
-module.exports = function(app, settings) {
-    if (settings.syslog) {
-        var logger = require('syslog').createClient(514, 'localhost', { name: 'tilestream' });
-        app.error(function(err, req, res, next) {
-            err.method = req.method;
-            err.url = req.url;
-            err.headers = req.headers;
-            logger.error(JSON.stringify(err));
-            next();
-        });
-    }
-
-    app.enable('jsonp callback');
-    app.error(Error.HTTP.handler(settings));
-
+router = Bones.Router.extend({
+    initialize: function(options) {
+        this.config = options.plugin.config;
+        this.config.header = { 'Cache-Control': 'max-age=' + 60 * 60 };
+        this.server.get('/1.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.validate, this.headers, this.tile);
+        this.server.get('/1.0.0/:tileset/:z/:x/:y.grid.json', this.validate, this.headers, this.grid);
+        this.server.get('/1.0.0/:tileset/layer.json', this.validate, this.headers, this.layer);
+        this.server.get('/download/:tileset.mbtiles', this.validate, this.download);
+        this.server.get('/status', this.status);
+    },
+    // Basic route for checking the health of the server.
+    status: function(req, res, next) {
+        res.send('TileStream', 200);
+    },
     // Route middleware. Validates an mbtiles file specified in a tile or
     // download route.
-    var validateTileset = function(req, res, next) {
+    validate: function(req, res, next) {
         req.model = req.model || {};
         req.model.options = req.model.options || {};
         var model = new models.Tileset(
@@ -40,10 +37,9 @@ module.exports = function(app, settings) {
                 next(err);
             }
         });
-    };
-
+    },
     // Load HTTP headers specific to the requested mbtiles file.
-    var loadMapFileHeaders = function(req, res, next) {
+    headers: function(req, res, next) {
         var headers = {};
         if (res.mapfile) {
             fs.stat(res.mapfile, function(err, stat) {
@@ -56,18 +52,16 @@ module.exports = function(app, settings) {
                 }
             });
         }
-    }
-
-    // Tileset download endpoint.
-    app.get('/download/:tileset.mbtiles', validateTileset, function(req, res, next) {
-        _(res.headers).extend(settings.header_defaults);
+    },
+    // MBTiles download.
+    download: function(req, res, next) {
+        _(res.headers).extend(this.config.header);
         res.sendfile(res.mapfile, function(err, path) {
             return err && next(err);
         });
-    });
-
+    },
     // Tile endpoint.
-    app.get('/1.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', validateTileset, loadMapFileHeaders, function(req, res, next) {
+    tile: function(req, res, next) {
         var tile = new Tile({
             type: 'mbtiles',
             datasource: res.mapfile,
@@ -78,7 +72,7 @@ module.exports = function(app, settings) {
             if (!err) {
                 res.send(data[0], _.extend({},
                     res.mapfile_headers,
-                    settings.header_defaults,
+                    this.config.header,
                     data[1]));
             } else if (err.toString() === 'Tile does not exist') {
                 res.send('Not found.', 404);
@@ -86,10 +80,9 @@ module.exports = function(app, settings) {
                 res.send(err.toString(), 500);
             }
         });
-    });
-
+    },
     // Load a tileset layer.json manifest.
-    app.get('/1.0.0/:tileset/layer.json', validateTileset, loadMapFileHeaders, function(req, res, next) {
+    layer: function(req, res, next) {
         req.query.callback = req.query.callback || 'grid';
         var tile = new Tile({
             type: 'mbtiles',
@@ -101,7 +94,7 @@ module.exports = function(app, settings) {
                 res.send(data, _.extend(
                     { 'Content-Type': 'text/javascript' },
                     res.mapfile_headers,
-                    settings.header_defaults
+                    this.config.header
                 ));
             } else if ((err.toString() === 'Key does not exist') || !data) {
                 res.send('layer.json not found', 404);
@@ -109,10 +102,9 @@ module.exports = function(app, settings) {
                 res.send(err.toString(), 500);
             }
         });
-    });
-
+    },
     // Load an interaction grid tile.
-    app.get('/1.0.0/:tileset/:z/:x/:y.grid.json', validateTileset, loadMapFileHeaders, function(req, res, next) {
+    grid: function(req, res, next) {
         req.query.callback = req.query.callback || 'grid';
         var tile = new Tile({
             type: 'mbtiles',
@@ -127,7 +119,7 @@ module.exports = function(app, settings) {
                     _.extend(
                         {'Content-Type': 'text/javascript; charset=utf-8'},
                         res.mapfile_headers,
-                        settings.header_defaults
+                        this.config.header
                     )
                 );
             }
@@ -138,10 +130,6 @@ module.exports = function(app, settings) {
                 res.send(err.toString(), 500);
             }
         });
-    });
+    }
+});
 
-    // Basic route for the root. Useful for checking the health of the server.
-    app.get('/status', function(req, res, next) {
-        res.send('TileStream', 200);
-    });
-};
