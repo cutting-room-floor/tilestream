@@ -1,9 +1,2 @@
-build
-bin
-lib
-modules
+node_modules
 tiles
-files
-include
-share
-src
