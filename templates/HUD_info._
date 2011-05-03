@@ -30,12 +30,12 @@
       <li class='clearfix'>
         <label>Bounds</label>
         <div class='column'>
-          N: <%= n %>&deg;<br/>
-          S: <%= s %>&deg;
+          N: <%= bounds.n %>&deg;<br/>
+          S: <%= bounds.s %>&deg;
         </div>
         <div class='column'>
-          E: <%= e %>&deg;<br/>
-          W: <%= w %>&deg;
+          E: <%= bounds.e %>&deg;<br/>
+          W: <%= bounds.w %>&deg;
         </div>
       </li>
     <% } %>
