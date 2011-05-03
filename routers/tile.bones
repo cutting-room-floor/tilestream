@@ -36,9 +36,10 @@ router = Bones.Router.extend({
         });
     },
     // MBTiles download.
+    // @TODO: Current `maxAge` option is hardcoded into place. Find better
+    // way to pass this through.
     download: function(req, res, next) {
-        _(res.headers).extend(this.config.header);
-        res.sendfile(res.mapfile, function(err, path) {
+        res.sendfile(res.mapfile, { maxAge: 3600 }, function(err, path) {
             return err && next(err);
         });
     },

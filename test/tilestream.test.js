@@ -61,17 +61,17 @@ exports['layer json'] = function() {
     );
 };
 
-// exports['mbtiles download'] = function() {
-//     assert.response(
-//         command.servers['Ui'].server,
-//         { url: '/download/control_room.mbtiles' },
-//         { status: 200 },
-//         function(res) {
-//             // @TODO: determine why download is sometimes off by 1 (or more?) byte(s)
-//             assert.ok(res.body.length >= 2976208 || res.body.length <= 2976209);
-//         }
-//     );
-// };
+exports['mbtiles download'] = function() {
+    assert.response(
+        command.servers['Ui'].server,
+        { url: '/download/control_room.mbtiles' },
+        { status: 200 },
+        function(res) {
+            // @TODO: determine why download is sometimes off by 1 (or more?) byte(s)
+            assert.ok(res.body.length >= 2976208 || res.body.length <= 2976209);
+        }
+    );
+};
 
 exports['load map'] = function() {
     assert.response(
