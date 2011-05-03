@@ -9,16 +9,16 @@
     <li>
       <label>Zoom levels</label>
       <div class='zooms clearfix'>
-      <% if (zoom) { %>
+      <% zoom && _(zoom).each(function(zoom) { %>
         <span class='zoom zoom-<%= zoom %>'><%= zoom %></span>
-      <% } %>
+      <% }); %>
       </div>
     </li>
     <li>
       <label>Tile URL</label>
-      <% if (url) { %>
-      <input class='text' type='text' value='<%= url %>' />
-      <% } %>
+      <% url && _(url).each(function(url) { %>
+        <input class='text' type='text' value='<%= url %>' />
+      <% }); %>
     </li>
     <% if (type) { %>
       <li>
