@@ -13,15 +13,19 @@ router.augment({
             'wax/build/wax.ol.min.js'
         ]));
 
-        // @TODO.
-        // server.get('/theme/default/style.css', mirror.file('openlayers_slim/theme/default/style.css'));
+        this.server.get('/theme/default/style.css', mirror.assets(require, [
+            'openlayers_slim/theme/default/style.css'
+        ], {headers:{'Content-Type': 'text/css'}}));
+
+        parent.call(this, app);
     },
     initializeModels: function(parent, app) {
-        parent.call(this, app);
+        this.models = app.models;
+        _.bindAll(this, 'loadModel', 'getModel');
+
         this.server.get('/api/v1/:model/:id', this.loadModel, this.getModel);
-    },
-    initializeCollections: function(parent, app) {
-        parent.call(this, app);
         this.server.get('/api/v1/:collection', this.loadCollection.bind(this));
+
+        parent.call(this, app);
     }
 });
