@@ -47,11 +47,11 @@ view = Backbone.View.extend({
     render: function() {
         // Server side.
         if (Bones.server) {
-            this.el = this.template('App', this.options);
+            this.el = templates.App(this.options);
         // Client side.
         } else {
             $('body').attr('class', '');
-            $('#app').html(this.options.view.el);
+            $('#app').empty().append(this.options.view.el);
             this.options.view.trigger('ready');
         }
         return this;
