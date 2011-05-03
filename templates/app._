@@ -9,6 +9,13 @@
     location.href.indexOf('#') === -1 &&
     window.location.pathname !== basepath &&
     (window.location = basepath + '#' + window.location.pathname.substr(basepath.length - 1));
+
+    // Server-side request info.
+    var req = { query: {
+        basepath: <%= JSON.stringify(basepath) %>,
+        uiHost: <%= JSON.stringify(uiHost) %>,
+        tileHost: <%= JSON.stringify(tileHost) %>
+    }};
     </script>
 
     <link rel='shortcut icon' href='/assets/tilestream/images/favicon.ico' type='image/x-icon' />
@@ -20,7 +27,6 @@
     <script src="/assets/bones/models.js" type="text/javascript" charset="utf-8"></script>
     <script src="/assets/bones/templates.js" type="text/javascript" charset="utf-8"></script>
     <script src="/assets/tilestream/js/vendor.js" type="text/javascript" charset="utf-8"></script>
-    <script type='text/javascript' src='/settings.js'></script>
     <script type="text/javascript">$(Bones.start);</script>
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
