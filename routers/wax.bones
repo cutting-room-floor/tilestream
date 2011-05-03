@@ -15,15 +15,17 @@ router = Bones.Router.extend({
         //        layers[]=test_project&layers[]=broadband-virginia_23ecea
         // - `center` - List in the form [<lon>, <lat>, <zoom>]
         //        center[]=66.5&center[]=55.8&&center[]=2
-        this.server.get('/api/v1/wax.json', this.load, this.sendWax);
-        this.server.get('/api/wax.json', this.load, this.sendWax);
+        var load = _(this.load).bind(this),
+            wax = _(this.sendWax).bind(this);
+        this.server.get('/api/v1/wax.json', load, wax);
+        this.server.get('/api/wax.json', load, wax);
     },
     // Loader for layers. Validates `req.query` to ensure it is usable.
     load: function(req, res, next) {
         // Load defaults from Map model for each query property.
         var properties = ['el', 'api', 'size', 'center', 'options'],
             numeric = ['size', 'center'];
-        _(properties).each(function(key) {
+        _(properties).each(_(function(key) {
             req.query[key] = req.query[key] || this.defaults[key];
             req.query[key] = _(req.query[key].toJSON).isFunction()
                 ? req.query[key].toJSON()
@@ -33,7 +35,7 @@ router = Bones.Router.extend({
                     return parseFloat(value);
                 });
             }
-        });
+        }).bind(this));
         // Exception for `layers`.
         req.query.layers = req.query.layers || [];
 
@@ -42,7 +44,7 @@ router = Bones.Router.extend({
             return _(['zoomwheel', 'zoompan', 'legend', 'tooltips']).include(option);
         };
         if (!_(req.query.el).isString()) return res.send('`el` is invalid.', 400);
-        if (!_(_(Waxer).keys()).include(req.query.api)) return res.send('`api` is invalid.', 400);
+        if (!_(_(this.Waxer).keys()).include(req.query.api)) return res.send('`api` is invalid.', 400);
         if (!_(req.query.size).isArray()) return res.send('`size` is invalid.', 400);
         if (_(req.query.size).size() !== 2) return res.send('`size` is invalid.', 400);
         if (!_(req.query.size).all(_.isNumber)) return res.send('`size` is invalid.', 400);
@@ -55,9 +57,7 @@ router = Bones.Router.extend({
         if (!_(req.query.options).all(checkOption)) return res.send('`options` is invalid.', 400);
 
         var loadLayer = function(id, callback) {
-            req.model = req.model || {};
-            req.model.options = req.model.options || {};
-            (new models.Tileset({ id: id }, req.model.options)).fetch({
+            (new models.Tileset({ id: id }, req.query)).fetch({
                 success: function(model) { callback(null, model) },
                 error: function(model, err) { callback(err) }
             });
