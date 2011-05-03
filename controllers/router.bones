@@ -6,10 +6,8 @@ controller = Backbone.Controller.extend({
     },
     getOptions: function() {
         var options = {};
-        if (this.req && this.req.model && this.req.model.options) {
-            options = this.req.model.options;
-            options.basepath = this.req.basepath;
-            // debugger;
+        if (this.req && this.req.query) {
+            options = this.req.query;
         // @TODO.
         } else if (Bones.settings) {
             options = Bones.settings;
@@ -37,7 +35,6 @@ controller = Backbone.Controller.extend({
         });
     },
     map: function(id, response) {
-        var ctrl = this;
         var options = this.getOptions(response);
         (new this.Model({ id: id }, options)).fetch({
             success: _.bind(function(model) {
