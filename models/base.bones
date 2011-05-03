@@ -1,4 +1,4 @@
-var model;
+model = Backbone.Model;
 
 // Set options on initialize.
 Backbone.Collection.prototype.initialize =
