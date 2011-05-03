@@ -4,17 +4,17 @@
       <span class='icon tilestream'></span>
       TileStream
     </a>
-    <% if (obj.breadcrumb) { %>
-      <% if (icon) { %><span class='icon <%= icon %>'></span><% } %>
-      <a class='route' href='<%= href %>'><%= title %></a>
-    <% } %>
+    <% obj.breadcrumb && _(obj.breadcrumb).each(function(item) { %>
+      <% if (item.icon) { %><span class='icon <%= item.icon %>'></span><% } %>
+      <a class='route' href='<%= item.href %>'><%= item.title %></a>
+    <% }); %>
   </h1>
   <div class='buttons clearfix'>
-    <% if (obj.buttons) { %>
-      <a href='#<%= id %>'>
-        <span class='icon <%= id %>'></span>
-        <%= title %>
+    <% obj.buttons && _(obj.buttons).each(function(item) { %>
+      <a href='#<%= item.id %>'>
+        <span class='icon <%= item.id %>'></span>
+        <%= item.title %>
       </a>
-    <% } %>
+    <% }); %>
   </div>
 </div>

@@ -5,10 +5,10 @@
     well on block level elements. Ideally this would be a ul / li combo but
     alas...
   -->
-  <% _.each(maps, function(map) { %>
-  <span><%= this['MapThumb'](map) %></span>
-  <% }); %>
-  <% if (!maps.length) { %>
+  <% obj.maps && _(maps).each(_(function(item) { %>
+  <span><%= this['MapThumb'](item) %></span>
+  <% }).bind(this)); %>
+  <% if (!obj.maps) { %>
   <span class='empty'><span>No maps found.</span></span>
   <% } %>
 </div>

@@ -14,6 +14,9 @@ controller = Backbone.Controller.extend({
         // @TODO.
         } else if (Bones.settings) {
             options = Bones.settings;
+        // @TODO stopgap.
+        } else {
+            options = { basepath: '/' };
         }
         return options;
     },
@@ -29,7 +32,7 @@ controller = Backbone.Controller.extend({
             success: function(collection) {
                 options.collection = collection;
                 options.view = new views.Maps(options);
-                response(new views.App(options));
+                response((new views.App(options)).el);
             },
             error: _(this.error).bind({options: options, response: response})
         });
@@ -41,7 +44,7 @@ controller = Backbone.Controller.extend({
             success: function(model) {
                 options.model = model;
                 options.view = new views.Map(options);
-                response(new views.App(options));
+                response((new views.App(options)).el);
             },
             error: _(this.error).bind({options: options, response: response})
         });
@@ -53,7 +56,7 @@ controller = Backbone.Controller.extend({
         catch(err) { options.error = 'Connection problem.'; }
 
         options.view = new views.Error(options);
-        this.response(new views.App(options));
+        this.response((new views.App(options)).el);
     }
 });
 

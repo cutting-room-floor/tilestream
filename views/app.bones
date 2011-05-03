@@ -45,15 +45,9 @@ view = Backbone.View.extend({
         this.render().trigger('attach');
     },
     render: function() {
-        // Server side.
-        if (Bones.server) {
-            this.el = templates.App(this.options);
-        // Client side.
-        } else {
-            $('body').attr('class', '');
-            $('#app').empty().append(this.options.view.el);
-            this.options.view.trigger('ready');
-        }
+        $('body').attr('class', '');
+        $('#app').html(this.options.view.el);
+        this.options.view.trigger('ready');
         return this;
     }
 });
