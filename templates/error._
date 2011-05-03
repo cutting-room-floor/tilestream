@@ -1,0 +1,4 @@
+<%= this['Header'](obj) %>
+<div class='error'>
+  <div class='message'><%= error %></div>
+</div>

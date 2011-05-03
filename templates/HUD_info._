@@ -1,0 +1,43 @@
+<div class='info hud'>
+  <ul>
+    <li>
+      <h1><%= name %></h1>
+      <% if (description) { %>
+        <div class='description'><%= description %></div>
+      <% } %>
+    </li>
+    <li>
+      <label>Zoom levels</label>
+      <div class='zooms clearfix'>
+      <% if (zoom) { %>
+        <span class='zoom zoom-<%= zoom %>'><%= zoom %></span>
+      <% } %>
+      </div>
+    </li>
+    <li>
+      <label>Tile URL</label>
+      <% if (url) { %>
+      <input class='text' type='text' value='<%= url %>' />
+      <% } %>
+    </li>
+    <% if (type) { %>
+      <li>
+        <label>Type</label>
+        <%= type %>
+      </li>
+    <% } %>
+    <% if (bounds) { %>
+      <li class='clearfix'>
+        <label>Bounds</label>
+        <div class='column'>
+          N: <%= n %>&deg;<br/>
+          S: <%= s %>&deg;
+        </div>
+        <div class='column'>
+          E: <%= e %>&deg;<br/>
+          W: <%= w %>&deg;
+        </div>
+      </li>
+    <% } %>
+  </ul>
+</div>

@@ -1,0 +1,20 @@
+<div class='header'>
+  <h1 class='breadcrumb'>
+    <a class='route logo' href='<%= basepath %>'>
+      <span class='icon tilestream'></span>
+      TileStream
+    </a>
+    <% if (breadcrumb) { %>
+      <% if (icon) { %><span class='icon <%= icon %>'></span><% } %>
+      <a class='route' href='<%= href %>'><%= title %></a>
+    <% } %>
+  </h1>
+  <div class='buttons clearfix'>
+    <% if (buttons) { %>
+      <a href='#<%= id %>'>
+        <span class='icon <%= id %>'></span>
+        <%= title %>
+      </a>
+    <% } %>
+  </div>
+</div>

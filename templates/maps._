@@ -1,14 +1,13 @@
-{{>Header}}
+<%= this['Header'](obj) %>
 <div class='maps clearfix'>
-  {{!
+  <!--
     Inline markup is used here as IE7 does not support `display: inline-block`
     well on block level elements. Ideally this would be a ul / li combo but
     alas...
-  }}
-  {{#maps}}
-  <span>{{>MapThumb}}</span>
-  {{/maps}}
-  {{^maps}}
+  -->
+  <% if (maps) { %>
+  <span><%= this['MapThumb'](obj) %></span>
+  <% } else { %>
   <span class='empty'><span>No maps found.</span></span>
-  {{/maps}}
+  <% } %>
 </div>

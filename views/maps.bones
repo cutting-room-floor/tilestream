@@ -8,7 +8,7 @@ view = views.Hud.extend({
         this.render().trigger('attach');
     },
     render: function() {
-        $(this.el).html(this.template('Maps', _({
+        $(this.el).html(templates['Maps'](_({
             maps: this.collection.map(function(model) {
                 return {
                     basepath: model.options.basepath,
@@ -22,4 +22,3 @@ view = views.Hud.extend({
         return this;
     }
 });
-
