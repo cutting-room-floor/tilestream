@@ -1,24 +1,22 @@
 server = Bones.Server.extend({
-    initialize: function(options) {
-        this.port = options.config.uiPort;
+    initialize: function(plugin) {
+        this.port = plugin.config.uiPort;
         this.server.enable('jsonp callback');
-        this.server.error(Error.HTTP.handler(options.config));
-        models['Tileset'].register(this);
-        models['Tilesets'].register(this);
-        views['App'].register(this);
-        views['Error'].register(this);
-        views['Hud'].register(this);
-        views['Map'].register(this);
-        views['Maps'].register(this);
-        views['MapClient'].register(this);
+        this.server.error(Error.HTTP.handler(plugin.config));
 
         routers['Host'].register(this);
         routers['Ui'].register(this);
         routers['Wax'].register(this);
         routers['Syslog'].register(this);
-        routers['Core'].register(this);
-        (options.config.tilePort === options.config.uiPort) && routers['Tile'].register(this);
+        (plugin.config.tilePort === plugin.config.uiPort) && routers['Tile'].register(this);
 
-        controllers['Router'].register(this);
+        // @TODO: consider change in Bones as it's not clear that the core
+        // router must be registered before all other components.
+        routers['Core'].register(this);
+        _(['models', 'views', 'controllers', 'templates']).each(_(function(kind) {
+            _(plugin[kind]).each(_(function(object) {
+                object.register(this);
+            }).bind(this));
+        }).bind(this));
     }
 });
