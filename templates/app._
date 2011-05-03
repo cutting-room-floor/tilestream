@@ -18,8 +18,8 @@
     <script src="/assets/bones/views.js" type="text/javascript" charset="utf-8"></script>
     <script src="/assets/bones/controllers.js" type="text/javascript" charset="utf-8"></script>
     <script src="/assets/bones/models.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/assets/tilestream/app.js" type="text/javascript" charset="utf-8"></script>
     <script type='text/javascript' src='/settings.js'></script>
+    <script type="text/javascript">$(Bones.start);</script>
     <meta name="viewport" content="user-scalable=no; width=device-width; initial-scale=1.0; maximum-scale=1.0" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <link rel="apple-touch-icon-precomposed" href="/assets/tilestream/images/apple-touch-icon-57.png" />
