@@ -5,7 +5,7 @@
 view = views.Hud.extend({
     initialize: function(options) {
         views.Hud.prototype.initialize.call(this, options);
-        _.bindAll(this, 'render', 'ready', 'controlZoom', 'format');
+        _.bindAll(this, 'render', 'format');
         this.render().trigger('attach');
     },
     format: function(type, value) {
@@ -28,7 +28,7 @@ view = views.Hud.extend({
         }
     },
     render: function() {
-        $(this.el).html(this.template('Map', {
+        $(this.el).html(templates.Map({
             breadcrumb: [{
                 href: this.model.options.basepath + 'map/' + this.model.get('id'),
                 title: this.model.get('name')
