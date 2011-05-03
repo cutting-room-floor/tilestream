@@ -19,7 +19,7 @@ view = Backbone.View.extend({
         });
     },
     waxURL: function(wax) {
-        return Bones.settings.uiHost + 'api/wax.json?' + $.param(wax);
+        return this.model.options.uiHost + 'api/wax.json?' + $.param(wax);
     },
     generateWax: function(callback) {
         return _(this.model.wax()).extend({el: $(this.el).attr('id')});
