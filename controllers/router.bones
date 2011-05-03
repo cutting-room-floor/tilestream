@@ -12,6 +12,9 @@ controller = Backbone.Controller.extend({
         // @TODO.
         } else if (Bones.settings) {
             options = Bones.settings;
+        // @TODO stopgap.
+        } else {
+            options = { basepath: '/' };
         }
         return options;
     },
