@@ -20,6 +20,8 @@
         "underscore": "1.1.5",
         "wax": "https://github.com/mapbox/wax/tarball/master"
     },
-    "devDependencies": {},
+    "devDependencies": {
+        "expresso" : ">= 0.7.6"
+    },
     "bundledDependencies": []
 }
