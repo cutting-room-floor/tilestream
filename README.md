@@ -19,9 +19,10 @@ Requirements
   - May work: Opera 11
 - *TileStream server*
   - Tested: Mac OS X 10.6, Ubuntu 10.10
+  - Tested: [node](http://nodejs.org/) 0.4.7
+  - Tested: [npm](http://npmjs.org/) v1.0.3
   - At least 613MB memory
   - May work: Older versions, other POSIX-compliant systems
-  - The [prerequisites for node][2] (python, libssl-dev)
 
 [2]:https://github.com/ry/node/wiki/Installation
 
@@ -32,13 +33,13 @@ Install [Xcode][3] for Mac OS X.
 
 Download and unpack TileStream. Build & install:
 
-    git clone -b master-ndistro git://github.com/mapbox/tilestream.git
+    git clone git://github.com/mapbox/tilestream.git
     cd tilestream
-    ./ndistro
+    npm install .
 
 Start TileStream:
 
-    bin/node bin/tilestream
+    ./index.js
 
 TileStream should now be accessible from a browser at `http://localhost:8888`.
 
@@ -53,13 +54,13 @@ Install build requirements:
 
 Download and unpack TileStream. Build & install:
 
-    git clone -b master-ndistro git://github.com/mapbox/tilestream.git
+    git clone git://github.com/mapbox/tilestream.git
     cd tilestream
-    ./ndistro
+    npm install .
 
 Start TileStream:
 
-    bin/node bin/tilestream
+    ./index.js
 
 TileStream should now be accessible from a browser at `http://localhost:8888`.
 
@@ -99,25 +100,18 @@ Tileset filenames:
         World Light.mbtiles
         BlueWorld-1.0.mbtiles
 
-Commandline options:
+To see the options available for use with TileStream, run
 
-    Usage: tilestream [COMMAND] [OPTION]
-    Commands:
-      start
-        start server
-        --config=PATH      Pass options via JSON config file at PATH.
-        --uiPort=PORT      UI server port. Defaults to 8888.
-        --tilePort=PORT    Tile server port. Defaults to 8888.
-        --subdomains=LIST  Comma separated list of subdomains to use for tiles.
-        --tiles=PATH       Path to tiles directory.
-        --syslog           Log to syslog instead of stdout.
+    ./index.js start --help
 
 
 Tests
 -----
-You can run the TileStream tests using expresso:
+TileStream tests use [Expresso](http://visionmedia.github.com/expresso).
 
-    PATH=bin expresso modules/tilestream/test/tilestream.test.js
+    npm install -g expresso
+    cd tilestream
+    expresso
 
 
 Contributors
