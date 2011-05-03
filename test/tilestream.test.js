@@ -8,8 +8,7 @@ tilestream.config = {
     tiles: __dirname + '/fixtures/tiles',
     uiPort: 8888,
     tilePort: 8888,
-    subdomains: 'a,b,c,d',
-    'cold-start': true
+    subdomains: 'a,b,c,d'
 };
 var command = tilestream.start();
 
