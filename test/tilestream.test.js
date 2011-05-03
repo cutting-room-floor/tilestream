@@ -8,8 +8,7 @@ tilestream.config = {
     tiles: __dirname + '/fixtures/tiles',
     uiPort: 8888,
     tilePort: 8888,
-    subdomains: 'a,b,c,d',
-    'cold-start': true
+    subdomains: 'a,b,c,d'
 };
 var command = tilestream.start();
 
@@ -90,23 +89,23 @@ exports['load map'] = function() {
         }
     );
 };
-// 
-// exports['load map v1'] = function() {
-//     assert.response(
-//         command.servers['Ui'].server,
-//         { url: '/api/v1/Tileset/control_room' },
-//         { status: 200 },
-//         function(res) {
-//             var map;
-//             assert.doesNotThrow(function() {
-//                 map = JSON.parse(res.body);
-//             }, SyntaxError);
-//             assert.equal(map.id, 'control_room');
-//             assert.equal(map.type, 'baselayer');
-//             assert.equal(map.bounds, "-180,-85.05112877980659,180,89.99075251648905");
-//         }
-//     );
-// };
+
+exports['load map v1'] = function() {
+    assert.response(
+        command.servers['Ui'].server,
+        { url: '/api/v1/Tileset/control_room' },
+        { status: 200 },
+        function(res) {
+            var map;
+            assert.doesNotThrow(function() {
+                map = JSON.parse(res.body);
+            }, SyntaxError);
+            assert.equal(map.id, 'control_room');
+            assert.equal(map.type, 'baselayer');
+            assert.equal(map.bounds, "-180,-85.05112877980659,180,89.99075251648905");
+        }
+    );
+};
 
 exports['load maps'] = function() {
     assert.response(
@@ -126,23 +125,23 @@ exports['load maps'] = function() {
     );
 };
 
-// exports['load maps v1'] = function() {
-//     assert.response(
-//         command.servers['Ui'].server,
-//         { url: '/api/v1/Tileset' },
-//         { status: 200 },
-//         function(res) {
-//             var maps;
-//             assert.doesNotThrow(function() {
-//                 maps = JSON.parse(res.body);
-//             }, SyntaxError);
-//             assert.equal(maps.length, 2);
-//             assert.equal(maps[0].id, 'control_room');
-//             assert.equal(maps[0].type, 'baselayer');
-//             assert.equal(maps[0].bounds, "-180,-85.05112877980659,180,89.99075251648905");
-//         }
-//     );
-// };
+exports['load maps v1'] = function() {
+    assert.response(
+        command.servers['Ui'].server,
+        { url: '/api/v1/Tileset' },
+        { status: 200 },
+        function(res) {
+            var maps;
+            assert.doesNotThrow(function() {
+                maps = JSON.parse(res.body);
+            }, SyntaxError);
+            assert.equal(maps.length, 2);
+            assert.equal(maps[0].id, 'control_room');
+            assert.equal(maps[0].type, 'baselayer');
+            assert.equal(maps[0].bounds, "-180,-85.05112877980659,180,89.99075251648905");
+        }
+    );
+};
 
 exports['ssviews list'] = function() {
     assert.response(
