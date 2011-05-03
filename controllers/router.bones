@@ -34,8 +34,8 @@ controller = Backbone.Controller.extend({
             error: _.bind(this.error, this)
         });
     },
-    map: function(id, response) {
-        var options = this.getOptions(response);
+    map: function(id) {
+        var options = this.getOptions();
         (new this.Model({ id: id }, options)).fetch({
             success: _.bind(function(model) {
                 options.model = model;
