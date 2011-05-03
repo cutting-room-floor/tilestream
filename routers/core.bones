@@ -22,7 +22,6 @@ router.augment({
     },
     initializeCollections: function(parent, app) {
         parent.call(this, app);
-        this.server.get('/api/v1/:collection', this.loadCollection.bind(this));ad
-
+        this.server.get('/api/v1/:collection', this.loadCollection.bind(this));
     }
 });
