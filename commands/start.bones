@@ -3,4 +3,4 @@ commands.start.augment({
         require('../lib/bootstrap')(options.config);
         return parent.call(this, options);
     }
-})
+});
