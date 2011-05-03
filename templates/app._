@@ -29,6 +29,6 @@
     <link rel="apple-touch-startup-image" href="/assets/tilestream/images/apple-touch-startup-image-768.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)" />
   </head>
   <body>
-    <div id='app'><% if (view) { %><%= html %><% } %></div>
+    <div id='app'><% view && print(view.html()); %></div>
   </body>
 </html>
