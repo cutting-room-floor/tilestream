@@ -1,15 +1,14 @@
 controller = Backbone.Controller.extend({
     initialize: function(options) {
-        _.bindAll(this, 'list', 'map', 'getOptions');
         this.Collection = models.Tilesets;
         this.Model =  models.Tileset;
         Backbone.Controller.prototype.initialize.call(this, options);
     },
-    getOptions: function(response) {
+    getOptions: function() {
         var options = {};
-        if (response.req && response.req.model && response.req.model.options) {
-            options = response.req.model.options;
-            options.basepath = response.req.basepath;
+        if (this.req && this.req.model && this.req.model.options) {
+            options = this.req.model.options;
+            options.basepath = this.req.basepath;
             // debugger;
         // @TODO.
         } else if (Bones.settings) {
@@ -25,38 +24,40 @@ controller = Backbone.Controller.extend({
         '/': 'list',
         '/map/:id': 'map'
     },
-    list: function(response) {
-        var that = this;
-        var options = this.getOptions(response);
+    list: function() {
+        var options = this.getOptions();
         (new this.Collection([], options)).fetch({
-            success: function(collection) {
+            success: _.bind(function(collection) {
                 options.collection = collection;
                 options.view = new views.Maps(options);
-                response((new views.App(options)).el);
-            },
-            error: _(this.error).bind({options: options, response: response})
+                var view = new views.App(options);
+                this.res && this.res.send(view.el);
+            }, this),
+            error: _.bind(this.error, this)
         });
     },
     map: function(id, response) {
-        var that = this;
+        var ctrl = this;
         var options = this.getOptions(response);
         (new this.Model({ id: id }, options)).fetch({
-            success: function(model) {
+            success: _.bind(function(model) {
                 options.model = model;
                 options.view = new views.Map(options);
-                response((new views.App(options)).el);
-            },
-            error: _(this.error).bind({options: options, response: response})
+                var view = new views.App(options);
+                this.res && this.res.send(view.el);
+            }, this),
+            error: _.bind(this.error, this)
         });
     },
     // Error view callback. Must have `this.response` and `this.options`.
     error: function(model, xhr) {
-        var options = this.options;
+        var options = this.getOptions();
         try { options.error = JSON.parse(xhr.responseText).message; }
         catch(err) { options.error = 'Connection problem.'; }
 
         options.view = new views.Error(options);
-        this.response((new views.App(options)).el);
+        var view = new views.App(options);
+        this.res && this.res.send(view.el);
     }
 });
 
