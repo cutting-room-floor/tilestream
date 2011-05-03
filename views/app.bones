@@ -17,7 +17,7 @@ Backbone.View = Backbone.View.extend({
         var fragment = _(ev).isString() ? ev : this.href(ev.currentTarget);
         if (fragment.charAt(0) === '/') {
             // Remove the basepath from the fragment, but leave a /.
-            fragment = fragment.substr(Bones.settings.basepath.length - 1);
+            fragment = fragment.substr(req.query.basepath.length - 1);
             var matched = _.any(Backbone.history.handlers, function(handler) {
                 if (handler.route.test(fragment)) {
                     handler.callback(fragment);
