@@ -2,11 +2,6 @@ router = Bones.Router.extend({
     initialize: function(options) {
         var config = options.plugin.config;
 
-        // Static assets, mirrored module assets, and options mirrored to client.
-        this.server.get('/vendor.js', mirror.assets([
-            'openlayers_slim/OpenLayers.js',
-            'wax/build/wax.ol.min.js'
-        ]));
         // @TODO.
         // server.get('/theme/default/style.css', mirror.file('openlayers_slim/theme/default/style.css'));
 
