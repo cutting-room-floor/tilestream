@@ -2,20 +2,8 @@ controller = Backbone.Controller.extend({
     initialize: function(options) {
         this.Collection = models.Tilesets;
         this.Model =  models.Tileset;
+        (typeof req !== 'undefined') && (this.req = req);
         Backbone.Controller.prototype.initialize.call(this, options);
-    },
-    getOptions: function() {
-        var options = {};
-        if (this.req && this.req.query) {
-            options = this.req.query;
-        // @TODO.
-        } else if (Bones.settings) {
-            options = Bones.settings;
-        // @TODO stopgap.
-        } else {
-            options = { basepath: '/' };
-        }
-        return options;
     },
     routes: {
         '': 'list',
@@ -23,7 +11,7 @@ controller = Backbone.Controller.extend({
         '/map/:id': 'map'
     },
     list: function() {
-        var options = this.getOptions();
+        var options = _(this.req.query).clone();
         (new this.Collection([], options)).fetch({
             success: _.bind(function(collection) {
                 options.collection = collection;
@@ -35,7 +23,7 @@ controller = Backbone.Controller.extend({
         });
     },
     map: function(id) {
-        var options = this.getOptions();
+        var options = _(this.req.query).clone();
         (new this.Model({ id: id }, options)).fetch({
             success: _.bind(function(model) {
                 options.model = model;
@@ -48,7 +36,7 @@ controller = Backbone.Controller.extend({
     },
     // Error view callback. Must have `this.response` and `this.options`.
     error: function(model, xhr) {
-        var options = this.getOptions();
+        var options = _(this.req.query).clone();
         try { options.error = JSON.parse(xhr.responseText).message; }
         catch(err) { options.error = 'Connection problem.'; }
 

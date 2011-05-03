@@ -5,7 +5,6 @@ server = Bones.Server.extend({
         this.server.error(Error.HTTP.handler(plugin.config));
 
         routers['Host'].register(this);
-        routers['Ui'].register(this);
         routers['Wax'].register(this);
         routers['Syslog'].register(this);
         (plugin.config.tilePort === plugin.config.uiPort) && routers['Tile'].register(this);
