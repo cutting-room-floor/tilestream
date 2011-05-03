@@ -15,11 +15,14 @@ router.augment({
 
         // @TODO.
         // server.get('/theme/default/style.css', mirror.file('openlayers_slim/theme/default/style.css'));
+    },
+    initializeModels: function(parent, app) {
+        parent.call(this, app);
+        this.server.get('/api/v1/:model/:id', this.loadModel, this.getModel);
+    },
+    initializeCollections: function(parent, app) {
+        parent.call(this, app);
+        this.server.get('/api/v1/:collection', this.loadCollection.bind(this));ad
 
-        // @TODO.
-        // server.get('/api/v1/:model', validateCollection, getCollection);
-        // server.all('/api/v1/:model/*', validateModel, getModel);
-
-        return parent.call(this, app);
     }
 });
