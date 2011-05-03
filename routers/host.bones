@@ -23,7 +23,7 @@ router = Bones.Router.extend({
             req.query.uiHost = 'http://' + req.headers.host + '/';
             if (this.config.subdomains) {
                 // Add subdomains for tiles.
-                var basehost = host.removeTileSubdomain(req.headers.host);
+                var basehost = this.removeTileSubdomain(req.headers.host);
                 var subdomains = this.config.subdomains.split(',');
                 req.query.tileHost = [];
                 _.each(subdomains, function(subdomain) {

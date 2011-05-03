@@ -9,6 +9,7 @@ server = Bones.Server.extend({
         this.server.enable('jsonp callback');
         this.server.error(Error.HTTP.handler(options.config));
         routers['Syslog'].register(this);
+        routers['Host'].register(this);
         routers['Tile'].register(this);
     },
     start: function() {

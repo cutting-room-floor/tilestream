@@ -4,9 +4,9 @@ server = Bones.Server.extend({
         this.server.enable('jsonp callback');
         this.server.error(Error.HTTP.handler(plugin.config));
 
+        routers['Syslog'].register(this);
         routers['Host'].register(this);
         routers['Wax'].register(this);
-        routers['Syslog'].register(this);
         (plugin.config.tilePort === plugin.config.uiPort) && routers['Tile'].register(this);
 
         // @TODO: consider change in Bones as it's not clear that the core
