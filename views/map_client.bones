@@ -5,7 +5,7 @@ view = Backbone.View.extend({
     className: 'MapClient',
     id: 'openlayers-map',
     initialize: function(options) {
-        _.bindAll(this, 'ready', 'zoom', 'record', 'ol', 'olNav');
+        _.bindAll(this, 'ready', 'record', 'ol', 'olNav');
     },
     ready: function() {
         var that = this;
