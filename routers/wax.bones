@@ -78,7 +78,7 @@ router = Bones.Router.extend({
         );
     },
     sendWax: function(req, res, next) {
-        var hosts = { uiHost: req.uiHost, tileHost: req.tileHost };
+        var hosts = { uiHost: req.query.uiHost, tileHost: req.query.tileHost };
         res.send(this.Waxer[req.query.api].generate(res.layers, req.query, hosts));
     },
     defaults: {
