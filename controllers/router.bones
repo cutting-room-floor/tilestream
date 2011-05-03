@@ -9,6 +9,8 @@ controller = Backbone.Controller.extend({
         var options = {};
         if (response.req && response.req.model && response.req.model.options) {
             options = response.req.model.options;
+            options.basepath = response.req.basepath;
+            // debugger;
         // @TODO.
         } else if (Bones.settings) {
             options = Bones.settings;

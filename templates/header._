@@ -4,13 +4,13 @@
       <span class='icon tilestream'></span>
       TileStream
     </a>
-    <% if (breadcrumb) { %>
+    <% if (obj.breadcrumb) { %>
       <% if (icon) { %><span class='icon <%= icon %>'></span><% } %>
       <a class='route' href='<%= href %>'><%= title %></a>
     <% } %>
   </h1>
   <div class='buttons clearfix'>
-    <% if (buttons) { %>
+    <% if (obj.buttons) { %>
       <a href='#<%= id %>'>
         <span class='icon <%= id %>'></span>
         <%= title %>
