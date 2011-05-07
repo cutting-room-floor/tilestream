@@ -93,7 +93,7 @@ var Waxer = {
                 // Set the layer bounds. If the layer bounds exceed that of the world,
                 // do not set `maxExtent` as OpenLayers does not render the contiguous
                 // dateline-wrapped world correctly in this scenario.
-                if (layer.get('bounds')[0] <= -180 && layer.get('bounds')[2] >= 180) {
+                if (layer.get('bounds')[0] <= -179.999 && layer.get('bounds')[2] >= 179.999) {
                     options.wrapDateLine = true;
                 }
 
