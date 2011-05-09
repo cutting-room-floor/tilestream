@@ -43,3 +43,4 @@ view = Backbone.View.extend({
     }
 });
 
+view.title = 'HUD';
