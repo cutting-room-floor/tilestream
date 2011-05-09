@@ -19,3 +19,5 @@ server = Bones.Server.extend({
         }).bind(this));
     }
 });
+
+server.title = 'UI';
