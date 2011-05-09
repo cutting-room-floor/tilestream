@@ -16,7 +16,7 @@ var request = { headers: { 'host': 'localhost:8888' } };
 
 exports['tile'] = function() {
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/1.0.0/control_room/3/4/5.png' },
         { status: 200 },
         function(res) {
@@ -31,7 +31,7 @@ exports['tile'] = function() {
 
 exports['tile invalid name'] = function() {
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/1.0.0/bad.name/0/0/0.png' },
         { status: 404 }
     );
@@ -39,7 +39,7 @@ exports['tile invalid name'] = function() {
 
 exports['error tile'] = function() {
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/1.0.0/control_room/-1/-1/-1.png' },
         { status: 404 }
     );
@@ -47,7 +47,7 @@ exports['error tile'] = function() {
 
 exports['grid tile'] = function() {
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/1.0.0/waxtest/0/0/0.grid.json' },
         { status: 200, body: /grid\(/ }
     );
@@ -55,7 +55,7 @@ exports['grid tile'] = function() {
 
 exports['layer json'] = function() {
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/1.0.0/waxtest/layer.json' },
         { status: 200, body: /grid\(/ }
     );
@@ -63,7 +63,7 @@ exports['layer json'] = function() {
 
 exports['mbtiles download'] = function() {
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/download/control_room.mbtiles' },
         { status: 200 },
         function(res) {
@@ -75,7 +75,7 @@ exports['mbtiles download'] = function() {
 
 exports['load map'] = function() {
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/api/Tileset/control_room' },
         { status: 200 },
         function(res) {
@@ -92,7 +92,7 @@ exports['load map'] = function() {
 
 exports['load map v1'] = function() {
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/api/v1/Tileset/control_room' },
         { status: 200 },
         function(res) {
@@ -109,7 +109,7 @@ exports['load map v1'] = function() {
 
 exports['load maps'] = function() {
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/api/Tileset' },
         { status: 200 },
         function(res) {
@@ -127,7 +127,7 @@ exports['load maps'] = function() {
 
 exports['load maps v1'] = function() {
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/api/v1/Tileset' },
         { status: 200 },
         function(res) {
@@ -145,7 +145,7 @@ exports['load maps v1'] = function() {
 
 exports['ssviews list'] = function() {
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/' },
         { status: 200, body: /name\">control_room/ }
     );
@@ -153,12 +153,12 @@ exports['ssviews list'] = function() {
 
 exports['ssviews map'] = function() {
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/map/control_room' },
         { status: 200, body: /control_room<\/a/ }
     );
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/?_escaped_fragment_=/map/control_room' },
         { status: 200, body: /control_room<\/a/ }
     );
@@ -166,7 +166,7 @@ exports['ssviews map'] = function() {
 
 exports['settings'] = function() {
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/settings.js' },
         { status: 200 }
     );
@@ -181,28 +181,28 @@ exports['wax endpoint'] = function() {
             options: JSON.parse(fs.readFileSync(__dirname + '/fixtures/wax/wax.options.json', 'utf8'))
         };
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/api/wax.json?api=foo' },
         { status: 400, body: /`api` is invalid/ }
     );
 
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/api/wax.json' },
         { status: 400, body: /`layers` is invalid/ }
     );
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/api/wax.json?layers=foo' },
         { status: 400, body: /`layers` is invalid/ }
     );
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/api/wax.json?layers[]=foo' },
         { status: 400, body: /`layers` is invalid/ }
     );
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         _.extend({ url: '/api/wax.json?layers[]=control_room' }, request),
         { status: 200 },
         function(res) {
@@ -210,7 +210,7 @@ exports['wax endpoint'] = function() {
         }
     );
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         _.extend({ url: '/api/v1/wax.json?layers[]=control_room' }, request),
         { status: 200 },
         function(res) {
@@ -219,12 +219,12 @@ exports['wax endpoint'] = function() {
     );
 
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/api/wax.json?layers[]=control_room&el[]=foo' },
         { status: 400, body: /`el` is invalid/ }
     );
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         _.extend({ url: '/api/wax.json?layers[]=control_room&el=foo' }, request),
         { status: 200 },
         function(res) {
@@ -233,22 +233,22 @@ exports['wax endpoint'] = function() {
     );
 
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/api/wax.json?layers[]=control_room&center=foo' },
         { status: 400, body: /`center` is invalid/ }
     );
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/api/wax.json?layers[]=control_room&center[]=0' },
         { status: 400, body: /`center` is invalid/ }
     );
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/api/wax.json?layers[]=control_room&center[]=0&center[]=0&center[]=foo' },
         { status: 400, body: /`center` is invalid/ }
     );
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         _.extend({ url: '/api/wax.json?layers[]=control_room&center[]=40&center[]=40&center[]=2' }, request),
         { status: 200 },
         function(res) {
@@ -257,17 +257,17 @@ exports['wax endpoint'] = function() {
     );
 
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/api/wax.json?layers[]=control_room&options=foo' },
         { status: 400, body: /`options` is invalid/ }
     );
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         { url: '/api/wax.json?layers[]=control_room&options[]=foo' },
         { status: 400, body: /`options` is invalid/ }
     );
     assert.response(
-        command.servers['Ui'].server,
+        command.servers['UI'].server,
         _.extend({ url: '/api/wax.json?layers[]=control_room&options[]=tooltips' }, request),
         { status: 200 },
         function(res) {
