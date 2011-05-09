@@ -13,7 +13,9 @@ server = Bones.Server.extend({
         routers['Tile'].register(this);
     },
     start: function() {
-        this.server && this.server.listen(this.port);
-        return this;
+        if (this.server) {
+            this.server.listen(this.port);
+            return this;
+        }
     }
 });
