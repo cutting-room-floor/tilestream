@@ -1,9 +1,9 @@
 // Maps
 // ----
 // View showing each map as a thumbnail. Main map browsing page.
-view = views.Hud.extend({
+view = views.HUD.extend({
     initialize: function(options) {
-        views.Hud.prototype.initialize.call(this, options);
+        views.HUD.prototype.initialize.call(this, options);
         _.bindAll(this, 'render');
         this.render().trigger('attach');
     },

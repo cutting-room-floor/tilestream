@@ -2,9 +2,9 @@
 // ---
 // View for exploring a single Map. Provides a fullscreen map client with HUD
 // panels for info, download, etc.
-view = views.Hud.extend({
+view = views.HUD.extend({
     initialize: function(options) {
-        views.Hud.prototype.initialize.call(this, options);
+        views.HUD.prototype.initialize.call(this, options);
         _.bindAll(this, 'render', 'format');
         this.render().trigger('attach');
     },
