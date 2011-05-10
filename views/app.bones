@@ -51,4 +51,3 @@ view = Backbone.View.extend({
         return this;
     }
 });
-
