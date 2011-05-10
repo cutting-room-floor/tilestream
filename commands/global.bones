@@ -35,3 +35,11 @@ Bones.Command.options['syslog'] = {
     'default': false
 };
 
+Bones.Command.augment({
+    bootstrap: function(parent, plugin, callback) {
+        parent.call(this, plugin, function() {
+            require('../lib/bootstrap')(plugin.config);
+            callback();
+        });
+    }
+});
