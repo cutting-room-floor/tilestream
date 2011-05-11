@@ -50,8 +50,7 @@ router = Bones.Router.extend({
             format: req.params[0] ? req.params[0] : 'layer.json',
             x: req.param('x'),
             y: req.param('y'),
-            z: req.param('z'),
-            jsonp: req.query.callback || 'grid'
+            z: req.param('z')
         };
         tilelive.serve(options, function(err, data) {
             if (!err) {

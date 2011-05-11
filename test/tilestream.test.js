@@ -48,7 +48,7 @@ exports['error tile'] = function() {
 exports['grid tile'] = function() {
     assert.response(
         command.servers['UI'].server,
-        { url: '/1.0.0/waxtest/0/0/0.grid.json' },
+        { url: '/1.0.0/waxtest/0/0/0.grid.json?callback=grid' },
         { status: 200, body: /grid\(/ }
     );
 };
@@ -56,7 +56,7 @@ exports['grid tile'] = function() {
 exports['layer json'] = function() {
     assert.response(
         command.servers['UI'].server,
-        { url: '/1.0.0/waxtest/layer.json' },
+        { url: '/1.0.0/waxtest/layer.json?callback=grid' },
         { status: 200, body: /grid\(/ }
     );
 };
