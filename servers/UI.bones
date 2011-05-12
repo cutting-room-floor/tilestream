@@ -16,8 +16,9 @@ server = Bones.Server.extend({
 
         // @TODO: consider change in Bones as it's not clear that the core
         // router must be registered before all other components.
-        // TODO: this code registers the Core router twice.
         routers['Core'].register(this);
+
+        // Excludes 'routers' which are done manually above.
         _(['models', 'views', 'controllers', 'templates']).each(_(function(kind) {
             _(plugin[kind]).each(_(function(object) {
                 object.register(this);
