@@ -12,10 +12,12 @@ server = Bones.Server.extend({
         routers['Host'].register(this);
         routers['Tile'].register(this);
     },
-    start: function() {
+    start: function(callback) {
         if (this.server) {
-            this.server.listen(this.port);
-            return this;
+            this.server.listen(this.port, callback);
+        } else {
+            callback();
         }
+        return this;
     }
 });
