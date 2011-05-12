@@ -8,7 +8,7 @@
     var basepath = '<%= basepath %>';
     location.href.indexOf('#') === -1 &&
     window.location.pathname !== basepath &&
-    (window.location = basepath + '#' + window.location.pathname.substr(basepath.length - 1));
+    (window.location = basepath + '#!' + window.location.pathname.substr(basepath.length - 1));
 
     // Server-side request info.
     var req = { query: {
