@@ -34,11 +34,13 @@ controller = Backbone.Controller.extend({
             error: _.bind(this.error, this)
         });
     },
-    // Error view callback. Must have `this.response` and `this.options`.
     error: function(model, xhr) {
         var options = _(this.req.query).clone();
-        try { options.error = JSON.parse(xhr.responseText).message; }
-        catch(err) { options.error = 'Connection problem.'; }
+        options.error = 'Connection problem.';
+        try {
+            var resp = JSON.parse(xhr.responseText);
+            options.error = resp.message || (resp.error && resp.error.message);
+        } catch(err) {}
 
         options.view = new views.Error(options);
         var view = new views.App(options);
