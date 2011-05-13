@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var assert = require('assert');
+process.argv[2] = 'start';
 
 // Load application.
 require('..');
@@ -163,6 +164,20 @@ exports['ssviews map'] = function() {
         { status: 200, body: /control_room<\/a/ }
     );
 };
+
+exports['ssviews error'] = function() {
+    assert.response(
+        command.servers['UI'].server,
+        { url: '/map/asdf' },
+        { status: 200, body: /Connection problem.<\/div/ }
+    );
+    assert.response(
+        command.servers['UI'].server,
+        { url: '/?_escaped_fragment_=/map/asdf' },
+        { status: 200, body: /Connection problem.<\/div/ }
+    );
+};
+
 
 exports['settings'] = function() {
     assert.response(
