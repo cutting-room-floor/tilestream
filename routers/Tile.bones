@@ -60,10 +60,10 @@ router = Bones.Router.extend({
                     data[1]
                 );
                 res.send(data[0], headers);
-            } else if (err.toString() === 'Tile does not exist') {
-                res.send('Not found.', 404);
             } else {
-                res.send(err.toString(), 500);
+                if (!(err instanceof Error)) err = new Error(err);
+                err.status = 404;
+                next(err);
             }
         });
     }

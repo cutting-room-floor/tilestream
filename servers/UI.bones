@@ -4,7 +4,6 @@ server = Bones.Server.extend({
 
         this.port = plugin.config.uiPort;
         this.server.enable('jsonp callback');
-        this.server.error(Error.HTTP.handler(plugin.config));
 
         routers['Syslog'].register(this);
         routers['Host'].register(this);

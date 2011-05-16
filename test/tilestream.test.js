@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'test';
+
 var _ = require('underscore');
 var assert = require('assert');
 process.argv[2] = 'start';
@@ -34,7 +36,10 @@ exports['tile invalid name'] = function() {
     assert.response(
         command.servers['UI'].server,
         { url: '/1.0.0/bad.name/0/0/0.png' },
-        { status: 404 }
+        {
+            body: 'Tileset not found.',
+            status: 404
+        }
     );
 };
 
@@ -42,7 +47,10 @@ exports['error tile'] = function() {
     assert.response(
         command.servers['UI'].server,
         { url: '/1.0.0/control_room/-1/-1/-1.png' },
-        { status: 404 }
+        {
+            body: 'Tile does not exist',
+            status: 404
+        }
     );
 };
 
