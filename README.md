@@ -49,7 +49,7 @@ Installation: Ubuntu 10.10
 --------------------------
 Install build requirements:
 
-    sudo apt-get install build-essential libssl-dev libsqlite3-0 libsqlite3-dev
+    sudo apt-get install curl build-essential libssl-dev libsqlite3-0 libsqlite3-dev
 
 Download and unpack TileStream. Build & install:
 
