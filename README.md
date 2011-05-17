@@ -57,6 +57,12 @@ Download and unpack TileStream. Build & install:
     cd tilestream
     ./ndistro
 
+If you already cloned the master repository then do:
+
+    cd tilestream
+    git checkout master-ndistro
+    ./ndistro
+
 Start TileStream:
 
     bin/node bin/tilestream
