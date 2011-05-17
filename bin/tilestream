@@ -5,7 +5,7 @@ var argv = require('optimist').argv,
     appName = 'tilestream',
     command = argv._.length ? argv._[0] : 'start';
 
-if (argv.help) {
+if (argv.help || !app.commands[command]) {
     console.log('Usage: %s [COMMAND] [OPTION]', appName);
     console.log('Commands:');
     for (var command in app.commands) {
