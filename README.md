@@ -2,14 +2,12 @@ TileStream
 ----------
 A high performance tile server and simple web viewer for [MBTiles][1] files.
 
-[1]:[http://mbtiles.org]
-
 
 Features
 --------
 - MBTiles-based tile server
 - Minimal gallery view and OpenLayers based viewer of tiles
-- Support for MBTiles interaction using [Wax](http://github.com/mapbox/wax)
+- Support for MBTiles interaction using [Wax][2]
 
 
 Requirements
@@ -19,17 +17,18 @@ Requirements
   - May work: Opera 11
 - *TileStream server*
   - Tested: Mac OS X 10.6, Ubuntu 10.10
-  - Tested: [node](http://nodejs.org/) 0.4.7
-  - Tested: [npm](http://npmjs.org/) v1.0.3
+  - Tested: node 0.4.7
+  - Tested: npm v1.0.3
   - At least 613MB memory
   - May work: Older versions, other POSIX-compliant systems
-
-[2]:https://github.com/ry/node/wiki/Installation
 
 
 Installation: Mac OS X 10.6
 ---------------------------
 Install [Xcode][3] for Mac OS X.
+
+Install [node and npm][4]. You may want to use [nvm][5] which can install and
+manage your node installation for you.
 
 Download and unpack TileStream. Build & install:
 
@@ -43,14 +42,15 @@ Start TileStream:
 
 TileStream should now be accessible from a browser at `http://localhost:8888`.
 
-[3]:http://developer.apple.com/technologies/tools/xcode.html
-
 
 Installation: Ubuntu 10.10
 --------------------------
 Install build requirements:
 
     sudo apt-get install build-essential libssl-dev libsqlite3-0 libsqlite3-dev
+
+Install [node and npm][4]. You may want to use [nvm][5] which can install and
+manage your node installation for you.
 
 Download and unpack TileStream. Build & install:
 
@@ -107,17 +107,30 @@ To see the options available for use with TileStream, run
 
 Tests
 -----
-TileStream tests use [Expresso](http://visionmedia.github.com/expresso).
+TileStream tests use [Expresso][6].
 
     npm install -g expresso
     cd tilestream
-    expresso
+    npm test
 
 
 Contributors
 ------------
-- [Young Hahn](https://github.com/yhahn)
-- [Tom MacWright](https://github.com/tmcw)
-- [Will White](https://github.com/willwhite)
-- [Konstantin Käfer](https://github.com/kkaefer)
-- [Dane Springmeyer](https://github.com/springmeyer)
+- [Young Hahn][7]
+- [Tom MacWright][8]
+- [Will White][9]
+- [Konstantin Käfer][10]
+- [Dane Springmeyer][11]
+
+
+[1]:http://mbtiles.org
+[2]:https://github.com/mapbox/wax
+[3]:http://developer.apple.com/technologies/tools/xcode.html
+[4]:https://github.com/joyent/node/wiki/Installation
+[5]:https://github.com/creationix/nvm
+[6]:http://visionmedia.github.com/expresso
+[7]:https://github.com/yhahn
+[8]:https://github.com/tmcw
+[9]:https://github.com/willwhite
+[10]:https://github.com/kkaefer
+[11]:https://github.com/springmeyer
