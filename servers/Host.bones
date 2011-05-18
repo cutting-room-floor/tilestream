@@ -1,10 +1,9 @@
 // Middleware, retrieves host information from request headers and passes them
 // to the rest of the stack at `req.uiHost` and `req.tileHost`.
-router = Bones.Router.extend({
-    initialize: function(options) {
-        this.config = options.plugin.config;
-        this.server.use(_(this.middleware).bind(this));
-        return options;
+server = Bones.Server.extend({
+    initialize: function(app) {
+        this.config = app.config;
+        this.use(_(this.middleware).bind(this));
     },
     removeTileSubdomain: function(host) {
         // If subdomain already exists on the request host, remove it.

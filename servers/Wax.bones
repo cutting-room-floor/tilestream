@@ -1,7 +1,7 @@
 var Step = require('step');
 
-router = Bones.Router.extend({
-    initialize: function(options) {
+server = Bones.Server.extend({
+    initialize: function(app) {
         // Wax API Endpoint
         // ----------------
         // Provides and API for generating wax documents based on request query
@@ -17,8 +17,8 @@ router = Bones.Router.extend({
         //        center[]=66.5&center[]=55.8&&center[]=2
         var load = _(this.load).bind(this),
             wax = _(this.sendWax).bind(this);
-        this.server.get('/api/v1/wax.json', load, wax);
-        this.server.get('/api/wax.json', load, wax);
+        this.get('/api/v1/wax.json', load, wax);
+        this.get('/api/wax.json', load, wax);
     },
     // Loader for layers. Validates `req.query` to ensure it is usable.
     load: function(req, res, next) {
@@ -71,9 +71,12 @@ router = Bones.Router.extend({
                 });
             },
             function(err, layers) {
-                if (err) return res.send('`layers` is invalid', 400);
-                res.layers = layers;
-                next();
+                if (err) {
+                    next(new Error(err), 400);
+                } else {
+                    res.layers = layers;
+                    next();
+                }
             }
         );
     },
