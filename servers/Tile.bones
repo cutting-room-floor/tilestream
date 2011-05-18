@@ -1,6 +1,6 @@
 // Routes for the tile server. Suitable for HTTP cacheable content with a
 // long TTL.
-var tilelive = new (require('tilelive').Server)(require('tilelive-mbtiles'));
+var tilelive = new (require('tilelive').Server)(require('mbtiles'));
 
 server = Bones.Server.extend({
     initialize: function(app) {

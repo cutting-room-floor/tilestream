@@ -17,9 +17,9 @@
         "step": "0.0.4",
         "syslog": "0.1.1",
         "tilelive": "https://github.com/mapbox/tilelive.js/tarball/pluggable",
-        "tilelive-mbtiles": "https://github.com/mapbox/tilelive-mbtiles/tarball/master",
+        "mbtiles": "0.0.x",
         "underscore": "1.1.x",
-        "wax": "https://github.com/mapbox/wax/tarball/master"
+        "wax": "1.4.x"
     },
     "devDependencies": {
         "expresso" : ">= 0.7.6"
