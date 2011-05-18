@@ -1,19 +1,16 @@
 {
-    "author": "Development Seed <info@developmentseed.org> (developmentseed.org)",
     "name": "tilestream",
     "version": "1.2.0",
-    "repository": {
-        "url": ""
-    },
-    "directories": {
-        "lib": "."
-    },
+    "main": "./index",
+    "repositories": [{
+        "type": "git",
+        "url": "http://github.com/mapbox/tilestream.git"
+    }],
     "engines": {
         "node": "0.4.6"
     },
     "dependencies": {
         "bones": "https://github.com/developmentseed/bones/tarball/master",
-        "openlayers_slim": "https://github.com/developmentseed/openlayers_slim/tarball/master",
         "step": "0.0.4",
         "syslog": "0.1.1",
         "tilelive": "https://github.com/mapbox/tilelive.js/tarball/pluggable",
@@ -24,7 +21,6 @@
     "devDependencies": {
         "expresso" : ">= 0.7.6"
     },
-    "bundledDependencies": [],
     "scripts": {
         "test": "expresso"
     }
