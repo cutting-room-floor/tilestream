@@ -106,7 +106,7 @@ server = Bones.Server.extend({
                                 layers: _(layers).map(this.layerWax(hosts)),
                                 units: 'm',
                                 maxResolution: 1.40625,
-                                theme: hosts.uiHost + 'maps/ol/dark.css',
+                                theme: hosts.uiHost + 'assets/tilestream/maps/ol/dark.css',
                                 maxExtent: [
                                     '@new OpenLayers.Bounds',
                                     -20037508.34,-20037508.34,
