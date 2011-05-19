@@ -3,12 +3,16 @@
 var tilelive = new (require('tilelive').Server)(require('mbtiles'));
 
 server = Bones.Server.extend({
+    // Necessary to actually instantiate tile server.
+    port:3001,
+
     initialize: function(app) {
         if (app.config.tilePort !== app.config.uiPort) {
             this.port = app.config.tilePort;
             this.enable('jsonp callback');
-            this.use(new servers['Syslog'](app));
             this.use(new servers['Host'](app));
+        } else {
+            this.port = null;
         }
 
         var load = this.load.bind(this);
