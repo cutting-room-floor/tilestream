@@ -13,7 +13,7 @@
         "bones": "1.3.x",
         "step": "0.0.4",
         "syslog": "0.1.1",
-        "tilelive": "https://github.com/mapbox/tilelive.js/tarball/pluggable",
+        "tilelive": "3.0.x",
         "mbtiles": "0.0.x",
         "underscore": "1.1.x",
         "wax": "1.4.x"
