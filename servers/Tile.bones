@@ -1,7 +1,3 @@
-// Routes for the tile server. Suitable for HTTP cacheable content with a
-// long TTL.
-var tilelive = new (require('tilelive').Server)(require('mbtiles'));
-
 server = Bones.Server.extend({
     // Necessary to actually instantiate tile server.
     port:3001,
@@ -64,7 +60,7 @@ server = Bones.Server.extend({
             y: req.param('y'),
             z: req.param('z')
         };
-        tilelive.serve(options, function(err, data) {
+        server.tilelive.serve(options, function(err, data) {
             if (!err) {
                 var headers = _({}).extend(
                     res.model.get('headers'),
@@ -80,3 +76,7 @@ server = Bones.Server.extend({
         });
     }
 });
+
+// Routes for the tile server. Suitable for HTTP cacheable content with a
+// long TTL.
+server.tilelive = new (require('tilelive').Server)(require('mbtiles'));
