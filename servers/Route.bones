@@ -6,8 +6,8 @@ servers['Route'].augment({
             require.resolve('../assets/css/style.css')
         ],
         scripts: [
-            require.resolve('../assets/js/OpenLayers.js'),
-            require.resolve('wax/build/wax.ol.min.js')
+            require.resolve('wax/ext/modestmaps.js'),
+            require.resolve('wax/build/wax.mm.min.js')
         ]
     },
     initializeAssets: function(parent, app) {

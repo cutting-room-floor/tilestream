@@ -9,7 +9,8 @@ view = Backbone.View.extend({
     },
     ready: function() {
         var that = this;
-        $.jsonp({
+        $.ajax({
+            dataType: 'jsonp',
             url: this.waxURL(this.generateWax()),
             context: this,
             callback: 'grid',

@@ -23,7 +23,7 @@ server = Bones.Server.extend({
     // Loader for layers. Validates `req.query` to ensure it is usable.
     load: function(req, res, next) {
         // Load defaults from Map model for each query property.
-        var properties = ['el', 'api', 'size', 'center', 'options'],
+        var properties = ['el', 'api', 'center', 'options'],
             numeric = ['size', 'center'];
         _(properties).each(_(function(key) {
             req.query[key] = req.query[key] || this.defaults[key];
@@ -45,9 +45,11 @@ server = Bones.Server.extend({
         };
         if (!_(req.query.el).isString()) return res.send('`el` is invalid.', 400);
         if (!_(_(this.Waxer).keys()).include(req.query.api)) return res.send('`api` is invalid.', 400);
-        if (!_(req.query.size).isArray()) return res.send('`size` is invalid.', 400);
-        if (_(req.query.size).size() !== 2) return res.send('`size` is invalid.', 400);
-        if (!_(req.query.size).all(_.isNumber)) return res.send('`size` is invalid.', 400);
+        if (!_(req.query.size).isUndefined()) {
+            if (!_(req.query.size).isArray()) return res.send('`size` is invalid.', 400);
+            if (_(req.query.size).size() !== 2) return res.send('`size` is invalid.', 400);
+            if (!_(req.query.size).all(_.isNumber)) return res.send('`size` is invalid.', 400);
+        }
         if (!_(req.query.center).isArray()) return res.send('`center` is invalid.', 400);
         if (_(req.query.center).size() !== 3) return res.send('`center` is invalid.', 400);
         if (!_(req.query.center).all(_.isNumber)) return res.send('`center` is invalid.', 400);
@@ -88,7 +90,7 @@ server = Bones.Server.extend({
         name: '',
         el: 'map',
         api: 'ol',
-        size: [500, 300],
+        // size: [500, 300],
         center: [0, 0, 0],
         layers: [],
         options: ['zoomwheel', 'legend', 'tooltips']
@@ -98,99 +100,29 @@ server = Bones.Server.extend({
     Waxer: {
         ol: {
             generate: function(layers, params, hosts) {
+                var layer = layers[0];
                 return { wax:
                     ['@group',
-                        ['@new OpenLayers.Map',
+                        ['@new com.modestmaps.Map',
                             params.el,
-                            {
-                                layers: _(layers).map(this.layerWax(hosts)),
-                                units: 'm',
-                                maxResolution: 1.40625,
-                                theme: hosts.uiHost + 'assets/tilestream/maps/ol/dark.css',
-                                maxExtent: [
-                                    '@new OpenLayers.Bounds',
-                                    -20037508.34,-20037508.34,
-                                    20037508.34,20037508.34
-                                ],
-                                projection: [
-                                    '@new OpenLayers.Projection',
-                                    'EPSG:900913'
-                                ],
-                                displayProjection: [
-                                    '@new OpenLayers.Projection',
-                                    'EPSG:900913'
-                                ],
-                                controls: this.generateControls(params.options)
-                            }
-                        ],
-                        ['@inject setCenter',
-                            ['@group',
-                                ['@new OpenLayers.LonLat',
-                                    params.center[0], params.center[1]
-                                ],
-                                ['@inject transform',
-                                    ['@new OpenLayers.Projection', 'EPSG:4326'],
-                                    ['@new OpenLayers.Projection', 'EPSG:900913']
-                                ]
+                            ['@new com.modestmaps.WaxProvider',
+                                {
+                                    baseUrl: hosts.tileHost,
+                                    layerName: layer.get('id'),
+                                    zoomRange: [layer.get('minzoom'), layer.get('maxzoom')]
+                                }
                             ],
-                            // OpenLayers sets zoom level relative to the minimum
-                            // zoom level of the base layer, e.g. a map with zooms
-                            // 3-10 has a zoom level of '0' initially when on zoom
-                            // level 3.
-                            params.center[2] - layers[0].get('minzoom')
+                            params.size ? ['@new com.modestmaps.Point'].concat(params.size) : null
+                        ],
+                        ['@inject setCenterZoom',
+                            ['@new com.modestmaps.Location',
+                                params.center[1],
+                                params.center[0]
+                            ],
+                            params.center[2]
                         ]
                     ]
                 };
-            },
-            layerWax: function(hosts) {
-                return function(layer, index) {
-                    var options = {
-                        'projection': ['@new OpenLayers.Projection', 'EPSG:900913'],
-                        'wrapDateLine': false,
-                        'type': 'png',
-                        'buffer': 0,
-                        'transitionEffect': 'resize',
-                        'serverResolutions': [
-                            156543.0339, 78271.51695, 39135.758475, 19567.8792375,
-                            9783.93961875, 4891.96980938, 2445.98490469,
-                            1222.99245234, 611.496226172,
-                            305.748113086, 152.874056543, 76.4370282715, 38.2185141357,
-                            19.1092570679, 9.55462853394, 4.77731426697, 2.38865713348,
-                            1.19432856674, 0.597164283371, 0.2985821417, 0.1492910708,
-                            0.0746455354, 0.0373227677
-                        ],
-                        'layername': layer.get('id'),
-                        'isBaseLayer': index === 0,
-                        'visibility': true,
-                        'maxExtent': [
-                            '@new OpenLayers.Bounds',
-                            -20037508.34,
-                            -20037508.34,
-                            20037508.34,
-                            20037508.34
-                        ],
-                        'wrapDateLine': false
-                    };
-
-                    // Set the layer bounds. If the layer bounds exceed that of the world,
-                    // do not set `maxExtent` as OpenLayers does not render the contiguous
-                    // dateline-wrapped world correctly in this scenario.
-                    if (layer.get('bounds')[0] <= -180 && layer.get('bounds')[2] >= 180) {
-                        options.wrapDateLine = true;
-                    }
-
-                    // Return the proper subset of resolutions for this layer.
-                    options.resolutions = options.serverResolutions.slice(
-                        layer.get('minzoom'),
-                        layer.get('maxzoom') + 1
-                    );
-
-                    return ['@new OpenLayers.Layer.TMS',
-                        layer.get('name'),
-                        hosts.tileHost,
-                        options
-                    ];
-                }
             },
             generateControls: function(controls) {
                 var wax = {
