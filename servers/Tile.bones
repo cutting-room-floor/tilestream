@@ -25,6 +25,13 @@ server = Bones.Server.extend({
         res.send('TileStream', 200);
     },
 
+    // Override start. We must call the callback regardless of whether the port
+    // is set or not.
+    start: function(callback) {
+        this.port && this.listen(this.port, callback) || callback();
+        return this;
+    },
+
     // Route middleware. Validate and load an mbtiles file specified in a tile
     // or download route.
     load: function(req, res, next) {
