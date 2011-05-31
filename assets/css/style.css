@@ -105,7 +105,7 @@ a {
 .maps {
   /* Fixes a variety of spacing problems when using `inline-block` */
   font:0px/0px;
-  padding:20px 0px 0px;
+  padding:20px 0px;
   text-align:center;
   }
 
@@ -123,10 +123,9 @@ a {
   }
 
 .maps .empty {
-  background:#4c4c4c url(../images/bg.png);
+  border-color:#ddd;
+  background:#e4e4e4;
   box-shadow:none;
-  -moz-box-shadow:none;
-  -webkit-box-shadow:none;
   }
 
 .maps .empty span {
@@ -210,7 +209,7 @@ a {
 .hud.active,
 .hud {
   position:fixed;
-  right:-280px;
+  right:-300px;
   top:70px;
   width:280px;
   border:1px solid #ccc;

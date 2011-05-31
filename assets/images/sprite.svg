@@ -18,7 +18,7 @@
    version="1.0"
    sodipodi:docname="sprite.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
-   inkscape:export-filename="/home/devseed/ts/assets/images/sprite.png"
+   inkscape:export-filename="/home/devseed/pro/node_modules/tilestream/assets/images/sprite.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -6079,11 +6079,11 @@
        inkscape:collect="always"
        id="linearGradient3811-4">
       <stop
-         style="stop-color:#101010;stop-opacity:1"
+         style="stop-color:#404040;stop-opacity:1"
          offset="0"
          id="stop3813-7" />
       <stop
-         style="stop-color:#181818;stop-opacity:1"
+         style="stop-color:#606060;stop-opacity:1"
          offset="1"
          id="stop3815-4" />
     </linearGradient>
@@ -6099,8 +6099,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="106.11863"
-     inkscape:cy="69.00603"
+     inkscape:cx="31.199549"
+     inkscape:cy="27.174988"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -6156,7 +6156,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
