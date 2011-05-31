@@ -18,7 +18,7 @@
    version="1.0"
    sodipodi:docname="sprite.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
-   inkscape:export-filename="/home/devseed/tilemill/assets/images/sprite.png"
+   inkscape:export-filename="/home/devseed/ts/assets/images/sprite.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -27,11 +27,11 @@
        inkscape:collect="always"
        id="linearGradient6260">
       <stop
-         style="stop-color:#c4e2ec;stop-opacity:1"
+         style="stop-color:#000000;stop-opacity:0.1254902"
          offset="0"
          id="stop6262" />
       <stop
-         style="stop-color:#ddeef4;stop-opacity:1"
+         style="stop-color:#000000;stop-opacity:0"
          offset="1"
          id="stop6264" />
     </linearGradient>
@@ -6026,16 +6026,6 @@
        r="18" />
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient3203-8-9"
-       id="linearGradient5402"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(0,100)"
-       x1="15"
-       y1="95"
-       x2="30"
-       y2="110" />
-    <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient4133"
        id="linearGradient5404"
        gradientUnits="userSpaceOnUse"
@@ -6043,6 +6033,16 @@
        y1="189"
        x2="28"
        y2="192" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3203-8-9"
+       id="linearGradient4690"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(0,100)"
+       x1="20"
+       y1="100"
+       x2="30"
+       y2="110" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -6055,8 +6055,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="283.67026"
-     inkscape:cy="264.25956"
+     inkscape:cx="107.95044"
+     inkscape:cy="88.652403"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -6282,7 +6282,7 @@
          id="rect4113"
          transform="translate(0,-100)"
          d="m 8,186 0,28 24,0 0,-25 -3,-3 -21,0 z"
-         style="color:#000000;fill:url(#linearGradient5402);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         style="color:#000000;fill:url(#linearGradient4690);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
          inkscape:connector-curvature="0" />
       <path
          sodipodi:nodetypes="cccccc"
@@ -7003,7 +7003,7 @@
          height="1"
          width="400"
          id="rect6257"
-         style="color:#000000;fill:#9dd4e3;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.125;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+         style="color:#000000;fill:#000000;fill-opacity:0.25098041;fill-rule:nonzero;stroke:none;stroke-width:0.12500000000000000;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
     </g>
     <text
        xml:space="preserve"
