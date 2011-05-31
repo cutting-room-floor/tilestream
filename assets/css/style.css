@@ -1,29 +1,25 @@
+@font-face {
+  font-family:Droid;
+  src:url('../fonts/DroidSans.ttf');
+  }
+
+input,
+select,
+textarea,
+body { font-family:Droid,'Lucida Grande',sans-serif; }
+
 body {
-  background:#444 url(../images/bg.png) 50% 0%;
-  color:#ccc;
-  font:15px/20px Arial,Helvetica,sans-serif;
+  padding:50px 0px 0px;
+  background:#f0f8fa;
+  color:#222;
   }
 
 a {
-  color:#fff;
+  color:#222;
   text-decoration:none;
   }
 
 .pane { padding:10px; }
-
-.header,
-.overlay .title,
-.thumb .thumb-name {
-  background:url(../images/mask75.png);
-  text-shadow:#000 0px 1px 1px;
-  }
-
-.hud,
-.header {
-  box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
-  -moz-box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
-  -webkit-box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
-  }
 
 /**
  * Icons ======================================================================
@@ -37,96 +33,93 @@ a {
   overflow:hidden;
   }
 
-.icon.right         { background-position:0px 0px; }
-.icon.info          { background-position:-20px 0px; }
-.icon.download      { background-position:-40px 0px; }
-.icon.tilestream    { background-position:-380px -340px; }
+.icon.info          { background-position:-400px -200px; }
+.icon.download      { background-position:-420px -200px; }
 
 /**
  * Header =====================================================================
  */
-.header {
+.bleed {
   position:fixed;
-  top:0px;
   left:0px;
   right:0px;
-  height:20px;
-  padding:10px;
+  top:0px;
+  z-index:1;
+  height:32px;
+  padding:9px 0px;
+  background:#ddeef4 url(../images/sprite.png) 0px 0px repeat-x;
+  }
 
-  opacity:1;
-  filter:none;
-  z-index:80;
-  transition:opacity .25s, z-index .25s;
-  -moz-transition:opacity .25s, z-index .25s;
-  -webkit-transition:opacity .25s, z-index .25s;
+.header {
+  width:600px;
+  height:30px;
+  border:1px solid #b0dce8;
+  border-radius:5px;
+  margin:0px auto;
+  background:#fff url(../images/sprite.png) 0px -50px repeat-x;
+  box-shadow:inset rgba(0,0,0,.1) 0px 1px 2px;
+  }
+
+.header .breadcrumb { 
+  position:relative;
+  float:left;
   }
 
 .header .breadcrumb a,
 .header .breadcrumb span { float:left; }
 
-.header .breadcrumb {
+.header .breadcrumb a {
+  float:left;
+  font-weight:bold;
+  padding:5px 20px 5px 10px;
+  background:url(../images/sprite.png) 100% -80px no-repeat;
+  height:20px;
+  }
+
+.header .breadcrumb a.logo { padding-left:30px; }
+
+.header .breadcrumb a.logo .icon {
   position:absolute;
   left:0px;
-  top:10px;
+  top:0px;
+  width:30px;
+  height:30px;
+  background:url(../images/sprite.png) -30px -150px no-repeat;
   }
 
-.header .breadcrumb .logo {
-  margin:-10px 10px 0px 0px;
-  padding:10px 25px 10px 15px;
-  font-size:11px;
-  text-transform:uppercase;
-  background:url(../images/sprite.png) 100% -360px no-repeat;
+.buttons {
+  margin:5px;
+  float:right;
   }
 
-.header .breadcrumb .logo .icon { margin-right:5px; }
-
-.header .buttons {
-  font-size:11px;
-  font-weight:bold;
-  text-transform:uppercase;
-
-  position:absolute;
-  right:10px;
-  top:10px;
-  background:url(../images/mask25.png);
-  border-radius:3px;
-  -moz-border-radius:3px;
-  -webkit-border-radius:3px;
-  }
-
-.header .buttons a {
+.buttons a { float:left; }
+.buttons .icon {
   float:left;
-  color:#999;
-  padding:0px 15px 0px 10px;
-  border-radius:3px;
-  -moz-border-radius:3px;
-  -webkit-border-radius:3px;
+  margin:-1px 5px -1px -5px;
+  background-color:transparent;
   }
-
-.header .buttons .icon { float:left; }
 
 /**
  * Maps =======================================================================
  */
 .maps {
   /* Fixes a variety of spacing problems when using `inline-block` */
-  font:0px/0px Arial,Helvetica,sans-serif;
-  padding:60px 0px 0px;
+  font:0px/0px;
+  padding:20px 0px 0px;
   text-align:center;
   }
 
 .maps > span {
-  font:15px/20px Arial,Helvetica,sans-serif;
+  font:13px/20px;
   display:inline-block;
   text-align:left;
-  width:240px;
-  height:240px;
-  margin:0px 10px 20px;
+  width:238px;
+  height:238px;
+  border:1px solid #ccc;
+  margin:0px 5px 10px;
   position:relative;
   overflow:hidden;
-  box-shadow:#222 0px 1px 10px;
-  -moz-box-shadow:#222 0px 1px 10px;
-  -webkit-box-shadow:#222 0px 1px 10px;
+  box-shadow:rgba(0,0,0,.1) 0px 1px 3px;
   }
 
 .maps .empty {
@@ -150,63 +143,53 @@ a {
 .maps span span { display:block; }
 
 .thumb {
-  width:240px;
-  height:240px;
+  width:238px;
+  height:238px;
   font-weight:bold;
   display:block;
-  background:#ddd url(../images/bg.png);
+  background:#fff url(../images/bg.png);
   position:relative;
-  }
-
-.thumb .thumb-name {
-  opacity:0;
-  filter:alpha(opacity=0);
-  position:absolute;
-  left:0px;
-  bottom:0px;
-  right:0px;
-  padding:10px 20px;
-  min-height:20px;
-  overflow:hidden;
-  }
-
-.thumb:hover .thumb-name {
-  opacity:1;
-  filter:none;
-  -moz-transition:opacity .25s;
-  -webkit-transition:opacity .25s;
   }
 
 .thumb .thumb-layer {
   position:absolute;
-  left:0px;
   top:0px;
-  bottom:0px;
+  left:0px;
   right:0px;
+  bottom:0px;
   background-position:50% 50%;
   background-repeat:no-repeat;
+  }
+
+.thumb .thumb-name {
+  position:absolute;
+  left:0px;
+  right:0px;
+  bottom:0px;
+  background:rgba(255,255,255,.9);
+  padding:5px 10px;
+  min-height:20px;
+  overflow:hidden;
   }
 
 /**
  * Map ========================================================================
  */
 .MapClient {
-  background:#ddd url(../images/bg.png);
+  background:#fff url(../images/bg.png);
   position:absolute;
-  top:0px;
+  top:50px;
   left:0px;
   right:0px;
   bottom:0px;
-  height:100%;
-  width:100%;
+  height:auto;
+  width:auto;
   z-index:0;
   }
 
 .zooms {
-  background:url(../images/mask25.png);
+  background:#f0f8fa;
   border-radius:3px;
-  -moz-border-radius:3px;
-  -webkit-border-radius:3px;
   }
 
 .zooms .zoom {
@@ -215,32 +198,24 @@ a {
   text-align:center;
   font-size:11px;
   font-weight:bold;
-  color:#999;
   }
 
-input[type=submit]:active,
-input[type=button]:active,
-.header .buttons .active,
 .zooms .active {
   color:#fff;
-  background-color:#666;
+  background:#74bccc;
   border-radius:3px;
-  -moz-border-radius:3px;
-  -webkit-border-radius:3px;
-  box-shadow:#666 0px 0px 10px;
-  -moz-box-shadow:#666 0px 0px 10px;
-  -webkit-box-shadow:#666 0px 0px 10px;
   }
 
 .hud.active,
 .hud {
-  right:-280px;
-  top:60px;
-  bottom:20px;
-  width:280px;
   position:fixed;
-  background:url(../images/hud.png) 0% 100% repeat-x;
-  text-shadow:#000 0px 1px 1px;
+  right:-280px;
+  top:70px;
+  width:280px;
+  border:1px solid #ccc;
+  border-radius:5px;
+  background:rgba(255,255,255,.9);
+  box-shadow:rgba(0,0,0,.1) 0px 1px 3px;
   z-index:-1;
   transition:right .25s, z-index .5s;
   -moz-transition:right .25s, z-index .5s;
@@ -248,13 +223,13 @@ input[type=button]:active,
   }
 
 .hud.active {
-  right:0px;
+  right:20px;
   z-index:80;
   }
 
 .hud li {
-  padding:10px 20px;
-  background:url(../images/stroke.png) 0% 100% repeat-x;
+  padding:10px 20px 9px;
+  border-bottom:1px solid #eee;
   }
 
 .hud .column {
@@ -272,129 +247,49 @@ form span.label,
   font-weight:bold;
   }
 
-.hud h1 {
-  font-size:20px;
-  letter-spacing:-1px;
-  }
-
-.hud h2 {
-  margin:1em 0 0.5em;
-  }
+.hud h1 { font-size:20px; }
 
 .hud h1,
 .hud .description { margin:10px 0px; }
 
-.hud h1,
-.hud label { color:#fff; }
+.hud input.text { width:100%; }
 
 /**
  * Download link ==============================================================
  */
 a.download {
   display:block;
-  background:url(../images/mask25.png);
-  padding:10px;
-  margin:0px -10px;
+  position:relative;
+  padding:14px 9px 14px 49px;
+  border:1px solid #9c4;
+  background:#ae6;
+  border-radius:5px;
   word-break:break-all;
-  text-align:center;
   }
 
-a.download * { display:block; }
-
 a.download .icon {
-  margin:0px auto;
-  width:100px;
-  height:100px;
-  background:url(../images/sprite.png) 0px -20px no-repeat;
+  position:absolute;
+  left:4px;
+  top:4px;
+  width:40px;
+  height:40px;
+  background:url(../images/sprite.png) -80px -310px no-repeat;
   }
 
 a.download .file { font-weight:bold; }
-a.download .size { color:#999; }
-
-/**
- * Form elements ==============================================================
- */
-select,
-input[type=text],
-input[type=password] {
-  line-height:20px;
-  height:20px;
-  width:100%;
-  padding:0px 5px;
-
-  color:#fff;
-  background:url(../images/mask25.png);
-
-  border-radius:3px;
-  -moz-border-radius:3px;
-  -webkit-border-radius:3px;
-  box-sizing:border-box;
-  -moz-box-sizing:border-box;
-  -webkit-box-sizing:border-box;
-  }
-
-input[type=submit],
-input[type=button] {
-  font-size:11px;
-  font-weight:bold;
-  text-transform:uppercase;
-  text-shadow:#000 0px 1px 1px;
-
-  padding:0px 10px;
-  background:#444;
-  color:#eee;
-
-  cursor:pointer;
-  border-radius:3px;
-  -moz-border-radius:3px;
-  -webkit-border-radius:3px;
-  box-sizing:border-box;
-  -moz-box-sizing:border-box;
-  -webkit-box-sizing:border-box;
-  }
-
-form select,
-form input { margin:0px 0px 10px; }
-
-  label.inline {
-    display:inline;
-    padding:0 5px;
-    }
-
-  div.edit input[type='text'] {
-    border:1px solid #aaa;
-    }
-
-  div.size input[type='text'] {
-    width:50px;
-    text-align:center;
-    }
+a.download .size { color:#fff; }
 
 /**
  * ErrorView ==================================================================
  */
-.error {
-  position:absolute;
-  top:60px;
-  right:0px;
-  bottom:0px;
-  left:20px;
-  }
+.error {}
 
 .error .message {
-  position:absolute
-  left:0px;
-  top:0px;
-  width:240px;
-  height:240px;
-  line-height:240px;
-
-  white-space:nowrap;
-  overflow:hidden;
+  width:600px;
+  margin:0px auto;
+  padding:80px 0px;
   text-align:center;
-
   font-size:20px;
-  background:url(../images/mask25.png);
   }
 
 /**
@@ -416,3 +311,72 @@ form input { margin:0px 0px 10px; }
 
 .hudActive .wax-legends,
 .hudActive .wax-tooltip { right:300px; }
+
+/**
+ * Form elements
+ */
+select,
+input.text,
+textarea {
+  line-height:18px;
+  height:20px;
+  background:#f8f8f8;
+  border:1px solid #ccc;
+  border-color:#ccc #ddd #ddd;
+  padding:0px 2px;
+  box-shadow:inset #ddd 0px 2px 3px;
+  -moz-box-shadow:inset #ddd 0px 2px 3px;
+  -webkit-box-shadow:inset #ddd 0px 2px 3px;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  }
+
+textarea {
+  height:auto;
+  resize:none;
+  }
+
+.button,
+.buttons a,
+input.submit {
+  font-size:11px;
+  border:1px solid #5ab;
+  line-height:20px;
+  height:20px;
+  cursor:pointer;
+  padding:0px 10px;
+  background:#74bccc url(../images/sprite.png) 0px -130px no-repeat;
+  color:#fff;
+  border-radius:3px;
+  box-sizing:border-box;
+  display:inline-block;
+  }
+
+.button:hover,
+.buttons a:hover,
+input.submit:hover { background-color:#8cd; }
+
+.button:active,
+.buttons .active,
+.buttons .active:hover,
+.buttons a:active,
+input.submit:active {
+  background-color:#888;
+  border-color:#666;
+  background-position:0px -110px;
+  box-shadow:inset #999 0px -1px 0px;
+  }
+
+.buttons a {
+  border-radius:0px;
+  border-right-width:0px;
+  }
+
+.buttons a:first-child { border-radius:3px 0px 0px 3px; }
+
+.buttons a:last-child {
+  border-radius:0px 3px 3px 0px;
+  border-right-width:1px;
+  }
+

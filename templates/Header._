@@ -1,4 +1,4 @@
-<div class='header'>
+<div class='bleed'><div class='header'>
   <h1 class='breadcrumb'>
     <a class='route logo' href='<%= basepath %>'>
       <span class='icon tilestream'></span>
@@ -17,4 +17,4 @@
       </a>
     <% }); %>
   </div>
-</div>
+</div></div>
