@@ -166,7 +166,7 @@ a {
   left:0px;
   right:0px;
   bottom:0px;
-  background:rgba(255,255,255,.9);
+  background:url(../images/mask.png);
   padding:5px 10px;
   min-height:20px;
   overflow:hidden;
@@ -215,7 +215,7 @@ a {
   width:280px;
   border:1px solid #ccc;
   border-radius:5px;
-  background:rgba(255,255,255,.9);
+  background:url(../images/mask.png);
   box-shadow:rgba(0,0,0,.1) 0px 1px 3px;
   z-index:-1;
   transition:right .25s, z-index .5s;
