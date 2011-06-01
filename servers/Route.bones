@@ -1,3 +1,5 @@
+var env = process.env.NODE_ENV || 'development';
+
 servers['Route'].augment({
     assets: {
         styles: [
@@ -11,11 +13,13 @@ servers['Route'].augment({
         ]
     },
     initializeAssets: function(parent, app) {
+        var maxAge = env == 'production' ? 3600 : 0;
+
         parent.call(this, app);
         this.get('/assets/tilestream/css/vendor.css',
-            mirror.assets(this.assets.styles, { type: '.css' }));
+            mirror.assets(this.assets.styles, { type: '.css', maxAge: maxAge }));
         this.get('/assets/tilestream/js/vendor.js',
-            mirror.assets(this.assets.scripts, { type: '.js' }));
+            mirror.assets(this.assets.scripts, { type: '.js', maxAge: maxAge }));
     },
     initializeModels: function(parent, app) {
         this.models = app.models;
