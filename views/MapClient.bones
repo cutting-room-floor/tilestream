@@ -23,7 +23,10 @@ view = Backbone.View.extend({
         return this.model.options.uiHost + 'api/wax.json?' + $.param(wax);
     },
     generateWax: function(callback) {
-        return _(this.model.wax()).extend({el: $(this.el).attr('id')});
+        var wax = this.model.wax();
+        wax.el = $(this.el).attr('id');
+        wax.size && (delete wax.size);
+        return wax;
     },
     record: function(data) {
         if (data && data.wax) {
