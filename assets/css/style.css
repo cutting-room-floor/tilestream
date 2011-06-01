@@ -181,8 +181,8 @@ a {
   left:0px;
   right:0px;
   bottom:0px;
-  height:auto !important;
-  width:auto !important;
+  height:auto;
+  width:auto;
   z-index:0;
   }
 
