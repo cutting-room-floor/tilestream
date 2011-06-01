@@ -89,8 +89,7 @@ server = Bones.Server.extend({
     defaults: {
         name: '',
         el: 'map',
-        api: 'ol',
-        // size: [500, 300],
+        api: 'mm',
         center: [0, 0, 0],
         layers: [],
         options: ['zoomwheel', 'legend', 'tooltips']
@@ -98,43 +97,57 @@ server = Bones.Server.extend({
     // Wax generation APIs. Each API object should have a `generate` method
     // that returns a wax JSON record object.
     Waxer: {
-        ol: {
+        mm: {
             generate: function(layers, params, hosts) {
                 var layer = layers[0];
                 return { wax:
                     ['@group',
-                        ['@new com.modestmaps.Map',
-                            params.el,
-                            ['@new com.modestmaps.WaxProvider',
-                                {
-                                    baseUrl: hosts.tileHost,
-                                    layerName: layer.get('id'),
-                                    zoomRange: [layer.get('minzoom'), layer.get('maxzoom')]
-                                }
-                            ],
-                            params.size ? ['@new com.modestmaps.Point'].concat(params.size) : null
-                        ],
-                        ['@inject setCenterZoom',
-                            ['@new com.modestmaps.Location',
-                                params.center[1],
-                                params.center[0]
-                            ],
-                            params.center[2]
+                        ['@call w',
+                            ['@group',
+                                ['@new com.modestmaps.Map',
+                                    params.el,
+                                    ['@new wax.provider',
+                                        {
+                                            baseUrl: hosts.tileHost,
+                                            layerName: layer.get('id'),
+                                            zoomRange: [
+                                                layer.get('minzoom'),
+                                                layer.get('maxzoom')
+                                            ]
+                                        }
+                                    ],
+                                    params.size ? ['@new com.modestmaps.Point'].concat(params.size) : null,
+                                    [
+                                        ['@new com.modestmaps.MouseHandler'],
+                                        ['@new com.modestmaps.TouchHandler']
+                                    ]
+                                ],
+                                ['@inject setCenterZoom',
+                                    ['@new com.modestmaps.Location',
+                                        params.center[1],
+                                        params.center[0]
+                                    ],
+                                    params.center[2]
+                                ]
+                            ]
                         ]
-                    ]
+                    ].concat(this.generateControls(params.options))
                 };
             },
             generateControls: function(controls) {
                 var wax = {
+                    /*
+                    @TODO, see: https://github.com/stamen/modestmaps-js/issues/35
                     zoomwheel: ['@new OpenLayers.Control.Navigation',
                         {'zoomWheelEnabled': true}
                     ],
                     zoomwheelOff: ['@new OpenLayers.Control.Navigation',
                         {'zoomWheelEnabled': false}
                     ],
-                    zoompan: ['@new OpenLayers.Control.ZoomPanel'],
-                    tooltips: ['@new wax.ol.Interaction'],
-                    legend: ['@new wax.ol.Legend']
+                    */
+                    zoompan: ['@inject melt', ['@literal wax.zoomer']],
+                    tooltips: ['@inject melt', ['@literal wax.interaction']],
+                    legend: ['@inject melt', ['@literal wax.legend']]
                 };
                 _(controls).include('zoomwheel') || controls.unshift('zoomwheelOff');
                 return _(controls).map(function(c) { return wax[c]; });
@@ -142,4 +155,6 @@ server = Bones.Server.extend({
         }
     }
 });
+
+server.prototype.Waxer.ol = server.prototype.Waxer.mm;
 

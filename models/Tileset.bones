@@ -28,7 +28,7 @@ model = Backbone.Model.extend({
     },
     wax: function() {
         return {
-            api: 'ol',
+            api: 'mm',
             layers: [this.get('id')],
             center: this.get('center')
         };

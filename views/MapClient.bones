@@ -3,9 +3,9 @@
 // A web map client for displaying tile-based maps.
 view = Backbone.View.extend({
     className: 'MapClient',
-    id: 'openlayers-map',
+    id: 'map',
     initialize: function(options) {
-        _.bindAll(this, 'ready', 'record', 'ol', 'olNav');
+        _.bindAll(this, 'ready', 'record', 'mm', 'mmNav');
     },
     ready: function() {
         var that = this;
@@ -32,16 +32,14 @@ view = Backbone.View.extend({
             _(this[api]).isFunction() && this[api]();
         }
     },
-    ol: function() {
-        this.map.events.register('moveend', this.map, this.olNav);
-        this.map.events.register('zoomend', this.map, this.olNav);
-        this.olNav({element: this.map.div});
+    mm: function() {
+        this.map.addCallback('zoomed', this.mmNav);
+        this.mmNav();
     },
-    olNav: function(e) {
+    mmNav: function() {
         if (!$('.zoom').size()) return;
-        var zoom = this.model.get('minzoom') + this.map.getZoom();
         $('.zoom.active').removeClass('active');
-        $('.zoom-' + zoom).addClass('active');
+        $('.zoom-' + this.map.getZoom()).addClass('active');
     }
 });
 
