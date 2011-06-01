@@ -53,7 +53,9 @@ server = Bones.Server.extend({
     // way to pass this through.
     download: function(req, res, next) {
         res.sendfile(res.mapfile, { maxAge: 3600 }, function(err, path) {
-            return err && next(err);
+            // @TODO: log the error if one occurs.
+            // We don't call next() here as HTTP headers/response has
+            // already commenced by this point.
         });
     },
 
