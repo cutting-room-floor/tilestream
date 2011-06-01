@@ -30,10 +30,10 @@ server = Bones.Server.extend({
             req.query[key] = _(req.query[key].toJSON).isFunction()
                 ? req.query[key].toJSON()
                 : req.query[key];
-            if (_(numeric).include(key) && _(req.query[key]).isArray()) {
-                req.query[key] = _(req.query[key]).map(function(value) {
-                    return parseFloat(value);
-                });
+        }).bind(this));
+        _(numeric).each(_(function(key) {
+            if (_(req.query[key]).isArray()) {
+                req.query[key] = _(req.query[key]).map(parseFloat);
             }
         }).bind(this));
         // Exception for `layers`.
