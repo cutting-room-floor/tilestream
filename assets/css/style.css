@@ -313,11 +313,11 @@ a.download .size {
 .wax-tooltip,
 .wax-legends { right:20px; }
 
-.wax-tooltip { top:60px; }
+.wax-tooltip { top:20px; }
 .wax-legends { bottom:20px; }
 
 .hudActive .wax-legends,
-.hudActive .wax-tooltip { right:300px; }
+.hudActive .wax-tooltip { right:320px; }
 
 /**
  * Form elements

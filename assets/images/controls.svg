@@ -13,8 +13,11 @@
    height="20"
    id="svg3025"
    version="1.1"
-   inkscape:version="0.48.0 r9654"
-   sodipodi:docname="New document 2">
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="controls.svg"
+   inkscape:export-filename="/home/devseed/pro/node_modules/tilestream/assets/images/controls.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs3027" />
   <sodipodi:namedview
@@ -24,9 +27,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="-64.717938"
-     inkscape:cy="15.702283"
+     inkscape:zoom="3.0517578"
+     inkscape:cx="-11.048694"
+     inkscape:cy="7.6848441"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true">
@@ -56,7 +59,7 @@
      id="layer1"
      transform="translate(0,-1032.3622)">
     <path
-       style="color:#000000;fill:#ffffff;fill-opacity:0.75294118;fill-rule:nonzero;stroke:none;stroke-width:0.99999994;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       style="color:#000000;fill:#202020;fill-opacity:0.87843138;fill-rule:nonzero;stroke:none;stroke-width:0.99999994000000003;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        d="m 6.5,1037.3622 -1.5,1.5 3.5,3.5 -3.5,3.5 1.5,1.5 3.5,-3.5 3.5,3.5 1.5,-1.5 -3.5,-3.5 3.5,-3.5 -1.5,-1.5 -3.5,3.5 z"
        id="path3007"
        inkscape:connector-curvature="0"

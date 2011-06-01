@@ -1,31 +1,15 @@
-.olHandlerBoxZoomBox {
-  position:absolute;
-  background:url(../images/mask25.png);
-  font-size:1px;
-  border:0px;
-  opacity:1;
-  filter:none;
-  }
-
-.olImageLoadError { display:none; }
-
-.olControlZoomPanel {
-  left:10px !important;
-  top:10px !important;
-  }
-
 .wax-legend,
 .wax-tooltip {
   font:normal 13px/20px Arial,sans-serif;
-  color:#fff;
+  color:#222;
   min-width:180px;
   max-width:280px;
-  padding:10px 15px;
-  background:transparent url(../images/mask75.png) repeat;
-  text-shadow:#000 0px 1px 1px;
-  box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
-  -moz-box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
-  -webkit-box-shadow:rgba(0,0,0,0.25) 0px 0px 10px;
+  padding:9px 14px;
+  border:1px solid #ccc;
+  background:transparent url(../images/mask.png) repeat;
+  box-shadow:rgba(0,0,0,0.1) 0px 1px 3px;
+  -moz-box-shadow:rgba(0,0,0,0.1) 0px 1px 3px;
+  -webkit-box-shadow:rgba(0,0,0,0.1) 0px 1px 3px;
   }
 
 .wax-legends,
