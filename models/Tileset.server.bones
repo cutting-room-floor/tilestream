@@ -8,7 +8,9 @@ models.Tileset.register = function(server) {
         switch (method) {
         case 'read':
             tileset.load(model.filepath(config.tiles), function(err, data) {
-                return err ? error(err) : success(data);
+                if (err) return error(err);
+                data.host = model.options.tileHost;
+                success(data);
             });
             break;
         }
