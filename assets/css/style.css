@@ -211,6 +211,7 @@ a {
   position:fixed;
   right:-300px;
   top:70px;
+  bottom:20px;
   width:280px;
   border:1px solid #ccc;
   border-radius:5px;
