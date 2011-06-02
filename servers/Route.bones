@@ -1,21 +1,23 @@
 servers['Route'].augment({
     assets: {
-        styles: [
+        styles: new mirror([
             require.resolve('../assets/css/reset.css'),
             require.resolve('../assets/css/controls.css'),
             require.resolve('../assets/css/style.css')
-        ],
-        scripts: [
+        ], { type: '.css' }),
+        scripts: new mirror([
             require.resolve('wax/ext/modestmaps.js'),
             require.resolve('wax/build/wax.mm.min.js')
-        ]
+        ], { type: '.js'})
     },
     initializeAssets: function(parent, app) {
         parent.call(this, app);
-        this.get('/assets/tilestream/css/vendor.css',
-            new mirror(this.assets.styles, { type: '.css' }));
-        this.get('/assets/tilestream/js/vendor.js',
-            new mirror(this.assets.scripts, { type: '.js' }));
+
+        // Add our custom styles to the catchall file.
+        this.assets.all.push(this.assets.scripts);
+
+        this.get('/assets/tilestream/css/vendor.css', this.assets.styles);
+        this.get('/assets/tilestream/js/vendor.js', this.assets.scripts);
     },
     initializeModels: function(parent, app) {
         this.models = app.models;
