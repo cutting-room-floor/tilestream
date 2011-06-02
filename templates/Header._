@@ -5,8 +5,7 @@
       TileStream
     </a>
     <% obj.breadcrumb && _(obj.breadcrumb).each(function(item) { %>
-      <% if (item.icon) { %><span class='icon <%= item.icon %>'></span><% } %>
-      <a class='route' href='<%= item.href %>'><%= item.title %></a>
+      <a class='route' href='<%= item.href %>'><%= item.title.length > 20 ? item.title.substring(0, 17) + '...' : item.title %></a>
     <% }); %>
   </h1>
   <div class='buttons clearfix'>
