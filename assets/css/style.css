@@ -387,3 +387,5 @@ input.submit:active {
   border-right-width:1px;
   }
 
+.buttons a:only-child { border-radius:3px; }
+
