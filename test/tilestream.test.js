@@ -152,7 +152,7 @@ exports['load maps v1'] = function() {
 exports['ssviews list'] = function() {
     assert.response(
         server,
-        { url: '/' },
+        _({ url: '/' }).extend(request),
         { status: 200, body: /name\">control_room/ }
     );
 };
@@ -160,35 +160,26 @@ exports['ssviews list'] = function() {
 exports['ssviews map'] = function() {
     assert.response(
         server,
-        { url: '/map/control_room' },
+        _({ url: '/map/control_room' }).extend(request),
         { status: 200, body: /control_room<\/a/ }
     );
     assert.response(
         server,
         { url: '/?_escaped_fragment_=/map/control_room' },
-        { status: 200, body: /control_room<\/a/ }
+        { status: 301 }
     );
 };
 
 exports['ssviews error'] = function() {
     assert.response(
         server,
-        { url: '/map/asdf' },
+        _({ url: '/map/asdf' }).extend(request),
         { status: 200, body: /Connection problem.<\/div/ }
     );
     assert.response(
         server,
         { url: '/?_escaped_fragment_=/map/asdf' },
-        { status: 200, body: /Connection problem.<\/div/ }
-    );
-};
-
-
-exports['settings'] = function() {
-    assert.response(
-        server,
-        { url: '/settings.js' },
-        { status: 200 }
+        { status: 301 }
     );
 };
 
@@ -219,7 +210,7 @@ exports['wax endpoint'] = function() {
     assert.response(
         server,
         { url: '/api/wax.json?layers[]=foo' },
-        { status: 400, body: /`layers` is invalid/ }
+        { status: 500, body: /Tileset not found/ }
     );
     assert.response(
         server,
