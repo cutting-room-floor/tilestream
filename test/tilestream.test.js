@@ -108,44 +108,40 @@ exports['load map v1'] = function() {
             }, SyntaxError);
             assert.equal(map.id, 'control_room');
             assert.equal(map.type, 'baselayer');
-            assert.equal(map.bounds, "-180,-85.05112877980659,180,89.99075251648905");
+            assert.equal(map.bounds, '-180,-85.05112877980659,180,89.99075251648905');
+            assert.deepEqual(mapl.host, ['http://a.localhost:8888/', 'http://b.localhost:8888/', 'http:/c.localhost:8888/', 'http://d.localhost:8888/']);
+
         }
     );
+};
+
+var loadMaps = function(res) {
+    var maps;
+    assert.doesNotThrow(function() {
+        maps = JSON.parse(res.body);
+    }, SyntaxError);
+    assert.equal(maps.length, 2);
+    assert.equal(maps[0].id, 'control_room');
+    assert.equal(maps[0].type, 'baselayer');
+    assert.equal(maps[0].bounds, '-180,-85.05112877980659,180,89.99075251648905');
+    assert.deepEqual(maps[0].host, ['http://a.localhost:8888/', 'http://b.localhost:8888/', 'http://c.localhost:8888/', 'http://d.localhost:8888/']);
 };
 
 exports['load maps'] = function() {
     assert.response(
         server,
-        { url: '/api/Tileset' },
+        _({ url: '/api/Tileset' }).extend(request),
         { status: 200 },
-        function(res) {
-            var maps;
-            assert.doesNotThrow(function() {
-                maps = JSON.parse(res.body);
-            }, SyntaxError);
-            assert.equal(maps.length, 2);
-            assert.equal(maps[0].id, 'control_room');
-            assert.equal(maps[0].type, 'baselayer');
-            assert.equal(maps[0].bounds, "-180,-85.05112877980659,180,89.99075251648905");
-        }
+        loadMaps
     );
 };
 
 exports['load maps v1'] = function() {
     assert.response(
         server,
-        { url: '/api/v1/Tileset' },
+        _({ url: '/api/v1/Tileset' }).extend(request),
         { status: 200 },
-        function(res) {
-            var maps;
-            assert.doesNotThrow(function() {
-                maps = JSON.parse(res.body);
-            }, SyntaxError);
-            assert.equal(maps.length, 2);
-            assert.equal(maps[0].id, 'control_room');
-            assert.equal(maps[0].type, 'baselayer');
-            assert.equal(maps[0].bounds, "-180,-85.05112877980659,180,89.99075251648905");
-        }
+        loadMaps
     );
 };
 
