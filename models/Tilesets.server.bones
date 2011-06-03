@@ -8,7 +8,11 @@ models.Tilesets.register = function(server) {
         switch (method) {
         case 'read':
             tileset.all(model.filepath(config.tiles), function(err, data) {
-                return err ? error(err) : success(data);
+                if (err) return error(err);
+                _(data).each(function(t) {
+                    t.host = model.options.tileHost;
+                });
+                return success(data);
             });
             break;
         }
