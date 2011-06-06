@@ -6,7 +6,7 @@ servers['Route'].augment({
             require.resolve('../assets/css/style.css')
         ], { type: '.css' }),
         scripts: new mirror([
-            require.resolve('wax/ext/modestmaps.js'),
+            require.resolve('wax/ext/modestmaps.min.js'),
             require.resolve('wax/dist/wax.mm.min.js')
         ], { type: '.js'})
     },
