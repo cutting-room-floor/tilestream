@@ -6,6 +6,7 @@
         <div class='description'><%= get('description') %></div>
       <% } %>
     </li>
+    <% if (get('maxzoom')) { %>
     <li>
       <label>Zoom levels</label>
       <div class='zooms clearfix'>
@@ -14,6 +15,7 @@
       <% }); %>
       </div>
     </li>
+    <% } %>
     <li>
       <label>Tile URL</label>
       <% _(format('url', layerURL())).each(function(url) { %>
