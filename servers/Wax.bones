@@ -109,7 +109,7 @@ server = Bones.Server.extend({
                                     ['@new wax.mm.provider',
                                         {
                                             baseUrl: hosts.tileHost,
-                                            layerName: layer.get('id'),
+                                            layerName: layer.layerName(),
                                             zoomRange: [
                                                 layer.get('minzoom'),
                                                 layer.get('maxzoom')
