@@ -3,6 +3,8 @@ var tileset = require('../lib/tileset');
 // Server-side sync method for Tileset model.
 var register = models.Tilesets.register;
 models.Tilesets.register = function(server) {
+    register.apply(this, arguments);
+
     var config = server.plugin.config;
     this.prototype.sync = function(method, model, success, error) {
         switch (method) {
@@ -17,5 +19,4 @@ models.Tilesets.register = function(server) {
             break;
         }
     };
-    return register.apply(this, arguments);
 };
