@@ -82,7 +82,7 @@ exports['mbtiles download'] = function() {
 exports['load map'] = function() {
     assert.response(
         server,
-        { url: '/api/Tileset/control_room' },
+        _({ url: '/api/Tileset/control_room' }).extend(request),
         { status: 200 },
         function(res) {
             var map;
@@ -92,6 +92,7 @@ exports['load map'] = function() {
             assert.equal(map.id, 'control_room');
             assert.equal(map.type, 'baselayer');
             assert.equal(map.bounds, "-180,-85.05112877980659,180,89.99075251648905");
+            assert.deepEqual(map.host, ['http://a.localhost:8888/', 'http://b.localhost:8888/', 'http://c.localhost:8888/', 'http://d.localhost:8888/']);
         }
     );
 };
@@ -99,7 +100,7 @@ exports['load map'] = function() {
 exports['load map v1'] = function() {
     assert.response(
         server,
-        { url: '/api/v1/Tileset/control_room' },
+        _({ url: '/api/v1/Tileset/control_room' }).extend(request),
         { status: 200 },
         function(res) {
             var map;
@@ -109,7 +110,7 @@ exports['load map v1'] = function() {
             assert.equal(map.id, 'control_room');
             assert.equal(map.type, 'baselayer');
             assert.equal(map.bounds, '-180,-85.05112877980659,180,89.99075251648905');
-            assert.deepEqual(mapl.host, ['http://a.localhost:8888/', 'http://b.localhost:8888/', 'http:/c.localhost:8888/', 'http://d.localhost:8888/']);
+            assert.deepEqual(map.host, ['http://a.localhost:8888/', 'http://b.localhost:8888/', 'http://c.localhost:8888/', 'http://d.localhost:8888/']);
 
         }
     );

@@ -106,7 +106,7 @@ server = Bones.Server.extend({
                             ['@group',
                                 ['@new com.modestmaps.Map',
                                     params.el,
-                                    ['@new wax.provider',
+                                    ['@new wax.mm.provider',
                                         {
                                             baseUrl: hosts.tileHost,
                                             layerName: layer.get('id'),
@@ -138,16 +138,12 @@ server = Bones.Server.extend({
                 var wax = {
                     /*
                     @TODO, see: https://github.com/stamen/modestmaps-js/issues/35
-                    zoomwheel: ['@new OpenLayers.Control.Navigation',
-                        {'zoomWheelEnabled': true}
-                    ],
-                    zoomwheelOff: ['@new OpenLayers.Control.Navigation',
-                        {'zoomWheelEnabled': false}
-                    ],
+                    zoomwheel: [],
+                    zoomwheelOff: [],
                     */
-                    zoompan: ['@inject melt', ['@literal wax.zoomer']],
-                    tooltips: ['@inject melt', ['@literal wax.interaction']],
-                    legend: ['@inject melt', ['@literal wax.legend']]
+                    zoompan: ['@inject melt', ['@literal wax.mm.zoomer']],
+                    tooltips: ['@inject melt', ['@literal wax.mm.interaction']],
+                    legend: ['@inject melt', ['@literal wax.mm.legend']]
                 };
                 _(controls).include('zoomwheel') || controls.unshift('zoomwheelOff');
                 return _(controls).map(function(c) { return wax[c]; });

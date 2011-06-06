@@ -7,7 +7,7 @@ servers['Route'].augment({
         ], { type: '.css' }),
         scripts: new mirror([
             require.resolve('wax/ext/modestmaps.js'),
-            require.resolve('wax/build/wax.mm.min.js')
+            require.resolve('wax/dist/wax.mm.min.js')
         ], { type: '.js'})
     },
     initializeAssets: function(parent, app) {
