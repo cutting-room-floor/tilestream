@@ -28,7 +28,7 @@ view = views.HUD.extend({
         }
     },
     render: function() {
-        $(this.el).html(templates.Map({
+        $(this.el).html(templates.Map(_({
             breadcrumb: [{
                 href: this.model.options.basepath + 'map/' + this.model.get('id'),
                 title: this.model.get('name')
@@ -38,21 +38,8 @@ view = views.HUD.extend({
                 {id:'download', title:'Download'}
             ],
             basepath: this.model.options.basepath,
-            id: this.model.get('id'),
-            name: this.model.get('name'),
-            zoom: _.range(this.model.get('minzoom'), this.model.get('maxzoom') + 1),
-            description: this.model.get('description') || null,
-            type: this.model.get('type') || null,
-            bounds: {
-                w: this.format('deg', this.model.get('bounds')[0]),
-                s: this.format('deg', this.model.get('bounds')[1]),
-                e: this.format('deg', this.model.get('bounds')[2]),
-                n: this.format('deg', this.model.get('bounds')[3])
-            },
-            url: this.format('url', this.model.layerURL()),
-            download: this.format('download', this.model.layerURL()[0]),
-            size: this.format('size', this.model.get('size'))
-        }));
+            format: this.format
+        }).extend(this.model)));
         this.map = new views.MapClient({model: this.model});
         this.bind('ready', this.map.ready);
         $(this.el).append(this.map.el);

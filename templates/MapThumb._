@@ -1,4 +1,4 @@
-<a class='thumb route' href='<%= basepath %>map/<%= id %>'>
-  <span class='thumb-layer' style='background-image: url(<%= thumb %>)'></span>
-  <span class='thumb-name'><%= name %></span>
+<a class='thumb route' href='<%= options.basepath %>map/<%= get('id') %>'>
+  <span class='thumb-layer' style='background-image: url(<%= thumb() %>)'></span>
+  <span class='thumb-name'><%= get('name') %></span>
 </a>

@@ -4,10 +4,10 @@
       <h1>Download</h1>
     </li>
     <li>
-      <a class='download' href='<%= download %>'>
+      <a class='download' href='<%= format('download', get('download')) %>'>
         <span class='icon'></span>
-        <span class='file'><%= id %>.mbtiles</span>
-        <span class='size'><%= size %></span>
+        <span class='file'><%= get('id') %>.mbtiles</span>
+        <span class='size'><%= format('size', get('size')) %></span>
       </a>
       <div class='description'>
         For use with TileStream, the MapBox iPad app and applications that support the <a href='http://www.mbtiles.org'>MBTiles</a> format.

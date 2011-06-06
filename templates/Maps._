@@ -5,7 +5,7 @@
     well on block level elements. Ideally this would be a ul / li combo but
     alas...
   -->
-  <% obj.maps && _(obj.maps).each(_(function(item) { %>
+  <% obj.maps && obj.maps.each(_(function(item) { %>
   <span><%= this['MapThumb'](item) %></span>
   <% }).bind(this)); %>
   <% if (!obj.maps || !obj.maps.length) { %>

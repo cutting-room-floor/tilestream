@@ -1,41 +1,41 @@
 <div class='info hud'>
   <ul>
     <li>
-      <h1><%= name %></h1>
-      <% if (description) { %>
-        <div class='description'><%= description %></div>
+      <h1><%= get('name') %></h1>
+      <% if (get('description')) { %>
+        <div class='description'><%= get('description') %></div>
       <% } %>
     </li>
     <li>
       <label>Zoom levels</label>
       <div class='zooms clearfix'>
-      <% zoom && _(zoom).each(function(zoom) { %>
+      <% _(get('minzoom')).chain().range(get('maxzoom') + 1).each(function(zoom) { %>
         <span class='zoom zoom-<%= zoom %>'><%= zoom %></span>
       <% }); %>
       </div>
     </li>
     <li>
       <label>Tile URL</label>
-      <% url && _(url).each(function(url) { %>
+      <% _(format('url', layerURL())).each(function(url) { %>
         <input class='text' type='text' value='<%= url %>' />
       <% }); %>
     </li>
-    <% if (type) { %>
+    <% if (get('type')) { %>
       <li>
         <label>Type</label>
-        <%= type %>
+        <%= get('type') %>
       </li>
     <% } %>
-    <% if (bounds) { %>
+    <% if (get('bounds')) { %>
       <li class='clearfix'>
         <label>Bounds</label>
         <div class='column'>
-          N: <%= bounds.n %>&deg;<br/>
-          S: <%= bounds.s %>&deg;
+          N: <%= format('deg', get('bounds')[3]) %>&deg;<br/>
+          S: <%= format('deg', get('bounds')[1]) %>&deg;
         </div>
         <div class='column'>
-          E: <%= bounds.e %>&deg;<br/>
-          W: <%= bounds.w %>&deg;
+          E: <%= format('deg', get('bounds')[2]) %>&deg;<br/>
+          W: <%= format('deg', get('bounds')[0]) %>&deg;
         </div>
       </li>
     <% } %>
