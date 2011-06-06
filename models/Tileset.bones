@@ -25,10 +25,9 @@ model = Backbone.Model.extend({
         var y = parseInt((1.0 - Math.log(Math.tan(lat_rad) + (1 / Math.cos(lat_rad))) / Math.PI) / 2.0 * Math.pow(2, z));
         return [z, x, y];
     },
-    thumb: function(zxy, layer) {
+    thumb: function(zxy) {
         zxy = zxy || this.toZXY();
-        layer = layer || this.layerName();
-        return this.layerURL()[0] + ['1.0.0', layer, zxy[0], zxy[1], zxy[2]].join('/') + '.png';
+        return this.layerURL()[0] + ['1.0.0', this.layerName(), zxy[0], zxy[1], zxy[2]].join('/') + '.png';
     },
     wax: function() {
         return {
