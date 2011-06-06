@@ -118,9 +118,14 @@ server = Bones.Server.extend({
                                     ],
                                     params.size ? ['@new com.modestmaps.Point'].concat(params.size) : null,
                                     [
-                                        ['@new com.modestmaps.MouseHandler'],
+                                        ['@new com.modestmaps.DragHandler'],
+                                        ['@new com.modestmaps.DoubleClickHandler'],
                                         ['@new com.modestmaps.TouchHandler']
-                                    ]
+                                    ].concat(
+                                        _(params.options).include('zoomwheel')
+                                            ? [['@new com.modestmaps.MouseWheelHandler']]
+                                            : []
+                                    )
                                 ],
                                 ['@inject setCenterZoom',
                                     ['@new com.modestmaps.Location',
@@ -136,16 +141,10 @@ server = Bones.Server.extend({
             },
             generateControls: function(controls) {
                 var wax = {
-                    /*
-                    @TODO, see: https://github.com/stamen/modestmaps-js/issues/35
-                    zoomwheel: [],
-                    zoomwheelOff: [],
-                    */
                     zoompan: ['@inject melt', ['@literal wax.mm.zoomer']],
                     tooltips: ['@inject melt', ['@literal wax.mm.interaction']],
                     legend: ['@inject melt', ['@literal wax.mm.legend']]
                 };
-                _(controls).include('zoomwheel') || controls.unshift('zoomwheelOff');
                 return _(controls).map(function(c) { return wax[c]; });
             }
         }
