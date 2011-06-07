@@ -1,36 +1,83 @@
 .wax-legend,
 .wax-tooltip {
+  position:absolute;
+  z-index:999999;
+  right:10px;
   font:normal 13px/20px Arial,sans-serif;
   color:#222;
   min-width:180px;
   max-width:280px;
-  padding:9px 14px;
+  max-height:400px;
+  padding:4px 9px;
   border:1px solid #ccc;
-  background:transparent url(../images/mask.png) repeat;
+  background:transparent url(/assets/tilestream/images/mask.png) repeat;
+  overflow:auto;
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
   box-shadow:rgba(0,0,0,0.1) 0px 1px 3px;
   -moz-box-shadow:rgba(0,0,0,0.1) 0px 1px 3px;
   -webkit-box-shadow:rgba(0,0,0,0.1) 0px 1px 3px;
   }
 
-.wax-legends,
-.wax-tooltip {
-  position:absolute;
-  right:10px;
-  z-index:999999;
-  }
-
 .wax-tooltip { top:10px; }
 .wax-legends { bottom:10px; }
 
-.wax-tooltip .close {
-  display:block;
-  position:absolute;
-  top:5px;
-  right:5px;
-  width:20px;
-  height:20px;
+.wax-tooltip .close,
+.zoomer {
   text-indent:-9999px;
   overflow:hidden;
-  background:url(../images/controls.png) 0px 0px no-repeat;
+  display:block;
+  position:absolute;
+  border:1px solid #ccc;
+  text-indent:-9999px;
+  overflow:hidden;
+  }
+
+.wax-tooltip .close:active,
+.zoomer:active {
+  margin-top:1px;
+  border-color:#bbb;
+  background-color:#ddd;
+  box-shadow:inset rgba(0,0,0,0.1) 0px 1px 3px;
+  -moz-box-shadow:inset rgba(0,0,0,0.1) 0px 1px 3px;
+  -webkit-box-shadow:inset rgba(0,0,0,0.1) 0px 1px 3px;
+  }
+
+.wax-tooltip .close {
+  top:4px;
+  right:4px;
+  width:18px;
+  height:18px;
+  background:#fff url(/assets/tilestream/images/controls.png) -6px -6px no-repeat;
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+  }
+
+.zoomer {
+  left:10px;
+  top:10px;
+  width:28px;
+  height:28px;
+  background:#fff url(/assets/tilestream/images/controls.png) 30px 30px no-repeat;
+  box-shadow:rgba(0,0,0,0.1) 0px 1px 3px;
+  -moz-box-shadow:rgba(0,0,0,0.1) 0px 1px 3px;
+  -webkit-box-shadow:rgba(0,0,0,0.1) 0px 1px 3px;
+  }
+
+.zoomin {
+  background-position:-31px -1px;
+  left:39px;
+  border-radius:0px 3px 3px 0px;
+  -moz-border-radius:0px 3px 3px 0px;
+  -webkit-border-radius:0px 3px 3px 0px;
+  }
+
+.zoomout {
+  background-position:-61px -1px;
+  border-radius:3px 0px 0px 3px;
+  -moz-border-radius:3px 0px 0px 3px;
+  -webkit-border-radius:3px 0px 0px 3px;
   }
 
