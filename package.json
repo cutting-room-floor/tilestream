@@ -2,7 +2,7 @@
     "name": "tilestream",
     "description": "A high performance tile server and simple web viewer for MBTiles files.",
     "author": "Development Seed <info@developmentseed.org> (http://www.developmentseed.org)",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "main": "./index",
     "repositories": [{
         "type": "git",
