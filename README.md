@@ -6,7 +6,7 @@ A high performance tile server and simple web viewer for [MBTiles][1] files.
 Features
 --------
 - MBTiles-based tile server
-- Minimal gallery view and OpenLayers based viewer of tiles
+- Minimal gallery view and map viewer for tiles
 - Support for MBTiles interaction using [Wax][2]
 
 
