@@ -3,6 +3,13 @@
   position:absolute;
   z-index:999999;
   right:10px;
+  }
+
+.wax-legends { bottom:10px; }
+.wax-tooltip { top:10px; }
+
+.wax-legend,
+.wax-tooltip {
   font:normal 13px/20px Arial,sans-serif;
   color:#222;
   min-width:180px;
@@ -19,9 +26,6 @@
   -moz-box-shadow:rgba(0,0,0,0.1) 0px 1px 3px;
   -webkit-box-shadow:rgba(0,0,0,0.1) 0px 1px 3px;
   }
-
-.wax-tooltip { top:10px; }
-.wax-legends { bottom:10px; }
 
 .wax-tooltip .close,
 .zoomer {
