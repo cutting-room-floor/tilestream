@@ -19,6 +19,8 @@ a {
   text-decoration:none;
   }
 
+.hud a { color:#5ab; }
+
 .pane { padding:10px; }
 
 /**
@@ -257,6 +259,8 @@ form span.label,
 
 .hud input.text { width:100%; }
 
+.hud p { margin:0px 0px 10px; }
+
 /**
  * Download link ==============================================================
  */
@@ -348,6 +352,8 @@ textarea {
   }
 
 .button,
+a.button,
+span.button,
 .buttons a,
 input.submit {
   font-size:11px;
@@ -358,6 +364,7 @@ input.submit {
   padding:0px 10px;
   background:#74bccc url(../images/sprite.png) 0px -130px no-repeat;
   color:#fff;
+  text-shadow:none;
   border-radius:3px;
   box-sizing:border-box;
   display:inline-block;
