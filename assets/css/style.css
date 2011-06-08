@@ -51,7 +51,8 @@ a {
   }
 
 .header {
-  width:720px;
+  position:relative;
+  max-width:720px;
   height:30px;
   border:1px solid #888;
   border-radius:5px;
@@ -61,8 +62,8 @@ a {
   }
 
 .header .breadcrumb { 
-  position:relative;
-  float:left;
+  position:absolute;
+  left:0px;
   }
 
 .header .breadcrumb a,
@@ -87,13 +88,14 @@ a {
   background:url(../images/sprite.png) -30px -150px no-repeat;
   }
 
-.buttons {
-  margin:5px;
-  float:right;
+.header .buttons {
+  position:absolute;
+  right:5px;
+  top:5px;
   }
 
-.buttons a { float:left; }
-.buttons .icon {
+.header .buttons a { float:left; }
+.header .buttons .icon {
   float:left;
   margin:-1px 5px -1px -5px;
   background-color:transparent;
