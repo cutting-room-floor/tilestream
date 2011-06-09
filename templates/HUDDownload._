@@ -4,7 +4,7 @@
       <h1>Download</h1>
     </li>
     <li>
-      <a class='download' href='<%= format('download', get('download')) %>'>
+      <a class='download' href='<%= format('download') %>'>
         <span class='icon'></span>
         <span class='file'><%= get('id') %>.mbtiles</span>
         <span class='size'><%= format('size', get('size')) %></span>
