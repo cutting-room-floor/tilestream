@@ -32,7 +32,11 @@ server = Bones.Server.extend({
     // Override start. We must call the callback regardless of whether the port
     // is set or not.
     start: function(callback) {
-        this.port && this.listen(this.port, callback) || callback();
+        if (this.port) {
+            this.listen(this.port, callback);
+        } else {
+            callback();
+        }
         return this;
     },
 
