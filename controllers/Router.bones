@@ -1,3 +1,12 @@
+Backbone.Controller.prototype.toError = function(xhr) {
+    try {
+        var err = JSON.parse(xhr.responseText);
+        return err.message || (err.error && err.error.message) || '';
+    } catch(err) {
+        return '';
+    }
+};
+
 controller = Backbone.Controller.extend({
     initialize: function(options) {
         this.Collection = models.Tilesets;
@@ -36,12 +45,7 @@ controller = Backbone.Controller.extend({
     },
     error: function(model, xhr) {
         var options = _(this.req.query).clone();
-        options.error = 'Connection problem.';
-        try {
-            var resp = JSON.parse(xhr.responseText);
-            options.error = resp.message || (resp.error && resp.error.message);
-        } catch(err) {}
-
+        options.error = this.toError(xhr) || 'Connection problem.';
         options.view = new views.Error(options);
         var view = new views.App(options);
         this.res && this.res.send(view.el);
