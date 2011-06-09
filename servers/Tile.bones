@@ -11,9 +11,13 @@ server = Bones.Server.extend({
             this.port = null;
         }
 
-        var load = this.load.bind(this);
         this.config = app.config;
         this.config.header = { 'Cache-Control': 'max-age=' + 60 * 60 };
+        this.initializeRoutes();
+    },
+
+    initializeRoutes: function() {
+        var load = this.load.bind(this);
         this.get('/1.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg|grid.json)', load, this.tile.bind(this));
         this.get('/1.0.0/:tileset/layer.json', load, this.tile.bind(this));
         this.get('/download/:tileset.mbtiles', load, this.download.bind(this));
