@@ -1,9 +1,6 @@
 servers['Core'].augment({
     initialize: function(parent, app) {
-        this.use(new servers['Host'](app));
-
         parent.call(this, app);
-
         this.use(new servers['Wax'](app));
         if (app.config.tilePort === app.config.uiPort) {
             this.use(new servers['Tile'](app));

@@ -6,6 +6,7 @@ var assert = require('assert');
 require('..');
 var tilestream = require('bones').plugin;
 tilestream.config = {
+    host: 'localhost',
     tiles: __dirname + '/fixtures/tiles',
     uiPort: 8888,
     tilePort: 8888,
