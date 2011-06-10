@@ -6,7 +6,7 @@ server = Bones.Server.extend({
         if (app.config.tilePort !== app.config.uiPort) {
             this.port = app.config.tilePort;
             this.enable('jsonp callback');
-            this.use(new servers['Middleware'](app));
+            this.use(new servers['Host'](app));
         } else {
             this.port = null;
         }
