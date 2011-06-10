@@ -221,6 +221,8 @@ a {
   border-radius:5px;
   background:url(../images/mask.png);
   box-shadow:rgba(0,0,0,.1) 0px 1px 3px;
+  overflow-y:auto;
+  overflow-x:hidden;
   z-index:-1;
   transition:right .25s, z-index .5s;
   -moz-transition:right .25s, z-index .5s;
@@ -260,6 +262,22 @@ form span.label,
 .hud input.text { width:100%; }
 
 .hud p { margin:0px 0px 10px; }
+
+/* Special sauce */
+div::-webkit-scrollbar {
+  height:8px;
+  width:8px;
+  background:#f8f8f8;
+  border-radius:4px;
+  }
+
+div::-webkit-scrollbar-thumb {
+  border-radius:4px;
+  background:#ccc;
+  }
+
+div::-webkit-scrollbar-thumb:vertical { height:25px; }
+div::-webkit-scrollbar-thumb:horizontal { width:25px; }
 
 /**
  * Download link ==============================================================
