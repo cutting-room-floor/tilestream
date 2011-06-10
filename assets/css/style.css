@@ -303,7 +303,9 @@ a.download .icon {
   }
 
 a.download .file { font-weight:bold; }
+
 a.download .size {
+  white-space:nowrap;
   margin-left:5px;
   border-radius:3px;
   padding:0px 5px;
