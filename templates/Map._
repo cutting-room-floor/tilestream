@@ -1,0 +1,3 @@
+<%= this['Header'](obj) %>
+<%= this['HUDInfo'](obj) %>
+<%= this['HUDDownload'](obj) %>

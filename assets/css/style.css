@@ -1,0 +1,421 @@
+@font-face {
+  font-family:Droid;
+  src:url('../fonts/DroidSans.ttf');
+  }
+
+input,
+select,
+textarea,
+body { font-family:Droid,'Lucida Grande',sans-serif; }
+
+body {
+  padding:50px 0px 0px;
+  background:#eee;
+  color:#222;
+  }
+
+a {
+  color:#222;
+  text-decoration:none;
+  }
+
+.hud a { color:#5ab; }
+
+.pane { padding:10px; }
+
+/**
+ * Icons ======================================================================
+ */
+.icon {
+  display:block;
+  width:20px;
+  height:20px;
+  background:url(../images/sprite.png) 20px 20px no-repeat;
+  text-indent:-9999px;
+  overflow:hidden;
+  }
+
+.icon.info          { background-position:-400px -200px; }
+.icon.download      { background-position:-420px -200px; }
+
+/**
+ * Header =====================================================================
+ */
+.bleed {
+  position:fixed;
+  left:0px;
+  right:0px;
+  top:0px;
+  z-index:1;
+  height:32px;
+  padding:9px 0px;
+  background:#aaa url(../images/sprite.png) 0px 0px repeat-x;
+  }
+
+.header {
+  position:relative;
+  max-width:720px;
+  height:30px;
+  border:1px solid #888;
+  border-radius:5px;
+  margin:0px auto;
+  background:#fff url(../images/sprite.png) 0px -50px repeat-x;
+  box-shadow:inset rgba(0,0,0,.25) 0px 1px 2px;
+  }
+
+.header .breadcrumb { 
+  position:absolute;
+  left:0px;
+  }
+
+.header .breadcrumb a,
+.header .breadcrumb span { float:left; }
+
+.header .breadcrumb a {
+  float:left;
+  font-weight:bold;
+  padding:5px 20px 5px 10px;
+  background:url(../images/sprite.png) 100% -80px no-repeat;
+  height:20px;
+  }
+
+.header .breadcrumb a.logo { padding-left:30px; }
+
+.header .breadcrumb a.logo .icon {
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:30px;
+  height:30px;
+  background:url(../images/sprite.png) -30px -150px no-repeat;
+  }
+
+.header .buttons {
+  position:absolute;
+  right:5px;
+  top:5px;
+  }
+
+.header .buttons a { float:left; }
+.header .buttons .icon {
+  float:left;
+  margin:-1px 5px -1px -5px;
+  background-color:transparent;
+  }
+
+/**
+ * Maps =======================================================================
+ */
+.maps {
+  /* Fixes a variety of spacing problems when using `inline-block` */
+  font:0px/0px;
+  padding:20px 0px;
+  text-align:center;
+  }
+
+.maps > span {
+  font:13px/20px;
+  display:inline-block;
+  text-align:left;
+  width:238px;
+  height:238px;
+  border:1px solid #ccc;
+  margin:0px 5px 10px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:rgba(0,0,0,.1) 0px 1px 3px;
+  }
+
+.maps .empty {
+  border-color:#ddd;
+  background:#e4e4e4;
+  box-shadow:none;
+  }
+
+.maps .empty span {
+  position:absolute;
+  top:110px;
+  left:0px;
+  width:240px;
+  font-size:20px;
+  text-align:center;
+  white-space:nowrap;
+  }
+
+.maps span a,
+.maps span span { display:block; }
+
+.thumb {
+  width:238px;
+  height:238px;
+  font-weight:bold;
+  display:block;
+  background:#fff url(../images/bg.png);
+  position:relative;
+  }
+
+.thumb .thumb-layer {
+  position:absolute;
+  top:0px;
+  left:0px;
+  right:0px;
+  bottom:0px;
+  background-position:50% 50%;
+  background-repeat:no-repeat;
+  }
+
+.thumb .thumb-name {
+  position:absolute;
+  left:0px;
+  right:0px;
+  bottom:0px;
+  background:url(../images/mask.png);
+  padding:5px 10px;
+  min-height:20px;
+  overflow:hidden;
+  }
+
+/**
+ * Map ========================================================================
+ */
+.MapClient {
+  background:#fff url(../images/bg.png);
+  position:absolute;
+  top:50px;
+  left:0px;
+  right:0px;
+  bottom:0px;
+  height:auto;
+  width:auto;
+  z-index:0;
+  }
+
+.zooms {
+  background:#eee;
+  border-radius:3px;
+  }
+
+.zooms .zoom {
+  float:left;
+  width:20px;
+  text-align:center;
+  font-size:11px;
+  font-weight:bold;
+  }
+
+.zooms .zoom:first-child { border-radius:3px 0px 0px 3px; }
+
+.zooms .active {
+  color:#fff;
+  background:#888;
+  }
+
+.hud.active,
+.hud {
+  position:fixed;
+  right:-300px;
+  top:70px;
+  bottom:20px;
+  width:280px;
+  border:1px solid #ccc;
+  border-radius:5px;
+  background:url(../images/mask.png);
+  box-shadow:rgba(0,0,0,.1) 0px 1px 3px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  z-index:-1;
+  transition:right .25s, z-index .5s;
+  -moz-transition:right .25s, z-index .5s;
+  -webkit-transition:right .25s, z-index .5s;
+  }
+
+.hud.active {
+  right:20px;
+  z-index:80;
+  }
+
+.hud li {
+  padding:10px 20px 9px;
+  border-bottom:1px solid #eee;
+  }
+
+.hud .column {
+  float:left;
+  width:49.9%;
+  }
+
+form label,
+form span.label,
+.hud span.label,
+.hud label {
+  display:block;
+  font-size:11px;
+  text-transform:uppercase;
+  font-weight:bold;
+  }
+
+.hud h1 { font-size:20px; }
+
+.hud h1,
+.hud .description { margin:10px 0px; }
+
+.hud input.text { width:100%; }
+
+.hud p { margin:0px 0px 10px; }
+
+/* Special sauce */
+div::-webkit-scrollbar {
+  height:8px;
+  width:8px;
+  background:#f8f8f8;
+  border-radius:4px;
+  }
+
+div::-webkit-scrollbar-thumb {
+  border-radius:4px;
+  background:#ccc;
+  }
+
+div::-webkit-scrollbar-thumb:vertical { height:25px; }
+div::-webkit-scrollbar-thumb:horizontal { width:25px; }
+
+/**
+ * Download link ==============================================================
+ */
+a.download {
+  display:block;
+  position:relative;
+  padding:14px 9px 14px 49px;
+  border:1px solid #5ab;
+  background:#74bccc;
+  color:#fff;
+  border-radius:5px;
+  word-break:break-all;
+  }
+
+a.download .icon {
+  position:absolute;
+  left:4px;
+  top:4px;
+  width:40px;
+  height:40px;
+  background:url(../images/sprite.png) -80px -320px no-repeat;
+  }
+
+a.download .file { font-weight:bold; }
+
+a.download .size {
+  white-space:nowrap;
+  margin-left:5px;
+  border-radius:3px;
+  padding:0px 5px;
+  background:#5ab;
+  color:#fff;
+  }
+
+/**
+ * ErrorView ==================================================================
+ */
+.error {}
+
+.error .message {
+  width:600px;
+  margin:0px auto;
+  padding:80px 0px;
+  text-align:center;
+  font-size:20px;
+  }
+
+/**
+ * Map controls ===============================================================
+ * Override styles for map controls within the context of the TileStream UI.
+ */
+.wax-tooltip,
+.wax-legends {
+  transition:right .25s;
+  -moz-transition:right .25s;
+  -webkit-transition:right .25s;
+  }
+
+.wax-tooltip,
+.wax-legends { right:20px; }
+
+.wax-tooltip { top:20px; }
+.wax-legends { bottom:20px; }
+
+.hudActive .wax-legends,
+.hudActive .wax-tooltip { right:320px; }
+
+/**
+ * Form elements
+ */
+select,
+input.text,
+textarea {
+  line-height:18px;
+  height:20px;
+  background:#f8f8f8;
+  border:1px solid #ccc;
+  border-color:#ccc #ddd #ddd;
+  padding:0px 2px;
+  box-shadow:inset #ddd 0px 2px 3px;
+  -moz-box-shadow:inset #ddd 0px 2px 3px;
+  -webkit-box-shadow:inset #ddd 0px 2px 3px;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  }
+
+textarea {
+  height:auto;
+  resize:none;
+  }
+
+.button,
+a.button,
+span.button,
+.buttons a,
+input.submit {
+  font-size:11px;
+  border:1px solid #5ab;
+  line-height:20px;
+  height:20px;
+  cursor:pointer;
+  padding:0px 10px;
+  background:#74bccc url(../images/sprite.png) 0px -130px no-repeat;
+  color:#fff;
+  text-shadow:none;
+  border-radius:3px;
+  box-sizing:border-box;
+  display:inline-block;
+  }
+
+.button:hover,
+.buttons a:hover,
+input.submit:hover { background-color:#8cd; }
+
+.button:active,
+.buttons .active,
+.buttons .active:hover,
+.buttons a:active,
+input.submit:active {
+  background-color:#888;
+  border-color:#666;
+  background-position:0px -110px;
+  box-shadow:inset #999 0px -1px 0px;
+  }
+
+.buttons a {
+  border-radius:0px;
+  border-right-width:0px;
+  }
+
+.buttons a:first-child { border-radius:3px 0px 0px 3px; }
+
+.buttons a:last-child {
+  border-radius:0px 3px 3px 0px;
+  border-right-width:1px;
+  }
+
+.buttons a:only-child { border-radius:3px; }
+

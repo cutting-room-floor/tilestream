@@ -1,0 +1,19 @@
+<div class='bleed'><div class='header'>
+  <h1 class='breadcrumb'>
+    <a class='route logo' href='<%= basepath %>'>
+      <span class='icon tilestream'></span>
+      TileStream
+    </a>
+    <% obj.breadcrumb && _(obj.breadcrumb).each(function(item) { %>
+      <a class='route' href='<%= item.href %>'><%= item.title.length > 20 ? item.title.substring(0, 17) + '...' : item.title %></a>
+    <% }); %>
+  </h1>
+  <div class='buttons clearfix'>
+    <% obj.buttons && _(obj.buttons).each(function(item) { %>
+      <a href='#<%= item.id %>'>
+        <span class='icon <%= item.id %>'></span>
+        <%= item.title %>
+      </a>
+    <% }); %>
+  </div>
+</div></div>

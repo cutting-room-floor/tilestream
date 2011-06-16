@@ -1,0 +1,14 @@
+<%= this['Header'](obj) %>
+<div class='maps clearfix'>
+  <!--
+    Inline markup is used here as IE7 does not support `display: inline-block`
+    well on block level elements. Ideally this would be a ul / li combo but
+    alas...
+  -->
+  <% obj.maps && obj.maps.each(_(function(item) { %>
+  <span><%= this['MapThumb'](item) %></span>
+  <% }).bind(this)); %>
+  <% if (!obj.maps || !obj.maps.length) { %>
+  <span class='empty'><span>No maps found.</span></span>
+  <% } %>
+</div>

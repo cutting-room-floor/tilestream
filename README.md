@@ -2,14 +2,12 @@ TileStream
 ----------
 A high performance tile server and simple web viewer for [MBTiles][1] files.
 
-[1]:[http://mbtiles.org]
-
 
 Features
 --------
 - MBTiles-based tile server
-- Minimal gallery view and OpenLayers based viewer of tiles
-- Support for MBTiles interaction using [Wax](http://github.com/mapbox/wax)
+- Minimal gallery view and map viewer for tiles
+- Support for MBTiles interaction using [Wax][2]
 
 
 Requirements
@@ -19,30 +17,30 @@ Requirements
   - May work: Opera 11
 - *TileStream server*
   - Tested: Mac OS X 10.6, Ubuntu 10.10
+  - Tested: node 0.4.7
+  - Tested: npm v1.0.3
   - At least 613MB memory
   - May work: Older versions, other POSIX-compliant systems
-  - The [prerequisites for node][2] (python, libssl-dev)
-
-[2]:https://github.com/ry/node/wiki/Installation
 
 
 Installation: Mac OS X 10.6
 ---------------------------
 Install [Xcode][3] for Mac OS X.
 
+Install [node and npm][4]. You may want to use [nvm][5] which can install and
+manage your node installation for you.
+
 Download and unpack TileStream. Build & install:
 
-    git clone -b master-ndistro git://github.com/mapbox/tilestream.git
+    git clone git://github.com/mapbox/tilestream.git
     cd tilestream
-    ./ndistro
+    npm install .
 
 Start TileStream:
 
-    bin/node bin/tilestream
+    ./index.js
 
 TileStream should now be accessible from a browser at `http://localhost:8888`.
-
-[3]:http://developer.apple.com/technologies/tools/xcode.html
 
 
 Installation: Ubuntu 10.10
@@ -51,11 +49,14 @@ Install build requirements:
 
     sudo apt-get install curl build-essential libssl-dev libsqlite3-0 libsqlite3-dev
 
+Install [node and npm][4]. You may want to use [nvm][5] which can install and
+manage your node installation for you.
+
 Download and unpack TileStream. Build & install:
 
-    git clone -b master-ndistro git://github.com/mapbox/tilestream.git
+    git clone git://github.com/mapbox/tilestream.git
     cd tilestream
-    ./ndistro
+    npm install .
 
 If you already cloned the master repository then do:
 
@@ -65,7 +66,7 @@ If you already cloned the master repository then do:
 
 Start TileStream:
 
-    bin/node bin/tilestream
+    ./index.js
 
 TileStream should now be accessible from a browser at `http://localhost:8888`.
 
@@ -105,31 +106,37 @@ Tileset filenames:
         World Light.mbtiles
         BlueWorld-1.0.mbtiles
 
-Commandline options:
+To see the options available for use with TileStream, run
 
-    Usage: tilestream [COMMAND] [OPTION]
-    Commands:
-      start
-        start server
-        --config=PATH      Pass options via JSON config file at PATH.
-        --uiPort=PORT      UI server port. Defaults to 8888.
-        --tilePort=PORT    Tile server port. Defaults to 8888.
-        --subdomains=LIST  Comma separated list of subdomains to use for tiles.
-        --tiles=PATH       Path to tiles directory.
-        --syslog           Log to syslog instead of stdout.
+    ./index.js start --help
 
 
 Tests
 -----
-You can run the TileStream tests using expresso:
+TileStream tests use [Expresso][6].
 
-    PATH=bin expresso modules/tilestream/test/tilestream.test.js
+    npm install -g expresso
+    cd tilestream
+    npm test
 
 
 Contributors
 ------------
-- [Young Hahn](https://github.com/yhahn)
-- [Tom MacWright](https://github.com/tmcw)
-- [Will White](https://github.com/willwhite)
-- [Konstantin Käfer](https://github.com/kkaefer)
-- [Dane Springmeyer](https://github.com/springmeyer)
+- [Young Hahn][7]
+- [Tom MacWright][8]
+- [Will White][9]
+- [Konstantin Käfer][10]
+- [Dane Springmeyer][11]
+
+
+[1]:http://mbtiles.org
+[2]:https://github.com/mapbox/wax
+[3]:http://developer.apple.com/technologies/tools/xcode.html
+[4]:https://github.com/joyent/node/wiki/Installation
+[5]:https://github.com/creationix/nvm
+[6]:http://visionmedia.github.com/expresso
+[7]:https://github.com/yhahn
+[8]:https://github.com/tmcw
+[9]:https://github.com/willwhite
+[10]:https://github.com/kkaefer
+[11]:https://github.com/springmeyer

@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
+    <title>TileStream</title>
+    <script type='text/javascript'>
+    // Redirect requests without the hash.
+    var basepath = '<%= basepath %>';
+    location.href.indexOf('#') === -1 &&
+    window.location.pathname !== basepath &&
+    (window.location = basepath + '#!' + window.location.pathname.substr(basepath.length - 1));
+
+    // Server-side request info.
+    var req = { query: {
+        basepath: <%= JSON.stringify(basepath) %>,
+        uiHost: <%= JSON.stringify(uiHost) %>,
+        tileHost: <%= JSON.stringify(tileHost) %>
+    }};
+    </script>
+
+    <link rel='shortcut icon' href='/assets/tilestream/images/favicon.ico' type='image/x-icon' />
+    <link rel='stylesheet' href='/assets/tilestream/css/vendor.css' type='text/css'/>
+    <script src="/assets/bones/all.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">$(Bones.start);</script>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="apple-touch-icon-precomposed" href="/assets/tilestream/images/apple-touch-icon-57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/tilestream/images/apple-touch-icon-72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/tilestream/images/apple-touch-icon-114.png" />
+    <link rel="apple-touch-startup-image" href="/assets/tilestream/images/apple-touch-startup-image-1024.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)" />
+    <link rel="apple-touch-startup-image" href="/assets/tilestream/images/apple-touch-startup-image-768.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)" />
+  </head>
+  <body>
+    <div id='app'><% view && print(view.html()); %></div>
+  </body>
+</html>
