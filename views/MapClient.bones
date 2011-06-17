@@ -45,7 +45,7 @@ view = Backbone.View.extend({
             else $(tile).load(setBackground);
 
             function setBackground() {
-                if (view.alphaImageLuminosity(tile) > 0.9) {
+                if (view.alphaImageLuminosity(tile) > 0.8) {
                     $(tile).closest('.MapClient').css({ backgroundColor: 'black' });
                 }
             }
