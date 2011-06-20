@@ -18,7 +18,6 @@
     "dependencies": {
         "bones": "1.3.x",
         "step": "0.0.4",
-        "syslog": "0.1.1",
         "tilelive": "3.0.x",
         "mbtiles": "0.0.x",
         "underscore": "1.1.x",
