@@ -78,7 +78,12 @@ server = Bones.Server.extend({
         });
     },
     sendWax: function(req, res, next) {
-        var hosts = { uiHost: req.query.uiHost, tileHost: req.query.tileHost };
+        var hosts = {
+            uiHost: req.query.uiHost + req.query.basepath,
+            tileHost: req.query.tileHost.map(function(host) {
+                return host + req.query.basepath;
+            })
+        };
         res.send(this.Waxer[req.query.api].generate(res.layers, req.query, hosts));
     },
     defaults: {
