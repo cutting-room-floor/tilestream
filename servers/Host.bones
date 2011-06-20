@@ -21,9 +21,17 @@ server.prototype.removeTileSubdomain = function(host) {
 
 server.prototype.hostInfo = function(req, res, next) {
     req.query.basepath = req.query.basepath || '/';
+    if (!req.headers.host) {
+        var address = req.socket.address();
+        req.headers.host = address.address + ':' + address.port;
+        var subdomains = false;
+    } else {
+        var subdomains = this.config.subdomains;
+    }
+
     if (req.headers && req.headers.host && !req.query.uiHost) {
         req.query.uiHost = 'http://' + req.headers.host;
-        if (this.config.subdomains) {
+        if (subdomains) {
             // Add subdomains for tiles.
             var basehost = this.removeTileSubdomain(req.headers.host);
             var subdomains = this.config.subdomains.split(',');
