@@ -7,7 +7,11 @@ model = Backbone.Model.extend({
         return this.options.basepath + 'api/Tileset/' + this.id;
     },
     layerURL: function() {
-        return this.get('host') || this.options.tileHost || ['http://localhost:8888/'];
+        var hosts = this.get('host') || this.options.tileHost || ['http://localhost:8888'];
+        var basepath = this.options.basepath;
+        return hosts.map(function(url) {
+            return url + basepath;
+        });
     },
     layerName: function() {
         return this.get('id');

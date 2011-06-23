@@ -22,7 +22,7 @@ view = Backbone.View.extend({
         });
     },
     waxURL: function(wax) {
-        return this.model.options.uiHost + 'api/wax.json?' + $.param(wax);
+        return this.model.options.uiHost + this.model.options.basepath + 'api/wax.json?' + $.param(wax);
     },
     generateWax: function(callback) {
         var wax = this.model.wax();
