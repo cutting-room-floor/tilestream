@@ -1,7 +1,7 @@
 {
     "name": "tilestream",
     "description": "A high performance tile server and simple web viewer for MBTiles files.",
-    "version": "0.1.12",
+    "version": "0.2.0",
     "author": {
       "name": "MapBox",
       "url": "http://mapbox.com/",
@@ -21,7 +21,7 @@
         "tilelive": "3.0.x",
         "mbtiles": "0.0.x",
         "underscore": "1.1.x",
-        "wax": "2.1.x"
+        "wax": "3.0.x"
     },
     "devDependencies": {
         "expresso" : ">= 0.7.6"

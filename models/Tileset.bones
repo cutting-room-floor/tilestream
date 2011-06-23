@@ -27,7 +27,7 @@ model = Backbone.Model.extend({
     },
     thumb: function(zxy) {
         zxy = zxy || this.toZXY();
-        return this.layerURL()[0] + ['1.0.0', this.layerName(), zxy[0], zxy[1], zxy[2]].join('/') + '.png';
+        return this.layerURL()[0] + ['2.0.0', this.layerName(), zxy[0], zxy[1], zxy[2]].join('/') + '.png';
     },
     wax: function() {
         return {
