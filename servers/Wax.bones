@@ -38,7 +38,7 @@ server = Bones.Server.extend({
             }
         }).bind(this));
         var checkOption = function(option) {
-            return _(['zoomwheel', 'zoompan', 'legend', 'tooltips']).include(option);
+            return _(['zoomwheel', 'zoompan', 'legend', 'tooltips', 'zoombox']).include(option);
         };
         if (!_(req.query.el).isString()) return res.send('`el` is invalid.', 400);
         if (!_(_(this.Waxer).keys()).include(req.query.api)) return res.send('`api` is invalid.', 400);
@@ -95,7 +95,7 @@ server = Bones.Server.extend({
         api: 'mm',
         center: [0, 0, 0],
         layers: [],
-        options: ['zoomwheel', 'legend', 'tooltips']
+        options: ['zoomwheel', 'legend', 'tooltips', 'zoombox']
     },
     // Wax generation APIs. Each API object should have a `generate` method
     // that returns a wax JSON record object.
@@ -146,7 +146,8 @@ server = Bones.Server.extend({
                 var wax = {
                     zoompan: ['@inject melt', ['@literal wax.mm.zoomer']],
                     tooltips: ['@inject melt', ['@literal wax.mm.interaction']],
-                    legend: ['@inject melt', ['@literal wax.mm.legend']]
+                    legend: ['@inject melt', ['@literal wax.mm.legend']],
+                    zoombox: ['@inject melt', ['@literal wax.mm.zoombox']]
                 };
                 return _(controls).map(function(c) { return wax[c]; });
             }
