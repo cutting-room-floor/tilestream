@@ -9,7 +9,7 @@ model = Backbone.Model.extend({
     layerURL: function() {
         var hosts = this.get('host') || this.options.tileHost || ['http://localhost:8888'];
         var basepath = this.options.basepath;
-        return hosts.map(function(url) {
+        return _.map(hosts, function(url) {
             return url + basepath;
         });
     },
