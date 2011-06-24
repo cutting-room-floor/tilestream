@@ -38,7 +38,7 @@ view = Backbone.View.extend({
         }
 
         // Calculate the background luminosity from the first tile.
-        setTimeout(function() {
+        setTimeout(_(function() {
             var tile = this.$('img:first')[0];
             if (!tile) return;
             if (tile.complete) setBackground();
@@ -49,7 +49,7 @@ view = Backbone.View.extend({
                     $(tile).closest('.MapClient').css({ backgroundColor: 'black' });
                 }
             }
-        }.bind(this), 0);
+        }).bind(this), 0);
     },
     mm: function() {
         this.map.addCallback('zoomed', this.mmNav);
@@ -64,7 +64,7 @@ view = Backbone.View.extend({
 
 // Calculates the luminosity (0-1) of all semi-transparent pixels.
 view.alphaImageLuminosity = function(el) {
-    if (!HTMLCanvasElement || !el.complete) return -1;
+    if (typeof HTMLCanvasElement === 'undefined' || !el.complete) return -1;
 
     var canvas = document.createElement('canvas');
     canvas.setAttribute('width', el.width);
