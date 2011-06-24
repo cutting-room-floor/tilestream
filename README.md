@@ -69,6 +69,11 @@ Start TileStream:
     ./index.js
 
 TileStream should now be accessible from a browser at `http://localhost:8888`.
+If you intend to run TileStream as a server on a hostname or an IP rather than
+as localhost, specify that hostname when you run TileStream:
+
+    ./index.js --host 127.0.0.1
+    ./index.js --host yourhost.com
 
 
 Usage
