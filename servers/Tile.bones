@@ -19,7 +19,7 @@ server = Bones.Server.extend({
     initializeRoutes: function() {
         var load = this.load.bind(this);
         this.get('/1.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg|grid.json)', load, this.tile.bind(this));
-        this.get('/1.0.0/:tileset/layer.json', load, this.tile.bind(this));
+        this.get('/1.0.0/:tileset/layer.json', load, this.layer.bind(this));
         this.get('/download/:tileset.mbtiles', load, this.download.bind(this));
         this.get('/status', this.status);
     },
@@ -47,7 +47,6 @@ server = Bones.Server.extend({
         model.fetch({
             success: function(model) {
                 res.model = model;
-                res.mapfile = model.filepath(this.config.tiles);
                 next();
             }.bind(this),
             error: function(model, err) {
@@ -69,31 +68,20 @@ server = Bones.Server.extend({
 
     // Tile endpoint.
     tile: function(req, res, next) {
-        var config = this.config;
-        var options = {
-            datasource: res.mapfile,
-            format: req.params[0] ? req.params[0] : 'layer.json',
-            x: req.param('x'),
-            y: req.param('y'),
-            z: req.param('z')
-        };
-        server.tilelive.serve(options, function(err, data) {
-            if (!err) {
-                var headers = _({}).extend(
-                    res.model.get('headers'),
-                    config.header,
-                    data[1]
-                );
-                res.send(data[0], headers);
-            } else {
-                if (!(err instanceof Error)) err = new Error(err);
-                err.status = 404;
-                next(err);
-            }
-        });
+        var headers = _({}).extend(res.model.get('headers'), this.config.header);
+        res.model.source.getTile(req.param('z'), req.param('x'), req.param('y'),
+            function(err, tile) {
+                if (err) {
+                    err = new Error(err);
+                    err.status = 404;
+                    next(err);
+                } else {
+                    res.send(tile, headers);
+                }
+            });
+    },
+
+    layer: function(req, res, next) {
+        next(new Error('TODO: implement layer.json'));
     }
 });
-
-// Routes for the tile server. Suitable for HTTP cacheable content with a
-// long TTL.
-server.tilelive = new (require('tilelive').Server)(require('mbtiles'));

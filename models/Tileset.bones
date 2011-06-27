@@ -35,11 +35,6 @@ model = Backbone.Model.extend({
             layers: [this.get('id')],
             center: this.get('center')
         };
-    },
-    // Pass through function for determining the server-side filepath of a
-    // Tileset model.
-    filepath: function(path) {
-        return path + this.options.basepath + this.id + '.mbtiles';
     }
 });
 
