@@ -20,7 +20,7 @@ view = views.HUD.extend({
             });
             break;
         case 'download':
-            return this.options.tileHost[0] + 'download/' + this.model.id + '.mbtiles';
+            return this.options.tileHost[0] + this.model.options.basepath + 'download/' + this.model.id + '.mbtiles';
             break;
         case 'size':
             return (Math.ceil(parseInt(value) / 1048576)) + ' MB';
