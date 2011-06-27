@@ -20,6 +20,7 @@
         "step": "0.0.4",
         "tilelive": "3.0.x",
         "mbtiles": "0.0.x",
+        "sphericalmercator": "1.0.0",
         "underscore": "1.1.x",
         "wax": "3.0.x"
     },
