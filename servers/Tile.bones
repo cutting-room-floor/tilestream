@@ -20,12 +20,12 @@ server = Bones.Server.extend({
         _.bindAll(this, 'load', 'tile', 'grid', 'layer', 'download', 'status',
             'grid_1', 'layer_1');
 
-        // 1.0.0 endpoints: legacy, to be removed at 0.2.0
+        // 1.0.0 endpoints: legacy, to be removed at 0.2.0. Scheme is TMS.
         this.get('/1.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.load, this.tile);
         this.get('/1.0.0/:tileset/:z/:x/:y.grid.json', this.load, this.grid_1);
         this.get('/1.0.0/:tileset/layer.json', this.load, this.layer_1);
 
-        // 2.0.0 endpoints
+        // 2.0.0 endpoints. Scheme is TMS.
         this.get('/2.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.load, this.tile);
         this.get('/2.0.0/:tileset/:z/:x/:y.grid.json', this.load, this.grid);
         this.get('/2.0.0/:tileset/layer.json', this.load, this.layer);
@@ -84,48 +84,60 @@ server = Bones.Server.extend({
         }
     },
 
-    // This does not exist. It's the same as tile().
-    // tile_1: function(req, res, next) { },
-
+    // Grid endpoint for version 1.0.0.
+    // Incoming coordinates are in TMS.
     grid_1: function(req, res, next) {
+        var z = req.param('z'), x = req.param('x'), y = req.param('y');
+
+        // Flip Y coordinate because the Tilesource interface is in XYZ.
+        y = Math.pow(2, z) - 1 - y;
+
         var headers = _.clone(this.config.header);
-        res.model.source.getGrid(req.param('z'), req.param('x'), req.param('y'),
-            function(err, grid, options) {
-                if (err) {
-                    err.status = 404;
-                    next(err);
-                } else {
-                    _.extend(headers, options || {});
-                    res.send(grid, headers);
-                }
-            });
+        res.model.source.getGrid(z, x, y, function(err, grid, options) {
+            if (err) {
+                err.status = 404;
+                next(err);
+            } else {
+                _.extend(headers, options || {});
+                res.send(grid, headers);
+            }
+        });
     },
 
+    // Layer endpoint for version 1.0.0.
     layer_1: function(req, res, next) {
         res.send(res.model);
     },
 
-    // Tile endpoint.
+    // Tile endpoint for versions 1.0.0 and 2.0.0.
+    // Incoming coordinates are in TMS.
     tile: function(req, res, next) {
+        var z = req.param('z'), x = req.param('x'), y = req.param('y');
+
+        // Flip Y coordinate because the Tilesource interface is in XYZ.
+        y = Math.pow(2, z) - 1 - y;
+
         var headers = _.clone(this.config.header);
-        res.model.source.getTile(req.param('z'), req.param('x'), req.param('y'),
-            function(err, tile, options) {
-                if (err) {
-                    err.status = 404;
-                    next(err);
-                } else {
-                    _.extend(headers, options || {});
-                    res.send(tile, headers);
-                }
-            });
+        res.model.source.getTile(z, x, y, function(err, tile, options) {
+            if (err) {
+                err.status = 404;
+                next(err);
+            } else {
+                _.extend(headers, options || {});
+                res.send(tile, headers);
+            }
+        });
     },
 
+    // Grid endpoint for version 2.0.0.
+    // Incoming coordinates are in TMS.
     grid: function(req, res, next) {
         next(new Error('TODO: implement grid.json'));
         // data[0].keys = [data[0].keys];
         // data[0].data = [data[0].data];
     },
 
+    // Layer endpoint for version 2.0.0.
     layer: function(req, res, next) {
         var data = res.model.toJSON();
         if (data[0].formatter) data[0].formatter = [data[0].formatter];
