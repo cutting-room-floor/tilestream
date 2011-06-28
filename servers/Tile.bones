@@ -132,16 +132,36 @@ server = Bones.Server.extend({
     // Grid endpoint for version 2.0.0.
     // Incoming coordinates are in TMS.
     grid: function(req, res, next) {
-        next(new Error('TODO: implement grid.json'));
-        // data[0].keys = [data[0].keys];
-        // data[0].data = [data[0].data];
+        var z = req.param('z'), x = req.param('x'), y = req.param('y');
+
+        // Flip Y coordinate because the Tilesource interface is in XYZ.
+        y = Math.pow(2, z) - 1 - y;
+
+        var headers = _.clone(this.config.header);
+        res.model.source.getGrid(z, x, y, function(err, grid, options) {
+            if (err) {
+                err.status = 404;
+                next(err);
+            } else {
+                _.extend(headers, options || {});
+
+                // Make sure these are arrays.
+                if (grid.keys) grid.keys = [ grid.keys ];
+                if (grid.data) grid.data = [ grid.data ];
+
+                res.send(grid, headers);
+            }
+        });
     },
 
     // Layer endpoint for version 2.0.0.
     layer: function(req, res, next) {
         var data = res.model.toJSON();
-        if (data[0].formatter) data[0].formatter = [data[0].formatter];
-        if (data[0].legend) data[0].legend = [data[0].legend];
+
+        // Make sure these are arrays.
+        if (data.formatter) data.formatter = [ data.formatter ];
+        if (data.legend) data.legend = [ data.legend ];
+
         res.send(res.model);
     }
 });
