@@ -86,6 +86,7 @@ exports['layer json'] = function() {
             var body = JSON.parse(res.body.substring(5, res.body.length - 2));
             assert.deepEqual(body, {
                 id: 'waxtest',
+                size: 742400,
                 basename: 'waxtest.mbtiles',
                 name: 'waxtest',
                 type: 'baselayer',
