@@ -48,7 +48,7 @@ controller = Backbone.Controller.extend({
         options.error = this.toError(xhr) || 'Connection problem.';
         options.view = new views.Error(options);
         var view = new views.App(options);
-        this.res && this.res.send(view.el);
+        this.res && this.res.send('Service unavailable', 503);
     }
 });
 
