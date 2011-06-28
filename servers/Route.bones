@@ -1,4 +1,8 @@
 servers['Route'].augment({
+    initialize: function(parent, app) {
+        this.use(new servers['Wax'](app));
+        parent.call(this, app);
+    },
     assets: {
         styles: new mirror([
             require.resolve('../assets/css/reset.css'),
