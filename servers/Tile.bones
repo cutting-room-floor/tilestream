@@ -17,19 +17,20 @@ server = Bones.Server.extend({
     },
 
     initializeRoutes: function() {
-        var load = this.load.bind(this);
+        _.bindAll(this, 'load', 'tile', 'grid', 'layer', 'download', 'status',
+            'grid_1', 'layer_1');
 
         // 1.0.0 endpoints: legacy, to be removed at 0.2.0
-        this.get('/1.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', load, this.tile_1.bind(this));
-        this.get('/1.0.0/:tileset/:z/:x/:y.grid.json', load, this.grid_1.bind(this));
-        this.get('/1.0.0/:tileset/layer.json', load, this.layer_1.bind(this));
+        this.get('/1.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.load, this.tile);
+        this.get('/1.0.0/:tileset/:z/:x/:y.grid.json', this.load, this.grid_1);
+        this.get('/1.0.0/:tileset/layer.json', this.load, this.layer_1);
 
         // 2.0.0 endpoints
-        this.get('/2.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', load, this.tile.bind(this));
-        this.get('/2.0.0/:tileset/:z/:x/:y.grid.json', load, this.grid.bind(this));
-        this.get('/2.0.0/:tileset/layer.json', load, this.layer.bind(this));
+        this.get('/2.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.load, this.tile);
+        this.get('/2.0.0/:tileset/:z/:x/:y.grid.json', this.load, this.grid);
+        this.get('/2.0.0/:tileset/layer.json', this.load, this.layer);
 
-        this.get('/download/:tileset.mbtiles', load, this.download.bind(this));
+        this.get('/download/:tileset.mbtiles', this.load, this.download);
         this.get('/status', this.status);
     },
 
@@ -52,15 +53,19 @@ server = Bones.Server.extend({
     // Route middleware. Validate and load an mbtiles file specified in a tile
     // or download route.
     load: function(req, res, next) {
+        if (!(/^[\w-]+$/i).test(req.param('tileset'))) {
+            return next(new Error.HTTP('Tileset not found', 404));
+        }
+
         var model = new models.Tileset({ id: req.param('tileset') }, req.query);
         model.fetch({
             success: function(model) {
                 res.model = model;
                 next();
-            }.bind(this),
+            },
             error: function(model, err) {
                 next(err);
-            }.bind(this)
+            }
         });
     },
 
@@ -68,46 +73,48 @@ server = Bones.Server.extend({
     // @TODO: Current `maxAge` option is hardcoded into place. Find better
     // way to pass this through.
     download: function(req, res, next) {
-        res.sendfile(res.mapfile, { maxAge: 3600 }, function(err, path) {
-            // @TODO: log the error if one occurs.
-            // We don't call next() here as HTTP headers/response has
-            // already commenced by this point.
-        });
+        if (res.model.source.filename) {
+            res.sendfile(res.model.source.filename, { maxAge: 3600 }, function(err, path) {
+                // @TODO: log the error if one occurs.
+                // We don't call next() here as HTTP headers/response has
+                // already commenced by this point.
+            });
+        } else {
+            next(new Error.HTTP("Tileset can't be downloaded", 404));
+        }
     },
 
-    // Tile endpoint.
-    tile_1: function(req, res, next) {
-        var headers = _({}).extend(res.model.get('headers'), this.config.header);
-        res.model.source.getTile(req.param('z'), req.param('x'), req.param('y'),
-            function(err, tile) {
+    // This does not exist. It's the same as tile().
+    // tile_1: function(req, res, next) { },
+
+    grid_1: function(req, res, next) {
+        var headers = _.clone(this.config.header);
+        res.model.source.getGrid(req.param('z'), req.param('x'), req.param('y'),
+            function(err, grid, options) {
                 if (err) {
-                    err = new Error(err);
                     err.status = 404;
                     next(err);
                 } else {
-                    res.send(tile, headers);
+                    _.extend(headers, options || {});
+                    res.send(grid, headers);
                 }
             });
     },
 
-    grid_1: function(req, res, next) {
-        next(new Error('TODO: implement grid.json'));
-    },
-
     layer_1: function(req, res, next) {
-        next(new Error('TODO: implement layer.json'));
+        res.send(res.model);
     },
 
     // Tile endpoint.
     tile: function(req, res, next) {
-        var headers = _({}).extend(res.model.get('headers'), this.config.header);
+        var headers = _.clone(this.config.header);
         res.model.source.getTile(req.param('z'), req.param('x'), req.param('y'),
-            function(err, tile) {
+            function(err, tile, options) {
                 if (err) {
-                    err = new Error(err);
                     err.status = 404;
                     next(err);
                 } else {
+                    _.extend(headers, options || {});
                     res.send(tile, headers);
                 }
             });
@@ -120,10 +127,9 @@ server = Bones.Server.extend({
     },
 
     layer: function(req, res, next) {
-        next(new Error('TODO: implement layer.json'));
-        // if (!req.params[0]) {
-        //     if (data[0].formatter) data[0].formatter = [data[0].formatter];
-        //     if (data[0].legend) data[0].legend = [data[0].legend];
-        // }
+        var data = res.model.toJSON();
+        if (data[0].formatter) data[0].formatter = [data[0].formatter];
+        if (data[0].legend) data[0].legend = [data[0].legend];
+        res.send(res.model);
     }
 });
