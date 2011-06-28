@@ -28,18 +28,21 @@ view = views.HUD.extend({
         }
     },
     render: function() {
-        $(this.el).html(templates.Map(_({
+        var data = _({
             breadcrumb: [{
                 href: this.model.options.basepath + 'map/' + this.model.get('id'),
                 title: this.model.get('name')
             }],
             buttons: [
-                {id:'info', title:'Info'},
-                {id:'download', title:'Download'}
+                {id:'info', title:'Info'}
             ],
             basepath: this.model.options.basepath,
             format: this.format
-        }).extend(this.model)));
+        }).extend(this.model);
+        if (this.model.get('size')) {
+            data.buttons.push({id:'download', title:'Download'});
+        }
+        $(this.el).html(templates.Map(data));
         this.map = new views.MapClient({model: this.model});
         this.bind('ready', this.map.ready);
         $(this.el).append(this.map.el);
