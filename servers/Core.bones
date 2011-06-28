@@ -7,18 +7,5 @@ servers['Core'].augment({
         }
         this.enable('jsonp callback');
         this.port = app.config.uiPort;
-    },
-    conclude: function(parent, app) {
-        if (app.config.syslog) {
-            var logger = require('syslog').createClient(514, 'localhost', { name: 'tilestream' });
-            this.error(function(err, req, res, next) {
-                err.method = req.method;
-                err.url = req.url;
-                err.headers = req.headers;
-                logger.error(JSON.stringify(err));
-                next(err);
-            });
-        }
-        parent.call(this, app);
     }
 });

@@ -69,22 +69,11 @@ Start TileStream:
     ./index.js
 
 TileStream should now be accessible from a browser at `http://localhost:8888`.
+If you intend to run TileStream as a server on a hostname or an IP rather than
+as localhost, specify that hostname when you run TileStream:
 
-
-Syslog setup
-------------
-
-If you want tilestream to sent messages to syslog instead of stdout, use the
-`--syslog` option or specify `"syslog": true` in the settings JSON file.
-
-Tilestream uses the standard syslog format, and expects a syslog daemon
-(rsyslogd is known to work) to run on localhost:514, that has to accept TCP
-connections. To filter tilestream's messages to a particular log file, add
-
-    if $programname == 'tilestream' then /var/log/tilestream.log
-    & ~
-
-to your `/etc/rsyslog.conf` file and restart the daemon.
+    ./index.js --host 127.0.0.1
+    ./index.js --host yourhost.com
 
 
 Usage

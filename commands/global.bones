@@ -29,12 +29,6 @@ Bones.Command.options['accesslog'] = {
     'default': false
 };
 
-Bones.Command.options['syslog'] = {
-    'title': 'syslog',
-    'description': 'Log to syslog instead of stdout.',
-    'default': false
-};
-
 Bones.Command.augment({
     bootstrap: function(parent, plugin, callback) {
         parent.call(this, plugin, function() {

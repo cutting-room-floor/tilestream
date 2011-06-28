@@ -18,8 +18,17 @@ server = Bones.Server.extend({
 
     initializeRoutes: function() {
         var load = this.load.bind(this);
-        this.get('/1.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg|grid.json)', load, this.tile.bind(this));
-        this.get('/1.0.0/:tileset/layer.json', load, this.layer.bind(this));
+
+        // 1.0.0 endpoints: legacy, to be removed at 0.2.0
+        this.get('/1.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', load, this.tile_1.bind(this));
+        this.get('/1.0.0/:tileset/:z/:x/:y.grid.json', load, this.grid_1.bind(this));
+        this.get('/1.0.0/:tileset/layer.json', load, this.layer_1.bind(this));
+
+        // 2.0.0 endpoints
+        this.get('/2.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', load, this.tile.bind(this));
+        this.get('/2.0.0/:tileset/:z/:x/:y.grid.json', load, this.grid.bind(this));
+        this.get('/2.0.0/:tileset/layer.json', load, this.layer.bind(this));
+
         this.get('/download/:tileset.mbtiles', load, this.download.bind(this));
         this.get('/status', this.status);
     },
@@ -67,6 +76,29 @@ server = Bones.Server.extend({
     },
 
     // Tile endpoint.
+    tile_1: function(req, res, next) {
+        var headers = _({}).extend(res.model.get('headers'), this.config.header);
+        res.model.source.getTile(req.param('z'), req.param('x'), req.param('y'),
+            function(err, tile) {
+                if (err) {
+                    err = new Error(err);
+                    err.status = 404;
+                    next(err);
+                } else {
+                    res.send(tile, headers);
+                }
+            });
+    },
+
+    grid_1: function(req, res, next) {
+        next(new Error('TODO: implement grid.json'));
+    },
+
+    layer_1: function(req, res, next) {
+        next(new Error('TODO: implement layer.json'));
+    },
+
+    // Tile endpoint.
     tile: function(req, res, next) {
         var headers = _({}).extend(res.model.get('headers'), this.config.header);
         res.model.source.getTile(req.param('z'), req.param('x'), req.param('y'),
@@ -81,7 +113,17 @@ server = Bones.Server.extend({
             });
     },
 
+    grid: function(req, res, next) {
+        next(new Error('TODO: implement grid.json'));
+        // data[0].keys = [data[0].keys];
+        // data[0].data = [data[0].data];
+    },
+
     layer: function(req, res, next) {
         next(new Error('TODO: implement layer.json'));
+        // if (!req.params[0]) {
+        //     if (data[0].formatter) data[0].formatter = [data[0].formatter];
+        //     if (data[0].legend) data[0].legend = [data[0].legend];
+        // }
     }
 });
