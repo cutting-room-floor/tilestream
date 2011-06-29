@@ -52,7 +52,7 @@ exports['tile invalid name'] = function() {
         server,
         { url: '/1.0.0/bad.name/0/0/0.png' },
         {
-            body: /Tileset not found/,
+            body: /Not Found/,
             status: 404
         }
     );
