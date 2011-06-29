@@ -21,14 +21,14 @@ server = Bones.Server.extend({
             'grid_1', 'layer_1');
 
         // 1.0.0 endpoints: legacy, to be removed at 0.2.0. Scheme is TMS.
-        this.get('/1.0.0/:tileset([\\w-]+)/:z/:x/:y.(png|jpg|jpeg)', this.load, this.tile);
-        this.get('/1.0.0/:tileset([\\w-]+)/:z/:x/:y.grid.json', this.load, this.grid_1);
-        this.get('/1.0.0/:tileset([\\w-]+)/layer.json', this.load, this.layer_1);
+        this.get('/1.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.load, this.tile);
+        this.get('/1.0.0/:tileset/:z/:x/:y.grid.json', this.load, this.grid_1);
+        this.get('/1.0.0/:tileset/layer.json', this.load, this.layer_1);
 
         // 2.0.0 endpoints. Scheme is TMS.
-        this.get('/2.0.0/:tileset([\\w-]+)/:z/:x/:y.(png|jpg|jpeg)', this.load, this.tile);
-        this.get('/2.0.0/:tileset([\\w-]+)/:z/:x/:y.grid.json', this.load, this.grid);
-        this.get('/2.0.0/:tileset([\\w-]+)/layer.json', this.load, this.layer);
+        this.get('/2.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.load, this.tile);
+        this.get('/2.0.0/:tileset/:z/:x/:y.grid.json', this.load, this.grid);
+        this.get('/2.0.0/:tileset/layer.json', this.load, this.layer);
 
         this.get('/download/:tileset.mbtiles', this.load, this.download);
         this.get('/status', this.status);
@@ -53,6 +53,10 @@ server = Bones.Server.extend({
     // Route middleware. Validate and load an mbtiles file specified in a tile
     // or download route.
     load: function(req, res, next) {
+        if (!(/^[\w-]+$/i).test(req.param('tileset'))) {
+            return next(new Error.HTTP('Tileset not found', 404));
+        }
+
         var model = new models.Tileset({ id: req.param('tileset') }, req.query);
         model.fetch({
             success: function(model) {
