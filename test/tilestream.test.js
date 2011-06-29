@@ -172,7 +172,7 @@ exports['ssviews error'] = function() {
     assert.response(
         server,
         _({ url: '/map/asdf' }).extend(request),
-        { status: 200, body: /Connection problem.<\/div/ }
+        { status: 503, body: /Connection problem.<\/div/ }
     );
     assert.response(
         server,
