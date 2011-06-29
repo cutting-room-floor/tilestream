@@ -16,7 +16,7 @@ view = views.HUD.extend({
         case 'url':
             var id = this.model.id;
             return _.map(value, function(layer) {
-                return layer + '2.0.0/' + id + '/{z}/{x}/{y}.png';
+                return layer + '1.0.0/' + id + '/{z}/{x}/{y}.png';
             });
             break;
         case 'download':
