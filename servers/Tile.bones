@@ -54,12 +54,12 @@ server = Bones.Server.extend({
 
     // Route middleware. Validate and load an mbtiles file specified in a tile
     // or download route.
-    load: function(req, res, next) {
-        if (!(/^[\w-]+$/i).test(req.param('tileset'))) {
+    load: function(req, res, next, id) {
+        if (!(/^[\w-]+$/i).test(id)) {
             return next(new Error.HTTP('Tileset not found', 404));
         }
 
-        var model = new models.Tileset({ id: req.param('tileset') }, req.query);
+        var model = new models.Tileset({ id: id }, req.query);
         model.fetch({
             success: function(model) {
                 res.model = model;
