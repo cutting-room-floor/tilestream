@@ -20,17 +20,19 @@ server = Bones.Server.extend({
         _.bindAll(this, 'load', 'tile', 'grid', 'layer', 'download', 'status',
             'grid_1', 'layer_1');
 
+        this.param('tileset', this.load);
+
         // 1.0.0 endpoints: legacy, to be removed at 0.2.0. Scheme is TMS.
-        this.get('/1.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.load, this.tile);
-        this.get('/1.0.0/:tileset/:z/:x/:y.grid.json', this.load, this.grid_1);
-        this.get('/1.0.0/:tileset/layer.json', this.load, this.layer_1);
+        this.get('/1.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.tile);
+        this.get('/1.0.0/:tileset/:z/:x/:y.grid.json', this.grid_1);
+        this.get('/1.0.0/:tileset/layer.json', this.layer_1);
 
         // 2.0.0 endpoints. Scheme is TMS.
-        this.get('/2.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.load, this.tile);
-        this.get('/2.0.0/:tileset/:z/:x/:y.grid.json', this.load, this.grid);
-        this.get('/2.0.0/:tileset/layer.json', this.load, this.layer);
+        this.get('/2.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.tile);
+        this.get('/2.0.0/:tileset/:z/:x/:y.grid.json', this.grid);
+        this.get('/2.0.0/:tileset/layer.json', this.layer);
 
-        this.get('/download/:tileset.mbtiles', this.load, this.download);
+        this.get('/download/:tileset.mbtiles', this.download);
         this.get('/status', this.status);
     },
 
