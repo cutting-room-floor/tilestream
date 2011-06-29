@@ -56,7 +56,7 @@ server = Bones.Server.extend({
     // or download route.
     load: function(req, res, next, id) {
         if (!(/^[\w-]+$/i).test(id)) {
-            return next(new Error.HTTP('Tileset not found', 404));
+            return next(new Error.HTTP('Tileset does not exist', 404));
         }
 
         var model = new models.Tileset({ id: id }, req.query);
