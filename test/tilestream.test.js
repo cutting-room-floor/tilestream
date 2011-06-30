@@ -82,7 +82,7 @@ exports['layer json'] = function() {
                 maxzoom: 4,
                 center: [ 0, 0, 2 ],
                 legend: null,
-                scheme: 'xyz',
+                scheme: 'tms',
                 host: ['http://127.0.0.1:5555']
             });
         }
