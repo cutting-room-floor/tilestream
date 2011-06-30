@@ -31,22 +31,6 @@ exports['tile 1.0.0'] = function() {
 };
 
 
-exports['tile 2.0.0'] = function() {
-    assert.response(
-        server,
-        { url: '/2.0.0/control_room/3/4/5.png' },
-        { status: 200 },
-        function(res) {
-            assert.equal(res.headers['content-length'], 63554);
-            assert.equal(res.headers['content-type'], 'image/png');
-            assert.equal(res.headers['cache-control'], 'max-age=3600');
-            assert.ok(res.headers['last-modified']);
-            assert.ok(res.headers['etag']);
-        }
-    );
-};
-
-
 exports['tile invalid name'] = function() {
     assert.response(
         server,
@@ -209,7 +193,7 @@ exports['ssviews error'] = function() {
     assert.response(
         server,
         _({ url: '/map/asdf' }).extend(request),
-        { status: 200, body: /Connection problem.<\/div/ }
+        { status: 503, body: /Connection problem.<\/div/ }
     );
     assert.response(
         server,

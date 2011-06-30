@@ -17,20 +17,14 @@ server = Bones.Server.extend({
     },
 
     initializeRoutes: function() {
-        _.bindAll(this, 'load', 'tile', 'grid', 'layer', 'download', 'status',
-            'grid_1', 'layer_1');
+        _.bindAll(this, 'load', 'tile', 'grid', 'layer', 'download', 'status');
 
         this.param('tileset', this.load);
 
-        // 1.0.0 endpoints: legacy, to be removed at 0.2.0. Scheme is TMS.
+        // 1.0.0 endpoints. Scheme is TMS.
         this.get('/1.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.tile);
-        this.get('/1.0.0/:tileset/:z/:x/:y.grid.json', this.grid_1);
-        this.get('/1.0.0/:tileset/layer.json', this.layer_1);
-
-        // 2.0.0 endpoints. Scheme is TMS.
-        this.get('/2.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.tile);
-        this.get('/2.0.0/:tileset/:z/:x/:y.grid.json', this.grid);
-        this.get('/2.0.0/:tileset/layer.json', this.layer);
+        this.get('/1.0.0/:tileset/:z/:x/:y.grid.json', this.grid);
+        this.get('/1.0.0/:tileset/layer.json', this.layer);
 
         this.get('/download/:tileset.mbtiles', this.download);
         this.get('/status', this.status);
@@ -59,6 +53,7 @@ server = Bones.Server.extend({
     // Route middleware. Validate and load an mbtiles file specified in a tile
     // or download route.
     load: function(req, res, next, id) {
+        if (arguments.length === 1) console.trace(arguments[0]);
         if (!this.validTilesetID(id)) {
             return next(new Error.HTTP('Tileset does not exist', 404));
         }
@@ -91,32 +86,7 @@ server = Bones.Server.extend({
         }
     },
 
-    // Grid endpoint for version 1.0.0.
-    // Incoming coordinates are in TMS.
-    grid_1: function(req, res, next) {
-        var z = req.param('z'), x = req.param('x'), y = req.param('y');
-
-        // Flip Y coordinate because the Tilesource interface is in XYZ.
-        y = Math.pow(2, z) - 1 - y;
-
-        var headers = _.clone(this.config.header);
-        res.model.source.getGrid(z, x, y, function(err, grid, options) {
-            if (err) {
-                err.status = 404;
-                next(err);
-            } else {
-                _.extend(headers, options || {});
-                res.send(grid, headers);
-            }
-        });
-    },
-
-    // Layer endpoint for version 1.0.0.
-    layer_1: function(req, res, next) {
-        res.send(res.model);
-    },
-
-    // Tile endpoint for versions 1.0.0 and 2.0.0.
+    // Tile endpoint
     // Incoming coordinates are in TMS.
     tile: function(req, res, next) {
         var z = req.param('z'), x = req.param('x'), y = req.param('y');
@@ -136,7 +106,7 @@ server = Bones.Server.extend({
         });
     },
 
-    // Grid endpoint for version 2.0.0.
+    // Grid endpoint.
     // Incoming coordinates are in TMS.
     grid: function(req, res, next) {
         var z = req.param('z'), x = req.param('x'), y = req.param('y');
@@ -151,11 +121,6 @@ server = Bones.Server.extend({
                 next(err);
             } else {
                 _.extend(headers, options || {});
-
-                // Make sure these are arrays.
-                if (grid.keys) grid.keys = [ grid.keys ];
-                if (grid.data) grid.data = [ grid.data ];
-
                 res.send(grid, headers);
             }
         });
