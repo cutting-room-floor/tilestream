@@ -52,10 +52,14 @@ server = Bones.Server.extend({
         return this;
     },
 
+    validTilesetID: function(id) {
+        return (/^[\w-]+$/i).test(id)
+    },
+
     // Route middleware. Validate and load an mbtiles file specified in a tile
     // or download route.
     load: function(req, res, next, id) {
-        if (!(/^[\w-]+$/i).test(id)) {
+        if (!this.validTilesetID(id)) {
             return next(new Error.HTTP('Tileset does not exist', 404));
         }
 
@@ -66,6 +70,7 @@ server = Bones.Server.extend({
                 next();
             },
             error: function(model, err) {
+                err.status = 404;
                 next(err);
             }
         });

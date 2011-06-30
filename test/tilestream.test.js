@@ -25,7 +25,7 @@ exports['tile 1.0.0'] = function() {
             assert.equal(res.headers['content-type'], 'image/png');
             assert.equal(res.headers['cache-control'], 'max-age=3600');
             assert.ok(res.headers['last-modified']);
-            assert.ok(res.headers['e-tag']);
+            assert.ok(res.headers['etag']);
         }
     );
 };
@@ -41,7 +41,7 @@ exports['tile 2.0.0'] = function() {
             assert.equal(res.headers['content-type'], 'image/png');
             assert.equal(res.headers['cache-control'], 'max-age=3600');
             assert.ok(res.headers['last-modified']);
-            assert.ok(res.headers['e-tag']);
+            assert.ok(res.headers['etag']);
         }
     );
 };

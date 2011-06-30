@@ -4,7 +4,7 @@ var tilelive = require('tilelive');
 models.Tilesets.prototype.sync = function(method, model, success, error) {
     switch (method) {
     case 'read':
-        tilelive.all(model.filepath(Bones.plugin.config.tiles), function(err, data) {
+        tilelive.all(Bones.plugin.config.tiles, function(err, data) {
             if (err) return error(err);
             _(data).each(function(t) {
                 t.host = model.options.tileHost;
