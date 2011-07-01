@@ -7,11 +7,7 @@ model = Backbone.Model.extend({
         return this.options.basepath + 'api/Tileset/' + this.id;
     },
     layerURL: function() {
-        var hosts = this.get('host') || this.options.tileHost || ['http://localhost:8888'];
-        var basepath = this.options.basepath;
-        return _.map(hosts, function(url) {
-            return url + basepath;
-        });
+        return this.get('host');
     },
     layerName: function() {
         return this.get('id');
@@ -42,4 +38,3 @@ model = Backbone.Model.extend({
         return path + this.options.basepath + this.id + '.mbtiles';
     }
 });
-

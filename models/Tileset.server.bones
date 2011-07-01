@@ -6,7 +6,9 @@ models.Tileset.prototype.sync = function(method, model, success, error) {
     case 'read':
         tileset.load(model.filepath(Bones.plugin.config.tiles), function(err, data) {
             if (err) return error(err);
-            data.host = model.options.tileHost;
+            data.host = _(model.options.tileHost).map(function(host) {
+                return host + model.options.basepath;
+            });
             success(data);
         });
         break;
