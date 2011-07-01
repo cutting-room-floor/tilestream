@@ -53,7 +53,6 @@ server = Bones.Server.extend({
     // Route middleware. Validate and load an mbtiles file specified in a tile
     // or download route.
     load: function(req, res, next, id) {
-        if (arguments.length === 1) console.trace(arguments[0]);
         if (!this.validTilesetID(id)) {
             return next(new Error.HTTP('Tileset does not exist', 404));
         }
