@@ -15,7 +15,7 @@ tilestream.config = {
 var server = new tilestream.servers.Core(tilestream);
 var request = { headers: { 'host': 'localhost:8888' } };
 
-exports['tile'] = function() {
+exports['tile 1.0.0'] = function() {
     assert.response(
         server,
         { url: '/1.0.0/control_room/3/4/5.png' },
@@ -25,17 +25,18 @@ exports['tile'] = function() {
             assert.equal(res.headers['content-type'], 'image/png');
             assert.equal(res.headers['cache-control'], 'max-age=3600');
             assert.ok(res.headers['last-modified']);
-            assert.ok(res.headers['e-tag']);
+            assert.ok(res.headers['etag']);
         }
     );
 };
+
 
 exports['tile invalid name'] = function() {
     assert.response(
         server,
         { url: '/1.0.0/bad.name/0/0/0.png' },
         {
-            body: 'Tileset not found.',
+            body: /Tileset does not exist/,
             status: 404
         }
     );
@@ -46,7 +47,7 @@ exports['error tile'] = function() {
         server,
         { url: '/1.0.0/control_room/-1/-1/-1.png' },
         {
-            body: 'Tile does not exist',
+            body: /Tile does not exist/,
             status: 404
         }
     );
@@ -64,7 +65,27 @@ exports['layer json'] = function() {
     assert.response(
         server,
         { url: '/1.0.0/waxtest/layer.json?callback=grid' },
-        { status: 200, body: /grid\(/ }
+        { status: 200, body: /grid\(/ },
+        function(res) {
+            var body = JSON.parse(res.body.substring(5, res.body.length - 2));
+            assert.deepEqual(body, {
+                id: 'waxtest',
+                size: 742400,
+                basename: 'waxtest.mbtiles',
+                name: 'waxtest',
+                type: 'baselayer',
+                description: 'Interaction and legend test tiles',
+                version: '1.0.0',
+                formatter: 'function(options, data) { if (options.format === \'full\') { return \'<strong>\' + data.NAME + \'</strong><br/><small>Population \' + data.POP2005 + \'</small>\'; } else { return \'<strong>\' + data.NAME + \'</strong><br/><small>Population \' + data.POP2005 + \'</small>\'; } }',
+                bounds: [ -179.99992505544913, -85.05112231458043, 179.99992505544913, 85.05112231458043 ],
+                minzoom: 0,
+                maxzoom: 4,
+                center: [ 0, 0, 2 ],
+                legend: null,
+                scheme: 'tms',
+                host: ['http://127.0.0.1:5555/']
+            });
+        }
     );
 };
 
@@ -208,7 +229,7 @@ exports['wax endpoint'] = function() {
     assert.response(
         server,
         { url: '/api/wax.json?layers[]=foo' },
-        { status: 500, body: /Tileset not found/ }
+        { status: 500, body: /Tileset does not exist/ }
     );
     assert.response(
         server,
