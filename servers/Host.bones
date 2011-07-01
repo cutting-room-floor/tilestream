@@ -30,18 +30,15 @@ server.prototype.hostInfo = function(req, res, next) {
     }
 
     if (req.headers && req.headers.host && !req.query.uiHost) {
-        req.query.uiHost = 'http://' + req.headers.host;
+        req.query.uiHost = req.headers.host;
+        req.query.tileHost = [req.headers.host];
         if (subdomains) {
             // Add subdomains for tiles.
             var basehost = this.removeTileSubdomain(req.headers.host);
             var subdomains = this.config.subdomains.split(',');
-            req.query.tileHost = [];
-            _.each(subdomains, function(subdomain) {
-                req.query.tileHost.push('http://' + subdomain + '.' + basehost);
+            req.query.tileHost = _(subdomains).map(function(subdomain) {
+                return subdomain + '.' + basehost;
             });
-        } else {
-            // Use the same host for UI and tiles.
-            req.query.tileHost = [ 'http://' + req.headers.host ];
         }
     }
     next();

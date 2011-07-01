@@ -18,7 +18,7 @@
     <% } %>
     <li>
       <label>Tile URL</label>
-      <% _(format('url', layerURL())).each(function(url) { %>
+      <% _(get('tiles')).each(function(url) { %>
         <input class='text' type='text' value='<%= url %>' />
       <% }); %>
     </li>

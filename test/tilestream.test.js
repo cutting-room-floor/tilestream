@@ -83,7 +83,10 @@ exports['layer json'] = function() {
                 center: [ 0, 0, 2 ],
                 legend: null,
                 scheme: 'tms',
-                host: ['http://127.0.0.1:5555/']
+                host: ['http://127.0.0.1:5555/'],
+                tiles: ['http://127.0.0.1:5555/1.0.0/waxtest/${z}/${x}/${y}.png'],
+                grids: ['http://127.0.0.1:5555/1.0.0/waxtest/${z}/${x}/${y}.grid.json'],
+                download: 'http://127.0.0.1:5555/download/waxtest.mbtiles'
             });
         }
     );

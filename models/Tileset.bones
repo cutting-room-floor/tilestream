@@ -6,12 +6,6 @@ model = Backbone.Model.extend({
     url: function() {
         return this.options.basepath + 'api/Tileset/' + this.id;
     },
-    layerURL: function() {
-        return this.get('host');
-    },
-    layerName: function() {
-        return this.get('id');
-    },
     // Get ZXY of tile of tileset's center and minzoom. From [OSM wiki][1].
     // [1]: http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#lon.2Flat_to_tile_numbers_2
     toZXY: function() {
@@ -23,7 +17,10 @@ model = Backbone.Model.extend({
     },
     thumb: function(zxy) {
         zxy = zxy || this.toZXY();
-        return this.layerURL()[0] + ['1.0.0', this.layerName(), zxy[0], zxy[1], zxy[2]].join('/') + '.png';
+        return this.get('tiles')[0]
+            .replace('${z}', zxy[0])
+            .replace('${x}', zxy[1])
+            .replace('${y}', zxy[2]);
     },
     wax: function() {
         return {

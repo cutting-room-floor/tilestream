@@ -1,4 +1,5 @@
 var Step = require('step');
+var url = require('url');
 
 server = Bones.Server.extend({
     initialize: function(app) {
@@ -77,17 +78,8 @@ server = Bones.Server.extend({
             next();
         });
     },
-    hosts: function(req) {
-        return {
-            uiHost: req.query.uiHost + req.query.basepath,
-            tileHost: req.query.tileHost.map(function(host) {
-                return host + req.query.basepath;
-            })
-        };
-    },
     sendWax: function(req, res, next) {
-        var hosts = this.hosts(req);
-        res.send(this.Waxer[req.query.api].generate(res.layers, req.query, hosts));
+        res.send(this.Waxer[req.query.api].generate(res.layers, req.query));
     },
     defaults: {
         name: '',
@@ -101,8 +93,15 @@ server = Bones.Server.extend({
     // that returns a wax JSON record object.
     Waxer: {
         mm: {
-            generate: function(layers, params, hosts) {
+            generate: function(layers, params) {
                 var layer = layers[0];
+                var baseUrl = _(params.tileHost).map(function(host) {
+                    return url.format({
+                        host: host,
+                        pathname: params.basepath,
+                        protocol: 'http:'
+                    });
+                });
                 return { wax:
                     ['@group',
                         ['@call w',
@@ -111,8 +110,8 @@ server = Bones.Server.extend({
                                     params.el,
                                     ['@new wax.mm.provider',
                                         {
-                                            baseUrl: hosts.tileHost,
-                                            layerName: layer.layerName(),
+                                            baseUrl: baseUrl,
+                                            layerName: layer.id,
                                             zoomRange: [
                                                 layer.get('minzoom'),
                                                 layer.get('maxzoom')

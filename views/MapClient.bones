@@ -21,8 +21,13 @@ view = Backbone.View.extend({
             error: function() {}
         });
     },
+    // Since this is client-side we cannot use url.format().
     waxURL: function(wax) {
-        return this.model.options.uiHost + this.model.options.basepath + 'api/wax.json?' + $.param(wax);
+        return 'http://' +
+            this.model.options.uiHost +
+            this.model.options.basepath +
+            'api/wax.json?' +
+            $.param(wax);
     },
     generateWax: function(callback) {
         var wax = this.model.wax();
