@@ -9,21 +9,21 @@ models.Tileset.syncread = function(data, options) {
             protocol: 'http:'
         });
     });
-    data.tiles = _(options.tileHost).map(function(host) {
+    data.tiles = data.tiles || _(options.tileHost).map(function(host) {
         return url.format({
             host: host,
             pathname: options.basepath + '1.0.0/' + data.id + '/${z}/${x}/${y}.png',
             protocol: 'http:'
         });
     });
-    if (data.formatter) data.grids = _(options.tileHost).map(function(host) {
+    if (data.formatter) data.grids = data.grids || _(options.tileHost).map(function(host) {
         return url.format({
             host: host,
             pathname: options.basepath + '1.0.0/' + data.id + '/${z}/${x}/${y}.grid.json',
             protocol: 'http:'
         });
     });
-    data.download = url.format({
+    if (data.basename) data.download = url.format({
         host: options.tileHost[0],
         pathname: options.basepath + 'download/' + data.basename,
         protocol: 'http:'
