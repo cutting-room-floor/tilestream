@@ -95,13 +95,7 @@ server = Bones.Server.extend({
         mm: {
             generate: function(layers, params) {
                 var layer = layers[0];
-                var baseUrl = _(params.tileHost).map(function(host) {
-                    return url.format({
-                        host: host,
-                        pathname: params.basepath,
-                        protocol: 'http:'
-                    });
-                });
+                var legacy = models.Tileset.legacy(layer.get('tiles'));
                 return { wax:
                     ['@group',
                         ['@call w',
@@ -110,8 +104,8 @@ server = Bones.Server.extend({
                                     params.el,
                                     ['@new wax.mm.provider',
                                         {
-                                            baseUrl: baseUrl,
-                                            layerName: layer.id,
+                                            baseUrl: legacy.baseUrl,
+                                            layerName: legacy.layerName,
                                             zoomRange: [
                                                 layer.get('minzoom'),
                                                 layer.get('maxzoom')

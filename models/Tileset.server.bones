@@ -9,6 +9,7 @@ models.Tileset.syncread = function(data, options) {
             protocol: 'http:'
         });
     });
+    data.scheme = data.scheme || 'tms';
     data.tiles = data.tiles || _(options.tileHost).map(function(host) {
         return url.format({
             host: host,
@@ -29,6 +30,25 @@ models.Tileset.syncread = function(data, options) {
         protocol: 'http:'
     });
     return data;
+};
+
+// Retrieve `baseUrl`, `layerName`, and `extension` properties from a
+// `tiles` array to support legacy mapping APIs that don't support
+// tilejson token URLs.
+models.Tileset.legacy = function(urls) {
+    var legacy = {};
+    legacy.baseUrl = _(urls).chain()
+        .map(function(url) {
+            // Matches x.0.0/[layerName]/${z}/{$x}/{$y}.[extension]
+            var match = url.match(/\d\.0\.0\/([^\/]+)\/\${\w}\/\${\w}\/\${\w}.(\w+)$/);
+            if (!match) return;
+            legacy.layerName = match[1];
+            legacy.extension = match[2];
+            return url.substr(0, match.index);
+        })
+        .compact()
+        .value();
+    return legacy;
 };
 
 // Server-side sync method for Tileset model.
