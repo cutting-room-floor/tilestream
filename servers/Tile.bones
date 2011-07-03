@@ -21,10 +21,10 @@ server = Bones.Server.extend({
 
         this.param('tileset', this.load);
 
-        // 1.0.0 endpoints. Scheme is TMS.
-        this.get('/1.0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.tile);
-        this.get('/1.0.0/:tileset/:z/:x/:y.grid.json', this.grid);
-        this.get('/1.0.0/:tileset/layer.json', this.layer);
+        // x.0.0 endpoints.
+        this.get('/:version(1|2).0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.tile);
+        this.get('/:version(1|2).0.0/:tileset/:z/:x/:y.grid.json', this.grid);
+        this.get('/:version(1|2).0.0/:tileset/layer.json', this.layer);
 
         this.get('/download/:tileset.mbtiles', this.download);
         this.get('/status', this.status);
@@ -86,12 +86,12 @@ server = Bones.Server.extend({
     },
 
     // Tile endpoint
-    // Incoming coordinates are in TMS.
     tile: function(req, res, next) {
         var z = req.param('z'), x = req.param('x'), y = req.param('y');
 
-        // Flip Y coordinate because the Tilesource interface is in XYZ.
-        y = Math.pow(2, z) - 1 - y;
+        // 1.0.0: incoming request TMS => tilesource XYZ
+        // 2.0.0: incoming request XYZ => tilesource XYZ
+        req.param('version') === '1' && (y = Math.pow(2, z) - 1 - y);
 
         var headers = _.clone(this.config.header);
         res.model.source.getTile(z, x, y, function(err, tile, options) {
@@ -106,12 +106,12 @@ server = Bones.Server.extend({
     },
 
     // Grid endpoint.
-    // Incoming coordinates are in TMS.
     grid: function(req, res, next) {
         var z = req.param('z'), x = req.param('x'), y = req.param('y');
 
-        // Flip Y coordinate because the Tilesource interface is in XYZ.
-        y = Math.pow(2, z) - 1 - y;
+        // 1.0.0: incoming request TMS => tilesource XYZ
+        // 2.0.0: incoming request XYZ => tilesource XYZ
+        req.param('version') === '1' && (y = Math.pow(2, z) - 1 - y);
 
         var headers = _.clone(this.config.header);
         res.model.source.getGrid(z, x, y, function(err, grid, options) {
@@ -125,14 +125,8 @@ server = Bones.Server.extend({
         });
     },
 
-    // Layer endpoint for version 2.0.0.
+    // Layer endpoint.
     layer: function(req, res, next) {
-        var data = res.model.toJSON();
-
-        // Make sure these are arrays.
-        if (data.formatter) data.formatter = [ data.formatter ];
-        if (data.legend) data.legend = [ data.legend ];
-
-        res.send(res.model);
+        res.send(res.model.toJSON());
     }
 });
