@@ -91,7 +91,7 @@ server = Bones.Server.extend({
 
         // 1.0.0: incoming request TMS => tilesource XYZ
         // 2.0.0: incoming request XYZ => tilesource XYZ
-        req.param('version') === '1' && (y = Math.pow(2, z) - 1 - y);
+        if (req.param('version') === '1') y = Math.pow(2, z) - 1 - y;
 
         var headers = _.clone(this.config.header);
         res.model.source.getTile(z, x, y, function(err, tile, options) {
@@ -111,7 +111,7 @@ server = Bones.Server.extend({
 
         // 1.0.0: incoming request TMS => tilesource XYZ
         // 2.0.0: incoming request XYZ => tilesource XYZ
-        req.param('version') === '1' && (y = Math.pow(2, z) - 1 - y);
+        if (req.param('version') === '1') y = Math.pow(2, z) - 1 - y;
 
         var headers = _.clone(this.config.header);
         res.model.source.getGrid(z, x, y, function(err, grid, options) {
