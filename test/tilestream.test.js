@@ -18,7 +18,7 @@ var request = { headers: { 'host': 'localhost:8888' } };
 exports['tile'] = function() {
     assert.response(
         server,
-        { url: '/1.0.0/control_room/3/4/5.png' },
+        _({ url: '/1.0.0/control_room/3/4/5.png' }).extend(request),
         { status: 200 },
         function(res) {
             assert.equal(res.headers['content-length'], 63554);
@@ -33,7 +33,7 @@ exports['tile'] = function() {
 exports['tile invalid name'] = function() {
     assert.response(
         server,
-        { url: '/1.0.0/bad.name/0/0/0.png' },
+        _({ url: '/1.0.0/bad.name/0/0/0.png' }).extend(request),
         {
             body: 'Tileset not found.',
             status: 404
@@ -44,7 +44,7 @@ exports['tile invalid name'] = function() {
 exports['error tile'] = function() {
     assert.response(
         server,
-        { url: '/1.0.0/control_room/-1/-1/-1.png' },
+        _({ url: '/1.0.0/control_room/-1/-1/-1.png' }).extend(request),
         {
             body: 'Tile does not exist',
             status: 404
@@ -55,7 +55,7 @@ exports['error tile'] = function() {
 exports['grid tile'] = function() {
     assert.response(
         server,
-        { url: '/1.0.0/waxtest/0/0/0.grid.json?callback=grid' },
+        _({ url: '/1.0.0/waxtest/0/0/0.grid.json?callback=grid' }).extend(request),
         { status: 200, body: /grid\(/ }
     );
 };
@@ -63,7 +63,7 @@ exports['grid tile'] = function() {
 exports['layer json'] = function() {
     assert.response(
         server,
-        { url: '/1.0.0/waxtest/layer.json?callback=grid' },
+        _({ url: '/1.0.0/waxtest/layer.json?callback=grid' }).extend(request),
         { status: 200, body: /grid\(/ }
     );
 };
@@ -71,7 +71,7 @@ exports['layer json'] = function() {
 exports['mbtiles download'] = function() {
     assert.response(
         server,
-        { url: '/download/control_room.mbtiles' },
+        _({ url: '/download/control_room.mbtiles' }).extend(request),
         { status: 200 },
         function(res) {
             // @TODO: determine why download is sometimes off by 1 (or more?) byte(s)
