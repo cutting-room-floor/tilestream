@@ -2,6 +2,7 @@ var Step = require('step');
 var url = require('url');
 
 server = Bones.Server.extend({
+    OPTIONS: ['zoomwheel', 'zoompan', 'legend', 'tooltips', 'zoombox'],
     initialize: function(app) {
         // Wax API Endpoint
         // ----------------
@@ -38,9 +39,9 @@ server = Bones.Server.extend({
                 req.query[key] = _(req.query[key]).map(parseFloat);
             }
         }).bind(this));
-        var checkOption = function(option) {
-            return _(['zoomwheel', 'zoompan', 'legend', 'tooltips', 'zoombox']).include(option);
-        };
+        var checkOption = _(function(option) {
+            return _(this.OPTIONS).include(option);
+        }).bind(this);
         if (!_(req.query.el).isString()) return res.send('`el` is invalid.', 400);
         if (!_(_(this.Waxer).keys()).include(req.query.api)) return res.send('`api` is invalid.', 400);
         if (!_(req.query.size).isUndefined()) {
