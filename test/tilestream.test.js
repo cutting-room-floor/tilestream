@@ -18,7 +18,7 @@ var request = { headers: { 'host': 'localhost:8888' } };
 exports['tile 1.0.0'] = function() {
     assert.response(
         server,
-        { url: '/1.0.0/control_room/3/4/5.png' },
+        _({ url: '/1.0.0/control_room/3/4/5.png' }).extend(request),
         { status: 200 },
         function(res) {
             assert.equal(res.headers['content-length'], 63554);
@@ -34,7 +34,7 @@ exports['tile 1.0.0'] = function() {
 exports['tile invalid name'] = function() {
     assert.response(
         server,
-        { url: '/1.0.0/bad.name/0/0/0.png' },
+        _({ url: '/1.0.0/bad.name/0/0/0.png' }).extend(request),
         {
             body: /Tileset does not exist/,
             status: 404
@@ -45,7 +45,7 @@ exports['tile invalid name'] = function() {
 exports['error tile'] = function() {
     assert.response(
         server,
-        { url: '/1.0.0/control_room/-1/-1/-1.png' },
+        _({ url: '/1.0.0/control_room/-1/-1/-1.png' }).extend(request),
         {
             body: /Tile does not exist/,
             status: 404
@@ -56,7 +56,7 @@ exports['error tile'] = function() {
 exports['grid tile'] = function() {
     assert.response(
         server,
-        { url: '/1.0.0/waxtest/0/0/0.grid.json?callback=grid' },
+        _({ url: '/1.0.0/waxtest/0/0/0.grid.json?callback=grid' }).extend(request),
         { status: 200, body: /grid\(/ }
     );
 };
@@ -64,7 +64,7 @@ exports['grid tile'] = function() {
 exports['layer json'] = function() {
     assert.response(
         server,
-        { url: '/1.0.0/waxtest/layer.json?callback=grid' },
+        _({ url: '/1.0.0/waxtest/layer.json?callback=grid' }).extend(request),
         { status: 200, body: /grid\(/ },
         function(res) {
             var body = JSON.parse(res.body.substring(5, res.body.length - 2));
@@ -83,9 +83,19 @@ exports['layer json'] = function() {
                 center: [ 0, 0, 2 ],
                 legend: null,
                 scheme: 'tms',
-                tiles: ['http://127.0.0.1:5555/1.0.0/waxtest/{z}/{x}/{y}.png'],
-                grids: ['http://127.0.0.1:5555/1.0.0/waxtest/{z}/{x}/{y}.grid.json'],
-                download: 'http://127.0.0.1:5555/download/waxtest.mbtiles'
+                tiles: [
+                    'http://a.localhost:8888/1.0.0/waxtest/{z}/{x}/{y}.png',
+                    'http://b.localhost:8888/1.0.0/waxtest/{z}/{x}/{y}.png',
+                    'http://c.localhost:8888/1.0.0/waxtest/{z}/{x}/{y}.png',
+                    'http://d.localhost:8888/1.0.0/waxtest/{z}/{x}/{y}.png'
+                ],
+                grids: [
+                    'http://a.localhost:8888/1.0.0/waxtest/{z}/{x}/{y}.grid.json',
+                    'http://b.localhost:8888/1.0.0/waxtest/{z}/{x}/{y}.grid.json',
+                    'http://c.localhost:8888/1.0.0/waxtest/{z}/{x}/{y}.grid.json',
+                    'http://d.localhost:8888/1.0.0/waxtest/{z}/{x}/{y}.grid.json'
+                ],
+                download: 'http://a.localhost:8888/download/waxtest.mbtiles'
             });
         }
     );
@@ -94,7 +104,7 @@ exports['layer json'] = function() {
 exports['mbtiles download'] = function() {
     assert.response(
         server,
-        { url: '/download/control_room.mbtiles' },
+        _({ url: '/download/control_room.mbtiles' }).extend(request),
         { status: 200 },
         function(res) {
             // @TODO: determine why download is sometimes off by 1 (or more?) byte(s)
@@ -183,7 +193,7 @@ exports['ssviews map'] = function() {
     );
     assert.response(
         server,
-        { url: '/?_escaped_fragment_=/map/control_room' },
+        _({ url: '/?_escaped_fragment_=/map/control_room' }).extend(request),
         { status: 301 }
     );
 };
@@ -196,7 +206,7 @@ exports['ssviews error'] = function() {
     );
     assert.response(
         server,
-        { url: '/?_escaped_fragment_=/map/asdf' },
+        _({ url: '/?_escaped_fragment_=/map/asdf' }).extend(request),
         { status: 301 }
     );
 };
@@ -211,28 +221,28 @@ exports['wax endpoint'] = function() {
         };
     assert.response(
         server,
-        { url: '/api/wax.json?api=foo' },
+        _({ url: '/api/wax.json?api=foo' }).extend(request),
         { status: 400, body: /`api` is invalid/ }
     );
 
     assert.response(
         server,
-        { url: '/api/wax.json' },
+        _({ url: '/api/wax.json' }).extend(request),
         { status: 400, body: /`layers` is invalid/ }
     );
     assert.response(
         server,
-        { url: '/api/wax.json?layers=foo' },
+        _({ url: '/api/wax.json?layers=foo' }).extend(request),
         { status: 400, body: /`layers` is invalid/ }
     );
     assert.response(
         server,
-        { url: '/api/wax.json?layers[]=foo' },
+        _({ url: '/api/wax.json?layers[]=foo' }).extend(request),
         { status: 500, body: /Tileset does not exist/ }
     );
     assert.response(
         server,
-        _.extend({ url: '/api/wax.json?layers[]=control_room' }, request),
+        _({ url: '/api/wax.json?layers[]=control_room' }).extend(request),
         { status: 200 },
         function(res) {
             assert.deepEqual(fixtures.layers, JSON.parse(res.body));
@@ -240,7 +250,7 @@ exports['wax endpoint'] = function() {
     );
     assert.response(
         server,
-        _.extend({ url: '/api/v1/wax.json?layers[]=control_room' }, request),
+        _({ url: '/api/v1/wax.json?layers[]=control_room' }).extend(request),
         { status: 200 },
         function(res) {
             assert.deepEqual(fixtures.layers, JSON.parse(res.body));
@@ -249,12 +259,12 @@ exports['wax endpoint'] = function() {
 
     assert.response(
         server,
-        { url: '/api/wax.json?layers[]=control_room&el[]=foo' },
+        _({ url: '/api/wax.json?layers[]=control_room&el[]=foo' }).extend(request),
         { status: 400, body: /`el` is invalid/ }
     );
     assert.response(
         server,
-        _.extend({ url: '/api/wax.json?layers[]=control_room&el=foo' }, request),
+        _({ url: '/api/wax.json?layers[]=control_room&el=foo' }).extend(request),
         { status: 200 },
         function(res) {
             assert.deepEqual(fixtures.el, JSON.parse(res.body));
@@ -263,22 +273,22 @@ exports['wax endpoint'] = function() {
 
     assert.response(
         server,
-        { url: '/api/wax.json?layers[]=control_room&center=foo' },
+        _({ url: '/api/wax.json?layers[]=control_room&center=foo' }).extend(request),
         { status: 400, body: /`center` is invalid/ }
     );
     assert.response(
         server,
-        { url: '/api/wax.json?layers[]=control_room&center[]=0' },
+        _({ url: '/api/wax.json?layers[]=control_room&center[]=0' }).extend(request),
         { status: 400, body: /`center` is invalid/ }
     );
     assert.response(
         server,
-        { url: '/api/wax.json?layers[]=control_room&center[]=0&center[]=0&center[]=foo' },
+        _({ url: '/api/wax.json?layers[]=control_room&center[]=0&center[]=0&center[]=foo' }).extend(request),
         { status: 400, body: /`center` is invalid/ }
     );
     assert.response(
         server,
-        _.extend({ url: '/api/wax.json?layers[]=control_room&center[]=40&center[]=40&center[]=2' }, request),
+        _({ url: '/api/wax.json?layers[]=control_room&center[]=40&center[]=40&center[]=2' }).extend(request),
         { status: 200 },
         function(res) {
             assert.deepEqual(fixtures.center, JSON.parse(res.body));
@@ -287,17 +297,17 @@ exports['wax endpoint'] = function() {
 
     assert.response(
         server,
-        { url: '/api/wax.json?layers[]=control_room&options=foo' },
+        _({ url: '/api/wax.json?layers[]=control_room&options=foo' }).extend(request),
         { status: 400, body: /`options` is invalid/ }
     );
     assert.response(
         server,
-        { url: '/api/wax.json?layers[]=control_room&options[]=foo' },
+        _({ url: '/api/wax.json?layers[]=control_room&options[]=foo' }).extend(request),
         { status: 400, body: /`options` is invalid/ }
     );
     assert.response(
         server,
-        _.extend({ url: '/api/wax.json?layers[]=control_room&options[]=tooltips' }, request),
+        _({ url: '/api/wax.json?layers[]=control_room&options[]=tooltips' }).extend(request),
         { status: 200 },
         function(res) {
             assert.deepEqual(fixtures.options, JSON.parse(res.body));
