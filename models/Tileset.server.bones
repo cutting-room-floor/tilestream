@@ -2,25 +2,18 @@ var tilelive = require('tilelive');
 var url = require('url');
 
 models.Tileset.syncread = function(data, options) {
-    data.host = _(options.tileHost).map(function(host) {
-        return url.format({
-            host: host,
-            pathname: options.basepath,
-            protocol: 'http:'
-        });
-    });
     data.scheme = data.scheme || 'tms';
     data.tiles = data.tiles || _(options.tileHost).map(function(host) {
         return url.format({
             host: host,
-            pathname: options.basepath + '1.0.0/' + data.id + '/${z}/${x}/${y}.png',
+            pathname: options.basepath + '1.0.0/' + data.id + '/{z}/{x}/{y}.png',
             protocol: 'http:'
         });
     });
     if (data.formatter) data.grids = data.grids || _(options.tileHost).map(function(host) {
         return url.format({
             host: host,
-            pathname: options.basepath + '1.0.0/' + data.id + '/${z}/${x}/${y}.grid.json',
+            pathname: options.basepath + '1.0.0/' + data.id + '/{z}/{x}/{y}.grid.json',
             protocol: 'http:'
         });
     });
@@ -39,8 +32,8 @@ models.Tileset.legacy = function(urls) {
     var legacy = {};
     legacy.baseUrl = _(urls).chain()
         .map(function(url) {
-            // Matches x.0.0/[layerName]/${z}/{$x}/{$y}.[extension]
-            var match = url.match(/\d\.0\.0\/([^\/]+)\/\${\w}\/\${\w}\/\${\w}.(\w+)$/);
+            // Matches x.0.0/[layerName]/{z}/{x}/{y}.[extension]
+            var match = url.match(/\d\.0\.0\/([^\/]+)\/{[zxy]}\/{[zxy]}\/{[zxy]}.(\w+)$/);
             if (!match) return;
             legacy.layerName = match[1];
             legacy.extension = match[2];

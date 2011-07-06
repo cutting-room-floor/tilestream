@@ -83,9 +83,8 @@ exports['layer json'] = function() {
                 center: [ 0, 0, 2 ],
                 legend: null,
                 scheme: 'tms',
-                host: ['http://127.0.0.1:5555/'],
-                tiles: ['http://127.0.0.1:5555/1.0.0/waxtest/${z}/${x}/${y}.png'],
-                grids: ['http://127.0.0.1:5555/1.0.0/waxtest/${z}/${x}/${y}.grid.json'],
+                tiles: ['http://127.0.0.1:5555/1.0.0/waxtest/{z}/{x}/{y}.png'],
+                grids: ['http://127.0.0.1:5555/1.0.0/waxtest/{z}/{x}/{y}.grid.json'],
                 download: 'http://127.0.0.1:5555/download/waxtest.mbtiles'
             });
         }
@@ -117,7 +116,6 @@ exports['load map'] = function() {
             assert.equal(map.id, 'control_room');
             assert.equal(map.type, 'baselayer');
             assert.equal(map.bounds, "-180,-85.05112877980659,180,89.99075251648905");
-            assert.deepEqual(map.host, ['http://a.localhost:8888/', 'http://b.localhost:8888/', 'http://c.localhost:8888/', 'http://d.localhost:8888/']);
         }
     );
 };
@@ -135,7 +133,6 @@ exports['load map v1'] = function() {
             assert.equal(map.id, 'control_room');
             assert.equal(map.type, 'baselayer');
             assert.equal(map.bounds, '-180,-85.05112877980659,180,89.99075251648905');
-            assert.deepEqual(map.host, ['http://a.localhost:8888/', 'http://b.localhost:8888/', 'http://c.localhost:8888/', 'http://d.localhost:8888/']);
 
         }
     );
@@ -150,7 +147,6 @@ var loadMaps = function(res) {
     assert.equal(maps[0].id, 'control_room');
     assert.equal(maps[0].type, 'baselayer');
     assert.equal(maps[0].bounds, '-180,-85.05112877980659,180,89.99075251648905');
-    assert.deepEqual(maps[0].host, ['http://a.localhost:8888/', 'http://b.localhost:8888/', 'http://c.localhost:8888/', 'http://d.localhost:8888/']);
 };
 
 exports['load maps'] = function() {

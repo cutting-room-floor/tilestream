@@ -18,9 +18,9 @@ model = Backbone.Model.extend({
     thumb: function(zxy) {
         zxy = zxy || this.toZXY();
         return this.get('tiles')[0]
-            .replace('${z}', zxy[0])
-            .replace('${x}', zxy[1])
-            .replace('${y}', zxy[2]);
+            .replace('{z}', zxy[0])
+            .replace('{x}', zxy[1])
+            .replace('{y}', zxy[2]);
     },
     wax: function() {
         return {
