@@ -3,15 +3,14 @@ model = Backbone.Model;
 // Set options on initialize.
 Backbone.Collection.prototype.initialize =
 Backbone.Model.prototype.initialize = function(attributes, options) {
-    options = options || {};
     if (this.collection && this.collection.options) {
-        this.options = this.collection.options;
+        this.options = _(this.collection.options).clone();
     } else {
-        this.options = options;
+        this.options = _(options || {}).clone();
     }
     if (this.models) {
         _(this.models).each(_(function(model) {
-            model.options = this.options;
+            model.options = _(this.options).clone();
         }).bind(this));
     }
 };
