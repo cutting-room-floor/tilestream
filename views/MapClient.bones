@@ -44,6 +44,7 @@ view = Backbone.View.extend({
     },
     mm: function() {
         this.map.addCallback('zoomed', this.mmNav);
+        this.map.addCallback('extentset', this.mmNav);
         this.mmNav();
     },
     mmNav: function() {
