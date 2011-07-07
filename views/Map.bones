@@ -30,7 +30,7 @@ view = views.HUD.extend({
             basepath: this.model.options.basepath,
             format: this.format
         }).extend(this.model);
-        if (this.model.get('size')) {
+        if (this.model.get('download')) {
             data.buttons.push({id:'download', title:'Download'});
         }
         $(this.el).html(templates.Map(data));
