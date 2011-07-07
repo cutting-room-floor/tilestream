@@ -2,7 +2,7 @@ var Step = require('step');
 var url = require('url');
 
 server = Bones.Server.extend({
-    OPTIONS: ['zoomwheel', 'zoompan', 'legend', 'tooltips', 'zoombox'],
+    OPTIONS: ['zoomwheel', 'zoompan', 'legend', 'tooltips', 'zoombox', 'attribution'],
     initialize: function(app) {
         // Wax API Endpoint
         // ----------------
@@ -88,7 +88,7 @@ server = Bones.Server.extend({
         api: 'mm',
         center: [0, 0, 0],
         layers: [],
-        options: ['zoomwheel', 'legend', 'tooltips', 'zoombox']
+        options: ['zoomwheel', 'legend', 'tooltips', 'zoombox', 'attribution']
     },
     // Wax generation APIs. Each API object should have a `generate` method
     // that returns a wax JSON record object.
@@ -133,15 +133,18 @@ server = Bones.Server.extend({
                                 ]
                             ]
                         ]
-                    ].concat(this.generateControls(params.options))
+                    ].concat(this.generateControls(params.options, layer))
                 };
             },
-            generateControls: function(controls) {
+            generateControls: function(controls, layer) {
                 var wax = {
                     zoompan: ['@inject melt', ['@literal wax.mm.zoomer']],
                     tooltips: ['@inject melt', ['@literal wax.mm.interaction']],
                     legend: ['@inject melt', ['@literal wax.mm.legend']],
-                    zoombox: ['@inject melt', ['@literal wax.mm.zoombox']]
+                    zoombox: ['@inject melt', ['@literal wax.mm.zoombox']],
+                    attribution: ['@inject melt', ['@literal wax.mm.attribution'], {
+                        attribution: layer.get('attribution')
+                    }]
                 };
                 return _(controls).map(function(c) { return wax[c]; });
             }

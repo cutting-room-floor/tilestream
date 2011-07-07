@@ -346,6 +346,19 @@ a.download .size {
 .hudActive .wax-legends,
 .hudActive .wax-tooltip { right:320px; }
 
+.wax-attribution {
+  position:absolute;
+  background-color:rgba(255, 255, 255, 0.7);
+  color:#333;
+  font-size:11px;
+  line-height:20px;
+  z-index:99999;
+  text-align:center;
+  padding:0 5px;
+  bottom:0;
+  left:0;
+  }
+
 /**
  * Form elements
  */
