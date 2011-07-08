@@ -2,7 +2,7 @@
 process.title = 'tilestream';
 
 var tilelive = require('tilelive');
-tilelive.protocols['mbtiles:'] = require('mbtiles');
+require('mbtiles').registerProtocols(tilelive);
 
 require('bones').load(__dirname);
 !module.parent && require('bones').start();
