@@ -96,23 +96,13 @@ server = Bones.Server.extend({
         mm: {
             generate: function(layers, params) {
                 var layer = layers[0];
-                var legacy = models.Tileset.legacy(layer.get('tiles'));
                 return { wax:
                     ['@group',
                         ['@call w',
                             ['@group',
                                 ['@new com.modestmaps.Map',
                                     params.el,
-                                    ['@new wax.mm.provider',
-                                        {
-                                            baseUrl: legacy.baseUrl,
-                                            layerName: legacy.layerName,
-                                            zoomRange: [
-                                                layer.get('minzoom'),
-                                                layer.get('maxzoom')
-                                            ]
-                                        }
-                                    ],
+                                    ['@new wax.mm.connector', layer.attributes],
                                     params.size ? ['@new com.modestmaps.Point'].concat(params.size) : null,
                                     [
                                         ['@new com.modestmaps.DragHandler'],

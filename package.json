@@ -22,7 +22,7 @@
         "mbtiles": "https://github.com/mapbox/node-mbtiles/tarball/tilelive-refactoring",
         "sphericalmercator": "1.0.0",
         "underscore": "1.1.x",
-        "wax": "2.1.x"
+        "wax": "https://github.com/mapbox/wax/tarball/master"
     },
     "devDependencies": {
         "expresso" : ">= 0.7.6"
