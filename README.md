@@ -16,8 +16,8 @@ Requirements
   - Tested: Chrome 6+, Firefox 3+, IE8+
   - May work: Opera 11
 - *TileStream server*
-  - Tested: Mac OS X 10.6, Ubuntu 10.10
-  - Tested: node 0.4.7
+  - Tested: Mac OS X 10.6, Ubuntu 10.04, Ubuntu 11.04
+  - Tested: node 0.4.9
   - Tested: npm v1.0.3
   - At least 613MB memory
   - May work: Older versions, other POSIX-compliant systems
@@ -27,53 +27,66 @@ Installation: Mac OS X 10.6
 ---------------------------
 Install [Xcode][3] for Mac OS X.
 
-Install [node and npm][4]. You may want to use [nvm][5] which can install and
-manage your node installation for you.
+Install [node][4].
 
-Download and unpack TileStream. Build & install:
+Install [npm][5]:
 
-    git clone git://github.com/mapbox/tilestream.git
-    cd tilestream
-    npm install .
+    curl http://npmjs.org/install.sh | sh
+
+Install TileStream:
+
+    npm install -g tilestream
+
+This will install TileStream globablly. If you want a local installation in
+your current working directory, run the command without the `-g` option.
 
 Start TileStream:
 
-    ./index.js
+    tilestream
 
 TileStream should now be accessible from a browser at `http://localhost:8888`.
 
 
-Installation: Ubuntu 10.10
+Installation: Ubuntu 10.04
 --------------------------
 Install build requirements:
 
-    sudo apt-get install curl build-essential libssl-dev libsqlite3-0 libsqlite3-dev
+    sudo apt-get install curl build-essential libssl-dev libsqlite3-0 libsqlite3-dev git-core
 
-Install [node and npm][4]. You may want to use [nvm][5] which can install and
-manage your node installation for you.
+Install node:
 
-Download and unpack TileStream. Build & install:
+    git clone --depth 1 git://github.com/joyent/node.git
+    cd node
+    git checkout v0.4.9
+    export JOBS=2 # optional, sets number of parallel commands.
+    mkdir ~/local
+    ./configure --prefix=$HOME/local/node
+    make
+    make install
+    echo 'export PATH=$HOME/local/node/bin:$PATH' >> ~/.profile
+    source ~/.profile
 
-    git clone git://github.com/mapbox/tilestream.git
-    cd tilestream
-    npm install .
+Install [npm][5]:
 
-If you already cloned the master repository then do:
+    curl http://npmjs.org/install.sh | sh
 
-    cd tilestream
-    git checkout master-ndistro
-    ./ndistro
+Install TileStream:
+
+    npm install -g tilestream
+
+This will install TileStream globablly. If you want a local installation in
+your current working directory, run the command without the `-g` option.
 
 Start TileStream:
 
-    ./index.js
+    tilestream
 
 TileStream should now be accessible from a browser at `http://localhost:8888`.
 If you intend to run TileStream as a server on a hostname or an IP rather than
 as localhost, specify that hostname when you run TileStream:
 
-    ./index.js --host 127.0.0.1
-    ./index.js --host yourhost.com
+    tilestream --host 127.0.0.1
+    tilestream --host yourhost.com
 
 
 Usage
@@ -122,7 +135,7 @@ Contributors
 [2]:https://github.com/mapbox/wax
 [3]:http://developer.apple.com/technologies/tools/xcode.html
 [4]:https://github.com/joyent/node/wiki/Installation
-[5]:https://github.com/creationix/nvm
+[5]:http://npmjs.org/
 [6]:http://visionmedia.github.com/expresso
 [7]:https://github.com/yhahn
 [8]:https://github.com/tmcw
