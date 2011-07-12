@@ -91,9 +91,10 @@ as localhost, specify that hostname when you run TileStream:
 
 Usage
 -----
-MBTiles files should be placed in the `tiles` directory. Each
-tileset can be previewed at `http://localhost:8888/map/[filename]` where
-`[filename]` is the name of the tileset file without the `.mbtiles` extension.
+MBTiles files should be placed in the `~/tiles` directory, which is created at
+first run. Each tileset can be previewed at
+`http://localhost:8888/map/[filename]` where `[filename]` is the name of the
+tileset file without the `.mbtiles` extension.
 
 Tileset filenames:
 
