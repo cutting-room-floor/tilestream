@@ -128,15 +128,21 @@ server = Bones.Server.extend({
             },
             generateControls: function(controls, layer, params) {
                 var wax = {
-                    zoompan: ['@inject melt', ['@literal wax.mm.zoomer']],
-                    tooltips: ['@inject melt', ['@literal wax.mm.interaction']],
+                    zoompan: ['@group', ['@chain melt', ['@literal wax.mm.zoomer']]],
+                    tooltips: ['@group', ['@chain melt', ['@literal wax.mm.interaction']]],
                     legend: ['@group',
-                        ['@call wax.mm.legend', layer.attributes],
+                        ['@chain melt',
+                            ['@literal wax.mm.legend'],
+                            {legend:layer.get('legend')}
+                        ],
                         ['@chain appendTo', params.el]
                     ],
-                    zoombox: ['@inject melt', ['@literal wax.mm.zoombox']],
+                    zoombox: ['@group', ['@chain melt', ['@literal wax.mm.zoombox']]],
                     attribution: ['@group',
-                        ['@call wax.mm.attribution', {attribution: layer.get('attribution')}],
+                        ['@chain melt',
+                            ['@literal wax.mm.attribution'],
+                            {attribution:layer.get('attribution')}
+                        ],
                         ['@chain appendTo', params.el]
                     ]
                 };
