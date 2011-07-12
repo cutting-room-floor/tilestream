@@ -30,5 +30,8 @@
     "scripts": {
         "start": "./index.js",
         "test": "expresso"
+    },
+    "bin": {
+        "tilestream": "./index.js"
     }
 }
