@@ -110,7 +110,7 @@ Tileset filenames:
 
 To see the options available for use with TileStream, run
 
-    ./index.js start --help
+    tilestream start --help
 
 
 Tests
