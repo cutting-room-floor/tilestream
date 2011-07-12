@@ -37,7 +37,7 @@ Install TileStream:
 
     npm install -g tilestream
 
-This will install TileStream globablly. If you want a local installation in
+This will install TileStream globally. If you want a local installation in
 your current working directory, run the command without the `-g` option.
 
 Start TileStream:
@@ -74,7 +74,7 @@ Install TileStream:
 
     npm install -g tilestream
 
-This will install TileStream globablly. If you want a local installation in
+This will install TileStream globally. If you want a local installation in
 your current working directory, run the command without the `-g` option.
 
 Start TileStream:
