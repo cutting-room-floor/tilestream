@@ -1,3 +1,9 @@
+Upgrading from 0.2.x to 0.3.x
+-----------------------------
+The default tiles directory has moved to your user's home directory. Copy your
+existing tiles directory to your home folder or use the `--tiles` option to set
+the location manually.
+
 Upgrading from TileStream pre-ndistro
 -------------------------------------
 

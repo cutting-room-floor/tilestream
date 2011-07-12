@@ -20,7 +20,7 @@ Bones.Command.options['subdomains'] = {
 Bones.Command.options['tiles'] = {
     'title': 'tiles=[path]',
     'description': 'Path to tiles directory.',
-    'default': path.join(process.cwd(), 'tiles')
+    'default': path.join(process.env.HOME, 'tiles')
 };
 
 Bones.Command.options['accesslog'] = {
