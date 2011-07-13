@@ -22,7 +22,7 @@
         "mbtiles": "0.1.x",
         "sphericalmercator": "1.0.0",
         "underscore": "1.1.x",
-        "wax": "https://github.com/mapbox/wax/tarball/master"
+        "wax": "3.0.x"
     },
     "devDependencies": {
         "expresso" : ">= 0.7.6"
