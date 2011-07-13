@@ -7,3 +7,4 @@ require('mbtiles').registerProtocols(tilelive);
 require('bones').load(__dirname);
 !module.parent && require('bones').start();
 
+module.exports = { tilelive: tilelive };
