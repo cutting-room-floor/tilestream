@@ -128,7 +128,10 @@ server = Bones.Server.extend({
             },
             generateControls: function(controls, layer, params) {
                 var wax = {
-                    zoompan: ['@group', ['@chain melt', ['@literal wax.mm.zoomer']]],
+                    zoompan: ['@group',
+                        ['@chain melt', ['@literal wax.mm.zoomer']],
+                        ['@chain appendTo', params.el]
+                    ],
                     tooltips: ['@group', ['@chain melt', ['@literal wax.mm.interaction']]],
                     legend: ['@group',
                         ['@chain melt',
