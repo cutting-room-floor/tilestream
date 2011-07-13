@@ -18,8 +18,8 @@
     "dependencies": {
         "bones": "1.3.x",
         "step": "0.0.4",
-        "tilelive": "https://github.com/mapbox/tilelive.js/tarball/refactoring",
-        "mbtiles": "https://github.com/mapbox/node-mbtiles/tarball/tilelive-refactoring",
+        "tilelive": "4.0.x",
+        "mbtiles": "0.1.x",
         "sphericalmercator": "1.0.0",
         "underscore": "1.1.x",
         "wax": "https://github.com/mapbox/wax/tarball/master"
