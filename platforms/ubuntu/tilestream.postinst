@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "configure" ]; then
+
+	# Create the "tilestream" user
+	if ! getent passwd tilestream > /dev/null; then
+		adduser --quiet --system --group --no-create-home \
+			--gecos "Tilestream system user" \
+			tilestream
+	fi
+
+	# Create files common to "tilestream" which need to be owned by the 
+        # "tilestream" user
+	install --owner tilestream --group tilestream --directory \
+        	/var/log/tilestream
+        # Ownership on tilestream home dir
+        chown tilestream:tilestream /usr/share/tilestream
+fi
+
+#DEBHELPER#
