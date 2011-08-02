@@ -1,3 +1,15 @@
+tilestream (0.4.1-3) maverick; urgency=medium
+
+  * Rearrange packaging
+
+ -- Ian Ward <ian@developmentseed.org>  Tue, 02 Aug 2011 12:40:06 -0400
+
+tilestream (0.4.1-2) maverick; urgency=medium
+
+  * No significant changes
+
+ -- Ian Ward <ian@developmentseed.org>  Mon, 25 Jul 2011 15:20:28 -0400
+
 tilestream (0.4.1-1) maverick; urgency=medium
 
   * Initial release.

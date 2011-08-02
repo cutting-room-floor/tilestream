@@ -9,7 +9,9 @@ case "$1" in
 		rm -rf /usr/share/tilestream/
 		;;
     remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
-
+                if [ -n "$(status tilestream |grep running)" ]; then
+                  /sbin/stop tilestream
+                fi
 
         ;;
 
