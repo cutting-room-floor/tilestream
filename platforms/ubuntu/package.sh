@@ -1,8 +1,14 @@
 #!/usr/bin/env sh
 
+while getopts ":p" opt; do
+  case $opt in
+    p ) PPA="mapbox" ;;
+  esac
+done
+
 PROJECT="tilestream"
 USER="developmentseed"
-PPA="mapbox"
+: ${PPA:="mapbox-dev"}
 
 CWD=`pwd`
 VERSION=`grep -m1 "$PROJECT ([0-9.-]*)" debian/changelog | sed "s/$PROJECT (\([0-9.-]*\)).*/\1/g"`
@@ -21,7 +27,7 @@ fi
 
 while true
 do
-  echo -n "Build $PROJECT-$TAG for $DIST (y/n)? "
+  echo -n "Build $PROJECT-$TAG for $DIST and upload to $PPA (y/n)? "
   read CONFIRM
   if [ $CONFIRM = "y" ]; then
     break
@@ -63,4 +69,3 @@ cd "$CWD/$DIST/$PROJECT-$TAG/debian"
 debuild -inode_modules\|.git\|.png\|.ttf -S -sa &&
 cd "$CWD/$DIST" &&
 dput "ppa:$USER/$PPA" "${PROJECT}_${VERSION}_source.changes"
-
