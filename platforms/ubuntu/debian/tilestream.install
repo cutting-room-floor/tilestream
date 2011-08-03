@@ -7,7 +7,6 @@ lib usr/share/tilestream
 models usr/share/tilestream
 servers usr/share/tilestream
 templates usr/share/tilestream
-test usr/share/tilestream
 views usr/share/tilestream
 node_modules usr/share/tilestream
 LICENSE.md usr/share/tilestream
