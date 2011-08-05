@@ -2,7 +2,7 @@ var Step = require('step');
 var url = require('url');
 
 server = Bones.Server.extend({
-    OPTIONS: ['zoomwheel', 'zoompan', 'legend', 'tooltips', 'zoombox', 'attribution'],
+    OPTIONS: ['zoomwheel', 'zoompan', 'legend', 'tooltips', 'zoombox', 'attribution', 'bwdetect'],
     initialize: function(app) {
         // Wax API Endpoint
         // ----------------
@@ -146,6 +146,10 @@ server = Bones.Server.extend({
                             ['@literal wax.mm.attribution'],
                             {attribution:layer.get('attribution')}
                         ],
+                        ['@chain appendTo', params.el]
+                    ],
+                    bwdetect: ['@group',
+                        ['@chain melt', ['@literal wax.mm.bwdetect'] ],
                         ['@chain appendTo', params.el]
                     ]
                 };
