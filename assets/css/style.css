@@ -2,6 +2,11 @@
   font-family:Droid;
   src:url('../fonts/DroidSans.ttf');
   }
+@font-face {
+  font-family:Droid;
+  font-weight:bold;
+  src:url('../fonts/DroidSansBold.ttf');
+  }
 
 input,
 select,
@@ -65,6 +70,7 @@ a {
 
 .header .breadcrumb { 
   position:absolute;
+  font-weight:normal;
   left:0px;
   }
 
@@ -73,7 +79,6 @@ a {
 
 .header .breadcrumb a {
   float:left;
-  font-weight:bold;
   padding:5px 20px 5px 10px;
   background:url(../images/sprite.png) 100% -80px no-repeat;
   height:20px;
@@ -148,7 +153,6 @@ a {
 .thumb {
   width:238px;
   height:238px;
-  font-weight:bold;
   display:block;
   background:#fff url(../images/bg.png);
   position:relative;
