@@ -149,8 +149,7 @@ server = Bones.Server.extend({
                         ['@chain appendTo', params.el]
                     ],
                     bwdetect: ['@group',
-                        ['@chain melt', ['@literal wax.mm.bwdetect'] ],
-                        ['@chain appendTo', params.el]
+                        ['@chain melt', ['@literal wax.mm.bwdetect'] ]
                     ]
                 };
                 return _(controls).map(function(c) { return wax[c]; });
