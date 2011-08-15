@@ -3,6 +3,7 @@ var url = require('url');
 
 models.Tileset.syncread = function(data, options) {
     data.scheme = data.scheme || 'tms';
+    data.center = data.center || [0, 0, 0];
     data.tiles = data.tiles || _(options.tileHost).map(function(host) {
         return url.format({
             host: host,
