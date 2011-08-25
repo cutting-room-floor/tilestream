@@ -20,8 +20,8 @@ server = Bones.Server.extend({
         var validate = _(this.validate).bind(this),
             load = _(this.load).bind(this),
             wax = _(this.sendWax).bind(this);
-        this.get('/api/v1/wax.json', validate, load, wax);
-        this.get('/api/wax.json', validate, load, wax);
+        this.get('/api/v1/wax.json', [validate, load, wax]);
+        this.get('/api/wax.json', [validate, load, wax]);
     },
     // Validates `req.query` to ensure it is usable.
     validate: function(req, res, next) {
