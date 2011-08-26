@@ -8,6 +8,10 @@ models.Tilesets.prototype.sync = function(method, model, success, error) {
     tilelive.all(filepath, function(err, data) {
         if (err) return error(err);
         data = _(data).map(function(tileset) {
+            var err = tilelive.verify(tileset);
+            if (err) {
+                tileset.error = err.message;
+            }
             return models.Tileset.syncread(tileset, model.options);
         });
         return success(data);

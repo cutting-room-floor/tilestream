@@ -34,6 +34,7 @@ models.Tileset.prototype.sync = function(method, model, success, error) {
         if (!uri) uri = Bones.plugin.config.tiles + model.options.basepath + '?id=' + model.get('id');
 
         tilelive.info(uri, function(err, data, source) {
+            var err = err || tilelive.verify(data, source);
             if (err) return error(err);
             data = models.Tileset.syncread(data, model.options);
             model.source = source;

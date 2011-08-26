@@ -423,3 +423,7 @@ input.submit:active {
 
 .buttons a:only-child { border-radius:3px; }
 
+.maps .error {
+  background-color:#e00;
+  }
+
