@@ -424,6 +424,6 @@ input.submit:active {
 .buttons a:only-child { border-radius:3px; }
 
 .maps .error {
-  background-color:#e00;
+  background:#f33 url(../images/sprite.png) no-repeat -220px -220px;
   }
 

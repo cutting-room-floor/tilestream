@@ -14,11 +14,11 @@
    height="400"
    id="svg2"
    sodipodi:version="0.32"
-   inkscape:version="0.48+devel r10080"
+   inkscape:version="0.48.1 r9760"
    version="1.0"
    sodipodi:docname="sprite.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
-   inkscape:export-filename="/Users/kkaefer/Code/node_modules/tilestream/assets/images/sprite.png"
+   inkscape:export-filename="/Users/diggersf/src/tilestream/assets/images/sprite.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -6056,17 +6056,17 @@
      objecttolerance="10"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="8"
-     inkscape:cx="687.4033"
-     inkscape:cy="199.79781"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="-59.545345"
+     inkscape:cy="86.659647"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:snap-bbox="true"
      showguides="false"
      inkscape:guide-bbox="true"
-     inkscape:window-width="1276"
-     inkscape:window-height="756"
+     inkscape:window-width="1440"
+     inkscape:window-height="852"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="0"
@@ -6116,7 +6116,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -7228,5 +7228,20 @@
        d="m 688,207.00005 0,1 0.5,0 2.5625,0 -2.15625,4.96875 0,0.0312 1.09375,0 2.28125,-5.3125 0.28125,-0.6875 -0.75,0 -3.3125,0 -0.5,0 z"
        style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
        inkscape:connector-curvature="0" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1"
+       d="m 339.49999,298.99999 c -16.56856,0 -30,13.43146 -30,30 0,16.56853 13.43144,30 30,30 16.56853,0 30,-13.43147 30,-30 0,-16.56854 -13.43147,-30 -30,-30 z m 0,7.03125 c 12.69081,0 22.96875,10.27796 22.96875,22.96875 0,12.69081 -10.27794,22.96875 -22.96875,22.96875 -12.69079,0 -22.96875,-10.27794 -22.96875,-22.96875 0,-12.69079 10.27796,-22.96875 22.96875,-22.96875 z"
+       id="path3911"
+       inkscape:connector-curvature="0" />
+    <g
+       style="font-size:29.71425819px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Hoefler Text;-inkscape-font-specification:Helvetica Bold"
+       id="text3906"
+       transform="matrix(1.5068634,0,0,1.5068637,196.48523,-243.60824)">
+      <path
+         d="m 92.29731,369.16912 5.22321,0 0,8.31361 -0.73996,6.06472 -3.7433,0 -0.73995,-6.06472 0,-8.31361 m 0,16.49663 5.22321,0 0,5.16518 -5.22321,0 0,-5.16518"
+         style="fill:#ffffff;fill-opacity:1;font-family:Sans;-inkscape-font-specification:Helvetica Bold"
+         id="path3916"
+         inkscape:connector-curvature="0" />
+    </g>
   </g>
 </svg>
