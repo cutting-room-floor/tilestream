@@ -88,6 +88,8 @@ as localhost, specify that hostname when you run TileStream:
     tilestream --host 127.0.0.1
     tilestream --host yourhost.com
 
+keep in mind only the hostname specified with the --host option will be able to 
+connect, all other attempts will receive HTTP 400 ( "Bad Request" )
 
 Usage
 -----
