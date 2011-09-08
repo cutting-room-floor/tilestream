@@ -28,7 +28,15 @@ server = Bones.Server.extend({
         this.get('/:version(1|2).0.0/:tileset/layer.json', this.layer);
 
         this.get('/download/:tileset.mbtiles', this.download);
+
+        this.get('/crossdomain.xml', this.crossdomainXML);
         this.get('/status', this.status);
+    },
+
+    crossdomainXML: function(req, res, next) {
+        res.send(templates.CrossdomainXML(), {
+            'Content-Type': 'text/x-cross-domain-policy'
+        }, 200);
     },
 
     // Basic route for checking the health of the server.
