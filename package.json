@@ -19,7 +19,7 @@
         "bones": "1.3.x",
         "step": "0.0.4",
         "tilelive": "~4.1.0",
-        "mbtiles": "~0.1.7",
+        "mbtiles": "~0.1.8",
         "sphericalmercator": "1.0.0",
         "underscore": "1.1.x",
         "wax": "3.0.x"
