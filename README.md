@@ -35,6 +35,12 @@ Install [npm][5]:
 
 Install TileStream:
 
+If you have a checked out copy of the source, build it:
+
+    npm install
+
+You may also install from anywhere:
+
     npm install -g tilestream
 
 This will install TileStream globally. If you want a local installation in
@@ -42,7 +48,8 @@ your current working directory, run the command without the `-g` option.
 
 Start TileStream:
 
-    tilestream
+    tilestream (if you installed globally)
+    ./index.js (if running from the source copy)
 
 TileStream should now be accessible from a browser at `http://localhost:8888`.
 
