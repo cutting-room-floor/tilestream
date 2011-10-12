@@ -143,6 +143,12 @@ TileStream tests use [Expresso][6].
     npm test
 
 
+### Deployment
+
+See the `configuration_examples` directory for configuration examples with
+[nginx](http://nginx.net) and upstart.
+
+
 Contributors
 ------------
 - [Young Hahn][7]
