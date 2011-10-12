@@ -1,6 +1,19 @@
 TileStream
 ----------
-A high performance tile server and simple web viewer for [MBTiles][1] files.
+TileStream is a high-performance map tile server powered by [MBTiles][1] files.
+
+It's like TileCache, TileStache, and other map servers in that it serves normal
+image files that can be used in OpenLayers, Google Maps, Modest Maps, and other
+Javascript APIs without much trouble - and with lots of enhancements when you
+use [Wax](http://mapbox.com/wax/).
+
+It's not like those tile servers in that it doesn't yet generate maps, it only
+serves maps that are generated with [TileMill](http://mapbox.com/tilemill).
+This means that it's reliably fast but not designed to serve live data.
+
+[MapBox Hosting](http://mapbox.com/hosting/) uses the same internals as
+TileStream but adds many features and is a hosted service rather than an
+installable application.
 
 
 Features
