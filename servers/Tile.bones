@@ -13,7 +13,9 @@ server = Bones.Server.extend({
         }
 
         this.config = app.config;
-        this.config.header = { 'Cache-Control': 'max-age=' + 60 * 60 };
+        this.config.header = {
+          'Cache-Control': 'max-age=' + 60 * 60
+        };
         this.initializeRoutes();
     },
 
@@ -23,10 +25,11 @@ server = Bones.Server.extend({
         this.param('tileset', this.load);
 
         // x.0.0 endpoints.
-        this.get('/:version(1|2).0.0/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.tile);
-        this.get('/:version(1|2).0.0/:tileset/:z/:x/:y.grid.json', this.grid);
-        this.get('/:version(1|2).0.0/:tileset/layer.json', this.layer);
+        this.get('/v:version(1|2)/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.tile);
+        this.get('/v:version(1|2)/:tileset/:z/:x/:y.grid.json', this.grid);
+        this.get('/v:version(1|2)/:tileset/layer.json', this.layer);
 
+        this.get('/:version(1|2)(.0.0)?/:tileset.mbtiles', this.download);
         this.get('/download/:tileset.mbtiles', this.download);
 
         this.get('/crossdomain.xml', this.crossdomainXML);

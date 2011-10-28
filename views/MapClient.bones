@@ -5,7 +5,7 @@ view = Backbone.View.extend({
     className: 'MapClient',
     id: 'map',
     initialize: function(options) {
-        _.bindAll(this, 'ready', 'record', 'mm', 'mmNav');
+        _.bindAll(this, 'ready', 'mm', 'mmNav');
     },
     ready: function() {
         var wax = this.generateWax();
@@ -17,9 +17,12 @@ view = Backbone.View.extend({
             context: this,
             callback: 'grid',
             callbackParameter: 'callback',
-            success: this.record,
+            success: this.render,
             error: function() {}
         });
+    },
+    render: function(data) {
+        console.log(arguments);
     },
     // Since this is client-side we cannot use url.format().
     waxURL: function(wax) {
@@ -35,13 +38,6 @@ view = Backbone.View.extend({
         wax.size && (delete wax.size);
         return wax;
     },
-    record: function(data) {
-        if (data && data.wax) {
-            var api = this.generateWax().api;
-            this.map = wax.Record(data.wax);
-            _(this[api]).isFunction() && this[api]();
-        }
-    },
     mm: function() {
         this.map.addCallback('zoomed', this.mmNav);
         this.map.addCallback('extentset', this.mmNav);
@@ -53,4 +49,3 @@ view = Backbone.View.extend({
         $('.zoom-' + this.map.getZoom()).addClass('active');
     }
 });
-

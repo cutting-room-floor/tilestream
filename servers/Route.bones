@@ -1,6 +1,5 @@
 servers['Route'].augment({
     initialize: function(parent, app) {
-        this.use(new servers['Wax'](app));
         parent.call(this, app);
     },
     assets: {

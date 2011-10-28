@@ -22,7 +22,7 @@
         "mbtiles": "~0.1.8",
         "sphericalmercator": "1.0.0",
         "underscore": "1.1.x",
-        "wax": "3.0.8"
+        "wax": "4.1.0"
     },
     "devDependencies": {
         "expresso" : ">= 0.7.6"
