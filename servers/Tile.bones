@@ -26,7 +26,7 @@ server = Bones.Server.extend({
 
         this.get('/v2/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.tile);
         this.get('/v2/:tileset/:z/:x/:y.grid.json', this.grid);
-        this.get('/v2/:tileset/layer.json', this.layer);
+        this.get('/v2/:tileset.json', this.layer);
         this.get('/v2/:tileset.mbtiles', this.download);
 
         this.get('/crossdomain.xml', this.crossdomainXML);

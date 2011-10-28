@@ -17,8 +17,9 @@ view = Backbone.View.extend({
         }
 
         var center = this.model.get('center');
+        var tj = this.model.toJSON();
         var map = new mm.Map(this.el,
-            new wax.mm.connector(this.model.toJSON())
+            new wax.mm.connector(tj)
         ).setCenterZoom(
             new mm.Location(center[1], center[0]
         ), center[2]);
@@ -26,6 +27,11 @@ view = Backbone.View.extend({
         wax.mm.zoomer(map).appendTo(map.parent);
         wax.mm.zoombox(map);
         wax.mm.attribution(map).appendTo(map.parent);
+
+        if (tj.grids) {
+            wax.mm.interaction(map, tj);
+        }
+
         map.addCallback('zoomed', mmNav);
         map.addCallback('extentset', mmNav);
         mmNav();

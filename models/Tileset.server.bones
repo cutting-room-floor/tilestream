@@ -11,13 +11,15 @@ models.Tileset.syncread = function(data, options) {
             protocol: 'http:'
         });
     });
-    if (data.formatter) data.grids = data.grids || _(options.tileHost).map(function(host) {
-        return url.format({
-            host: host,
-            pathname: options.basepath + 'v2/' + data.id + '/{z}/{x}/{y}.grid.json',
-            protocol: 'http:'
+    if (data.formatter || data.template) {
+        data.grids = data.grids || _(options.tileHost).map(function(host) {
+            return url.format({
+                host: host,
+                pathname: options.basepath + 'v2/' + data.id + '/{z}/{x}/{y}.grid.json',
+                protocol: 'http:'
+            });
         });
-    });
+    }
     if (data.basename) data.download = url.format({
         host: options.tileHost[0],
         pathname: options.basepath + 'v2/' + data.basename,
