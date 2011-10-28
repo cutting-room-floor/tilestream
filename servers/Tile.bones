@@ -24,13 +24,10 @@ server = Bones.Server.extend({
 
         this.param('tileset', this.load);
 
-        // x.0.0 endpoints.
-        this.get('/v:version(1|2)/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.tile);
-        this.get('/v:version(1|2)/:tileset/:z/:x/:y.grid.json', this.grid);
-        this.get('/v:version(1|2)/:tileset/layer.json', this.layer);
-
-        this.get('/:version(1|2)(.0.0)?/:tileset.mbtiles', this.download);
-        this.get('/download/:tileset.mbtiles', this.download);
+        this.get('/v2/:tileset/:z/:x/:y.(png|jpg|jpeg)', this.tile);
+        this.get('/v2/:tileset/:z/:x/:y.grid.json', this.grid);
+        this.get('/v2/:tileset/layer.json', this.layer);
+        this.get('/v2/:tileset.mbtiles', this.download);
 
         this.get('/crossdomain.xml', this.crossdomainXML);
         this.get('/status', this.status);
@@ -99,11 +96,9 @@ server = Bones.Server.extend({
 
     // Tile endpoint
     tile: function(req, res, next) {
-        var z = req.param('z'), x = req.param('x'), y = req.param('y');
-
-        // 1.0.0: incoming request TMS => tilesource XYZ
-        // 2.0.0: incoming request XYZ => tilesource XYZ
-        if (req.param('version') === '1') y = Math.pow(2, z) - 1 - y;
+        var z = req.param('z'),
+            x = req.param('x'),
+            y = req.param('y');
 
         var headers = _.clone(this.config.header);
         res.model.source.getTile(z, x, y, function(err, tile, options) {

@@ -5,47 +5,31 @@ view = Backbone.View.extend({
     className: 'MapClient',
     id: 'map',
     initialize: function(options) {
-        _.bindAll(this, 'ready', 'mm', 'mmNav');
+        _.bindAll(this, 'ready');
     },
     ready: function() {
-        var wax = this.generateWax();
-        if (!wax.layers || wax.layers.length === 0) return;
+        var mm = com.modestmaps;
 
-        $.ajax({
-            dataType: 'jsonp',
-            url: this.waxURL(wax),
-            context: this,
-            callback: 'grid',
-            callbackParameter: 'callback',
-            success: this.render,
-            error: function() {}
-        });
-    },
-    render: function(data) {
-        console.log(arguments);
-    },
-    // Since this is client-side we cannot use url.format().
-    waxURL: function(wax) {
-        return 'http://' +
-            this.model.options.uiHost +
-            this.model.options.basepath +
-            'api/wax.json?' +
-            $.param(wax);
-    },
-    generateWax: function(callback) {
-        var wax = this.model.wax();
-        wax.el = $(this.el).attr('id');
-        wax.size && (delete wax.size);
-        return wax;
-    },
-    mm: function() {
-        this.map.addCallback('zoomed', this.mmNav);
-        this.map.addCallback('extentset', this.mmNav);
-        this.mmNav();
-    },
-    mmNav: function() {
-        if (!$('.zoom').size()) return;
-        $('.zoom.active').removeClass('active');
-        $('.zoom-' + this.map.getZoom()).addClass('active');
+        function mmNav() {
+            if (!$('.zoom').size()) return;
+            $('.zoom.active').removeClass('active');
+            $('.zoom-' + map.getZoom()).addClass('active');
+        }
+
+        var center = this.model.get('center');
+        var map = new mm.Map(this.el,
+            new wax.mm.connector(this.model.toJSON())
+        ).setCenterZoom(
+            new mm.Location(center[1], center[0]
+        ), center[2]);
+
+        wax.mm.zoomer(map).appendTo(map.parent);
+        wax.mm.zoombox(map);
+        wax.mm.attribution(map).appendTo(map.parent);
+        map.addCallback('zoomed', mmNav);
+        map.addCallback('extentset', mmNav);
+        mmNav();
+
+        this.map = map;
     }
 });

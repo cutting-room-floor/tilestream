@@ -34,7 +34,9 @@ view = views.HUD.extend({
             data.buttons.push({id:'download', title:'Download'});
         }
         $(this.el).html(templates.Map(data));
-        this.map = new views.MapClient({model: this.model});
+        this.map = new views.MapClient({
+            model: this.model
+        });
         this.bind('ready', this.map.ready);
         $(this.el).append(this.map.el);
         return this;

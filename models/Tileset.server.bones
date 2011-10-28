@@ -2,25 +2,25 @@ var tilelive = require('tilelive');
 var url = require('url');
 
 models.Tileset.syncread = function(data, options) {
-    data.scheme = data.scheme || 'tms';
+    data.scheme = 'xyz';
     data.center = data.center || [0, 0, 0];
     data.tiles = data.tiles || _(options.tileHost).map(function(host) {
         return url.format({
             host: host,
-            pathname: options.basepath + '1.0.0/' + data.id + '/{z}/{x}/{y}.png',
+            pathname: options.basepath + 'v2/' + data.id + '/{z}/{x}/{y}.png',
             protocol: 'http:'
         });
     });
     if (data.formatter) data.grids = data.grids || _(options.tileHost).map(function(host) {
         return url.format({
             host: host,
-            pathname: options.basepath + '1.0.0/' + data.id + '/{z}/{x}/{y}.grid.json',
+            pathname: options.basepath + 'v2/' + data.id + '/{z}/{x}/{y}.grid.json',
             protocol: 'http:'
         });
     });
     if (data.basename) data.download = url.format({
         host: options.tileHost[0],
-        pathname: options.basepath + 'download/' + data.basename,
+        pathname: options.basepath + 'v2/' + data.basename,
         protocol: 'http:'
     });
     return data;
