@@ -105,8 +105,13 @@ TileStream should now be accessible from a browser at `http://localhost:8888`.
 If you intend to run TileStream as a server on a hostname or an IP rather than
 as localhost, specify that hostname when you run TileStream:
 
+
     tilestream --host 127.0.0.1
     tilestream --host yourhost.com
+
+
+In these examples, you would only be able to access tilestream from `127.0.0.1`
+or `yourhost.com`, respectively, due to security restrictions.
 
 
 Usage
