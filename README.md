@@ -40,7 +40,15 @@ Installation: Mac OS X 10.6
 ---------------------------
 Install [Xcode][3] for Mac OS X.
 
-Install [node][4].
+Install [node][4]. If you are using [HomeBrew][12], use these steps:
+
+    brew install node       # Installs the latest node, perhaps 0.6.x
+    brew versions node      # Find all the different versions of node available
+    # We need node 0.4.9 for tilestream, so switch to that node version
+    cd /usr/local/Cellar/node
+    git checkout -b node-0.4.9 10b3ded # The commit that correspons in the versions output
+    brew install node       # Now installiong 0.4.9
+    brew switch node 0.4.9  # set current node version
 
 Install [npm][5]:
 
@@ -154,6 +162,45 @@ See the `configuration_examples` directory for configuration examples with
 [nginx](http://nginx.net) and upstart.
 
 
+Troubleshooting
+---------------
+
+If you run into problems during install, such as unfound dependent versions, first try deleting the node_modules/ folder and re-run `node install`. It seems that some errors leave the installation in an unclean state (for example if you accidentally switched node versions during the install in the hopes of making things work!).
+
+### Build Failures
+
+`npm install` may cause:
+
+    Waf: Leaving directory '/Users/sundar/Projects/tilestream/node_modules/sqlite3/build'
+    Build failed:
+    -> task failed (err #1):
+    {task: cxx statement.cc -> statement_1.o}
+    -> task failed (err #1):
+    {task: cxx database.cc -> database_1.o}
+    -> task failed (err #1):
+    {task: cxx sqlite3.cc -> sqlite3_1.o}
+    npm ERR! sqlite3@2.1.1 preinstall: `node-waf clean || (exit 0); node-waf configure build`
+    npm ERR! `sh "-c" "node-waf clean || (exit 0); node-waf configure build"` failed with 1
+    npm ERR!
+    npm ERR! Failed at the sqlite3@2.1.1 preinstall script.
+
+Manually installing sqlite3 via npm install sqlite3 resolved this issue. Then re-run npm install in the tilestream folder:
+
+    npm install sqlite3
+    npm install
+
+If you STILL get errors when launching index.js, there may be more modules to install manually. This is the list that worked for me:
+
+    npm install sqlite3
+    npm install mbtiles
+    npm install jsdom
+    npm install uglify-js
+    npm install connect
+    npm install qs
+    npm install mime
+
+But again, all this headache may be solved by just deleting your node_modules/ folder and re-running `node install`.
+
 Contributors
 ------------
 - [Young Hahn][7]
@@ -174,3 +221,4 @@ Contributors
 [9]:https://github.com/willwhite
 [10]:https://github.com/kkaefer
 [11]:https://github.com/springmeyer
+[12]:https://github.com/mxcl/homebrew
