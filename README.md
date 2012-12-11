@@ -52,7 +52,7 @@ Install [node][4]. If you are using [HomeBrew][12], use these steps:
 
 Install [npm][5]:
 
-    curl http://npmjs.org/install.sh | sh
+    curl https://npmjs.org/install.sh | sh
 
 Install TileStream:
 
