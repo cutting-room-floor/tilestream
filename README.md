@@ -30,8 +30,7 @@ Requirements
   - May work: Opera 11
 - *TileStream server*
   - Tested: Mac OS X 10.6, Ubuntu 10.04, Ubuntu 11.04
-  - Tested: node 0.4.9
-  - Tested: npm v1.0.3
+  - Tested: node 0.8.x
   - At least 613MB memory
   - May work: Older versions, other POSIX-compliant systems
 
@@ -42,35 +41,24 @@ Install [Xcode][3] for Mac OS X.
 
 Install [node][4]. If you are using [HomeBrew][12], use these steps:
 
-    brew install node       # Installs the latest node, perhaps 0.6.x
+    brew install node       # Installs the latest node: should be v0.8.x
     brew versions node      # Find all the different versions of node available
-    # We need node 0.4.9 for tilestream, so switch to that node version
-    cd /usr/local/Cellar/node
-    git checkout -b node-0.4.9 10b3ded # The commit that correspons in the versions output
-    brew install node       # Now installiong 0.4.9
-    brew switch node 0.4.9  # set current node version
+    brew switch node 0.8.15  # set current node version
 
-Install [npm][5]:
-
-    curl https://npmjs.org/install.sh | sh
 
 Install TileStream:
 
-If you have a checked out copy of the source, build it:
-
+    git clone git@github.com:mapbox/tilestream.git
+    cd tilestream
     npm install
-
-You may also install from anywhere:
-
-    npm install -g tilestream
-
-This will install TileStream globally. If you want a local installation in
-your current working directory, run the command without the `-g` option.
 
 Start TileStream:
 
-    tilestream (if you installed globally)
     ./index.js (if running from the source copy)
+
+Get options:
+
+    ./index.js start --help
 
 TileStream should now be accessible from a browser at `http://localhost:8888`.
 
@@ -83,36 +71,30 @@ Install build requirements:
 
 Install node:
 
-    git clone --depth 1 git://github.com/joyent/node.git
-    cd node
-    git checkout v0.4.9
-    export JOBS=2 # optional, sets number of parallel commands.
-    mkdir ~/local
-    ./configure --prefix=$HOME/local/node
-    make
-    make install
-    echo 'export PATH=$HOME/local/node/bin:$PATH' >> ~/.profile
-    source ~/.profile
-
-Install [npm][5]:
-
-    curl http://npmjs.org/install.sh | sh
+    sudo apt-add-repository ppa:chris-lea/node.js
+    sudo apt-get update
+    sudo apt-get install nodejs nodejs-dev npm
 
 Install TileStream:
 
-    npm install -g tilestream
-
-This will install TileStream globally. If you want a local installation in
-your current working directory, run the command without the `-g` option.
+    git clone git@github.com:mapbox/tilestream.git
+    cd tilestream
+    npm install
 
 Start TileStream:
 
-    tilestream
+    ./index.js (if running from the source copy)
 
-TileStream should now be accessible from a browser at `http://localhost:8888`.
+Get options:
+
+    ./index.js start --help
+
+
+Custom configuration
+--------------------
+
 If you intend to run TileStream as a server on a hostname or an IP rather than
 as localhost, specify that hostname when you run TileStream:
-
 
     tilestream --host 127.0.0.1
     tilestream --host yourhost.com
@@ -144,15 +126,15 @@ Tileset filenames:
 
 To see the options available for use with TileStream, run
 
-    tilestream start --help
+    ./index.js start --help
 
 
 Tests
 -----
 TileStream tests use [Expresso][6].
 
-    npm install -g expresso
     cd tilestream
+    npm install expresso
     npm test
 
 
