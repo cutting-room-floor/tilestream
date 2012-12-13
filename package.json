@@ -1,7 +1,7 @@
 {
     "name": "tilestream",
     "description": "A high performance tile server and simple web viewer for MBTiles files.",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "author": {
       "name": "MapBox",
       "url": "http://mapbox.com/",
