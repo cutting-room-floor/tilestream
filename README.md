@@ -48,7 +48,7 @@ Install [node][4]. If you are using [HomeBrew][12], use these steps:
 
 Install TileStream:
 
-    git clone git@github.com:mapbox/tilestream.git
+    git clone https://github.com/mapbox/tilestream.git
     cd tilestream
     npm install
 
@@ -77,7 +77,7 @@ Install node:
 
 Install TileStream:
 
-    git clone git@github.com:mapbox/tilestream.git
+    git clone https://github.com/mapbox/tilestream.git
     cd tilestream
     npm install
 
