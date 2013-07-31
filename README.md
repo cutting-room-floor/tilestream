@@ -90,8 +90,8 @@ Get options:
     ./index.js start --help
     
 
-Ubuntu alternate installation procedure
----------------------------------------
+Installation: Ubuntu alternate procedure
+----------------------------------------
 
 An alternate option is to use a nodeenv (which functions somewhat like python virtualenv). Using
 this approach will ensure that you get the correct version of node needed by tilestream and 
@@ -119,7 +119,7 @@ Some handy options::
     ./index.js start --uiPort=[80] --tilePort=[80] --tiles=/usr/share/tilestream
 
 The above example specifies custom ports for the user interface and the tile store, and
-also demonstrates how to specify a directory other than :file:`~/Documents/MapBox/tiles`
+also demonstrates how to specify a directory other than `~/Documents/MapBox/tiles`
 for the mbtiles directory.
 
 
