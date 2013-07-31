@@ -88,6 +88,39 @@ Start TileStream:
 Get options:
 
     ./index.js start --help
+    
+
+Ubuntu alternate installation procedure
+---------------------------------------
+
+An alternate option is to use a nodeenv (which functions somewhat like python virtualenv). Using
+this approach will ensure that you get the correct version of node needed by tilestream and 
+will allow you to install more than one node based application on your host without worrying
+about conflicting node versions. A simple installation process would work like this::
+    
+    sudo apt-get install curl build-essential libssl-dev libsqlite3-0 libsqlite3-dev git-core python-pip
+    sudo pip install nodeenv
+    git clone http://github.com/mapbox/tilestream.git
+    cd tilestream
+    nodeenv env --node=0.8.15
+    . env/bin/activate
+    npm install
+    
+
+If something goes wrong do a  ```rm -rf node_modules``` then fix the underlying issue 
+and rerun ```npm install```.
+
+Now you can start Tilestream::
+    
+    ./index.js start
+
+Some handy options::
+    
+    ./index.js start --uiPort=[80] --tilePort=[80] --tiles=/usr/share/tilestream
+
+The above example specifies custom ports for the user interface and the tile store, and
+also demonstrates how to specify a directory other than :file:`~/Documents/MapBox/tiles`
+for the mbtiles directory.
 
 
 Custom configuration
