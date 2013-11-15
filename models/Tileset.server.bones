@@ -34,7 +34,13 @@ models.Tileset.prototype.sync = function(method, model, success, error) {
     case 'read':
         var uri = model.options.uri;
         if (!uri) uri = Bones.plugin.config.tiles + model.options.basepath + '?id=' + model.get('id');
-
+        // Workaround https://github.com/mapbox/tilelive.js/issues/40
+        if (process.platform === 'win32' && typeof uri === 'string') {
+            uri = url.parse(uri, true);
+            if (uri.protocol && uri.protocol.length <= 2) {
+                uri.protocol = null;
+            }
+        }
         tilelive.info(uri, function(err, data, source) {
             var err = err || tilelive.verify(data, source);
             if (err) return error(err);
