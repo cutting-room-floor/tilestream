@@ -25,9 +25,6 @@
         "wax": "6.4.2",
         "modestmaps": "3.3.5"
     },
-    "devDependencies": {
-        "expresso" : ">= 0.7.6"
-    },
     "scripts": {
         "start": "./index.js",
         "test": "expresso"
