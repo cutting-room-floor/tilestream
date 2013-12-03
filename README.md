@@ -214,7 +214,7 @@ If you STILL get errors when launching index.js, there may be more modules to in
     npm install qs
     npm install mime
 
-But again, all this headache may be solved by just deleting your node_modules/ folder and re-running `node install`.
+But again, all this headache may be solved by just deleting your node_modules/ folder and re-running `npm install`.
 
 Contributors
 ------------
