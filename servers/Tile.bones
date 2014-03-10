@@ -1,3 +1,5 @@
+var path = require('path');
+
 server = Bones.Server.extend({
     // Necessary to actually instantiate tile server.
     port:3001,
@@ -84,7 +86,9 @@ server = Bones.Server.extend({
     // way to pass this through.
     download: function(req, res, next) {
         if (res.model.source.filename) {
-            res.sendfile(res.model.source.filename, { maxAge: 3600 }, function(err, path) {
+            var file_to_send = res.model.source.filename;
+            var opts = { maxAge: 3600,root:path.dirname(file_to_send) };
+            res.sendfile(path.basename(file_to_send), opts, function(err, path) {
                 // @TODO: log the error if one occurs.
                 // We don't call next() here as HTTP headers/response has
                 // already commenced by this point.
