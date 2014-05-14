@@ -23,7 +23,17 @@ view = Backbone.View.extend({
         ).setCenterZoom(
             new mm.Location(center[1], center[0]
         ), center[2]);
+        var layer = map.getLayerAt(0);
+        layer.provider.options.tiles = this.model.get('tiles');
+        layer.provider.options.minzoom = this.model.get('minzoom');
+        layer.provider.options.maxzoom = this.model.get('maxzoom');
+        layer.setProvider(layer.provider);
 
+        layer.provider.setZoomRange(layer.provider.options.minzoom,
+                              layer.provider.options.maxzoom)
+
+        map.setZoomRange(layer.provider.options.minzoom,
+                              layer.provider.options.maxzoom)
         wax.mm.zoomer(map).appendTo(map.parent);
         wax.mm.zoombox(map);
         wax.mm.attribution(map).appendTo(map.parent);
