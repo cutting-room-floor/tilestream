@@ -12,6 +12,12 @@ Bones.Command.options['tilePort'] = {
     'default': 8888
 };
 
+Bones.Command.options['tileHost'] = {
+    'title': 'tileHost=[host]',
+    'description': 'Tile hostname',
+    'default': 'req.headers.host'
+};
+
 Bones.Command.options['subdomains'] = {
     'title': 'subdomains=[list]',
     'description': 'Comma separated list of subdomains to use for tiles.'

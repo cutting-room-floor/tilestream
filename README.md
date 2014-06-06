@@ -132,9 +132,33 @@ as localhost, specify that hostname when you run TileStream:
     tilestream --host 127.0.0.1
     tilestream --host yourhost.com
 
-
 In these examples, you would only be able to access tilestream from `127.0.0.1`
 or `yourhost.com`, respectively, due to security restrictions.
+
+You can also specify the hostname TileStream should use for URLs in its
+responses by setting a custom `tileHost` value:
+
+    tilestream --tileHost yourhost.com
+    ./index.js start --tileHost="yourhost.com"
+
+This is useful if you want to sit your TileStream server behind a proxy (such as
+nginx) and restrict direct access to TileStream:
+
+    tilestream --tileHost yourhost.com --host 127.0.0.1
+    ./index.js start --tileHost="yourhost.com" --host="127.0.0.1"
+
+These configuration flags can also be set using a JSON file:
+
+    ./index.js start --config config.json
+
+Where `config.json` is something like:
+
+    {
+      "host": ["127.0.0.1"],
+      "tileHost": "yourhost.com",
+      "tilePort": 8888,
+      "uiPort": 8888
+    }
 
 
 Usage
