@@ -31,7 +31,7 @@ server.prototype.hostInfo = function(req, res, next) {
 
     if (req.headers && req.headers.host && !req.query.uiHost) {
         req.query.uiHost = req.headers.host;
-        req.query.tileHost = this.config.tileHost || [req.headers.host];
+        req.query.tileHost = this.config.tileHost ? [this.config.tileHost] : [req.headers.host];
         if (subdomains) {
             // Add subdomains for tiles.
             var basehost = this.removeTileSubdomain(req.headers.host);

@@ -14,8 +14,7 @@ Bones.Command.options['tilePort'] = {
 
 Bones.Command.options['tileHost'] = {
     'title': 'tileHost=[host]',
-    'description': 'Tile hostname',
-    'default': 'req.headers.host'
+    'description': 'Tile hostname'
 };
 
 Bones.Command.options['subdomains'] = {
