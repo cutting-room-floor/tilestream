@@ -1,6 +1,6 @@
 TileStream
 ----------
-TileStream is a high-performance map tile server powered by [MBTiles][1] files.
+TileStream is a high-performance map tile server powered by [MBTiles][1].
 
 It's like TileCache, TileStache, and other map servers in that it serves normal
 image files that can be used in OpenLayers, Google Maps, Modest Maps, and other
@@ -25,28 +25,15 @@ Features
 
 Requirements
 ------------
-- *TileStream client*
-  - Tested: Chrome 6+, Firefox 3+, IE8+
-  - May work: Opera 11
-- *TileStream server*
-  - Tested: Mac OS X 10.6, Ubuntu 10.04, Ubuntu 11.04
-  - Tested: node 0.8.x
-  - At least 613MB memory
-  - May work: Older versions, other POSIX-compliant systems
+- Node.js v0.10.x or v0.8.x
+
+After installing Node.js you can should have the `npm` command.
 
 
-Installation: Mac OS X 10.6
----------------------------
-Install [Xcode][3] for Mac OS X.
+Installation
+------------
 
-Install [node][4]. If you are using [HomeBrew][12], use these steps:
-
-    brew install node       # Installs the latest node: should be v0.8.x
-    brew versions node      # Find all the different versions of node available
-    brew switch node 0.8.15  # set current node version
-
-
-Install TileStream:
+You can use `npm` to install TileStream:
 
     git clone https://github.com/mapbox/tilestream.git
     cd tilestream
@@ -54,7 +41,7 @@ Install TileStream:
 
 Start TileStream:
 
-    ./index.js (if running from the source copy)
+    ./index.js
 
 Get options:
 
@@ -62,57 +49,33 @@ Get options:
 
 TileStream should now be accessible from a browser at `http://localhost:8888`.
 
+#### Installation note: OS X
 
-Installation: Ubuntu 10.04
---------------------------
-Install build requirements:
+Installing Node.js via [Homebrew](http://brew.sh/) (`brew install node`), the [PKG installer](http://nodejs.org/download/), or [nvm](https://github.com/creationix/nvm) are all good ways to install Node.js.
 
-    sudo apt-get install curl build-essential libssl-dev libsqlite3-0 libsqlite3-dev git-core
+#### Installation note: Ubuntu
 
-Install node:
+If installing on ubuntu we recommend installing Node.js via the `chris-lea` PPA:
 
     sudo apt-add-repository ppa:chris-lea/node.js
     sudo apt-get update
     sudo apt-get install nodejs nodejs-dev npm
 
-Install TileStream:
-
-    git clone https://github.com/mapbox/tilestream.git
-    cd tilestream
-    npm install
+Usage
+-----
 
 Start TileStream:
 
-    ./index.js (if running from the source copy)
+    ./index.js start
 
 Get options:
 
     ./index.js start --help
     
+If something goes wrong during the install you can do a complete install by doing
 
-Installation: Ubuntu alternate procedure
-----------------------------------------
-
-An alternate option is to use a nodeenv (which functions somewhat like python virtualenv). Using
-this approach will ensure that you get the correct version of node needed by tilestream and 
-will allow you to install more than one node based application on your host without worrying
-about conflicting node versions. A simple installation process would work like this::
-    
-    sudo apt-get install curl build-essential libssl-dev libsqlite3-0 libsqlite3-dev git-core python-pip
-    sudo pip install nodeenv
-    git clone http://github.com/mapbox/tilestream.git
-    cd tilestream
-    nodeenv env --node=0.8.15
-    . env/bin/activate
+    rm -rf node_modules
     npm install
-    
-
-If something goes wrong do a  ```rm -rf node_modules``` then fix the underlying issue 
-and rerun ```npm install```.
-
-Now you can start Tilestream::
-    
-    ./index.js start
 
 Some handy options::
     
@@ -161,8 +124,9 @@ Where `config.json` is something like:
     }
 
 
-Usage
------
+Configuration
+-------------
+
 MBTiles files should be placed in the `~/Documents/MapBox/tiles` directory,
 which is created at first run. Each tileset can be previewed at
 `http://localhost:8888/map/[filename]` where `[filename]` is the name of the
