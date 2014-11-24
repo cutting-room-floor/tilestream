@@ -5,7 +5,7 @@ TileStream is a high-performance map tile server powered by [MBTiles][1].
 It's like TileCache, TileStache, and other map servers in that it serves normal
 image files that can be used in OpenLayers, Google Maps, Modest Maps, and other
 Javascript APIs without much trouble - and with lots of enhancements when you
-use [Wax](http://mapbox.com/wax/).
+use [Mapbox.js](https://www.mapbox.com/mapbox.js).
 
 It's not like those tile servers in that it doesn't yet generate maps, it only
 serves maps that are generated with [TileMill](http://mapbox.com/tilemill).
@@ -20,7 +20,7 @@ Features
 --------
 - MBTiles-based tile server
 - Minimal gallery view and map viewer for tiles
-- Support for MBTiles interaction using [Wax][2]
+- Support for MBTiles interaction using [Mapbox.js][2]
 
 
 Requirements
@@ -214,7 +214,7 @@ Contributors
 
 
 [1]:http://mbtiles.org
-[2]:https://github.com/mapbox/wax
+[2]:https://www.mapbox.com/mapbox.js
 [3]:http://developer.apple.com/technologies/tools/xcode.html
 [4]:https://github.com/joyent/node/wiki/Installation
 [5]:http://npmjs.org/
