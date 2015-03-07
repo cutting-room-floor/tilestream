@@ -16,7 +16,7 @@
         "node": "0.8.x || 0.10.x"
     },
     "dependencies": {
-        "jsdom":"0.5.7",
+        "jsdom":"https://github.com/springmeyer/jsdom-nogyp/tarball/c501ee8b71d8",
         "xmlhttprequest": "1.5.0",
         "backbone":"0.3.3",
         "jquery":"1.6.3",
