@@ -1,5 +1,12 @@
 var path = require('path');
 
+var defaultTilePath;
+if(process.env.HOME !== undefined) {
+    defaultTilePath = path.join(process.env.HOME, 'Documents', 'MapBox', 'tiles');
+} else {
+    defaultTilePath = path.join(process.cwd(), 'tiles');
+}
+
 Bones.Command.options['uiPort'] = {
     'title': 'uiPort=[port]',
     'description': 'UI server port.',
@@ -25,7 +32,7 @@ Bones.Command.options['subdomains'] = {
 Bones.Command.options['tiles'] = {
     'title': 'tiles=[path]',
     'description': 'Path to tiles directory.',
-    'default': path.join(process.env.HOME, 'Documents', 'MapBox', 'tiles')
+    'default': defaultTilePath
 };
 
 Bones.Command.options['accesslog'] = {
