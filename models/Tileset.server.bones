@@ -7,23 +7,20 @@ models.Tileset.syncread = function(data, options) {
     data.tiles = data.tiles || _(options.tileHost).map(function(host) {
         return url.format({
             host: host,
-            pathname: options.basepath + 'v2/' + data.id + '/{z}/{x}/{y}.png',
-            protocol: 'http:'
+            pathname: options.basepath + 'v2/' + data.id + '/{z}/{x}/{y}.png'
         });
     });
     if (data.formatter || data.template) {
         data.grids = data.grids || _(options.tileHost).map(function(host) {
             return url.format({
                 host: host,
-                pathname: options.basepath + 'v2/' + data.id + '/{z}/{x}/{y}.grid.json',
-                protocol: 'http:'
+                pathname: options.basepath + 'v2/' + data.id + '/{z}/{x}/{y}.grid.json'
             });
         });
     }
     if (data.basename) data.download = url.format({
         host: options.tileHost[0],
-        pathname: options.basepath + 'v2/' + data.basename,
-        protocol: 'http:'
+        pathname: options.basepath + 'v2/' + data.basename
     });
     return data;
 };
