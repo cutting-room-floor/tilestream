@@ -1,3 +1,4 @@
+var os = reuqire('os');
 var path = require('path');
 
 Bones.Command.options['uiPort'] = {
@@ -25,7 +26,7 @@ Bones.Command.options['subdomains'] = {
 Bones.Command.options['tiles'] = {
     'title': 'tiles=[path]',
     'description': 'Path to tiles directory.',
-    'default': path.join(process.env.HOME, 'Documents', 'MapBox', 'tiles')
+    'default': path.join(os.homedir(), 'Documents', 'MapBox', 'tiles')
 };
 
 Bones.Command.options['accesslog'] = {
